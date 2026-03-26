@@ -1,0 +1,10 @@
+https://monday.com/llms.txt|6daaee7271fb6c7db0bd53f231e2c123ebfb38681f3dc89b47b429fc7bd4961b
+https://monday.com/static/agents/skill.md|8e6c2058c292069348f27e058d09c85946350e623b330743f3f45c97dffeb1b5
+https://clickup.com/llms.txt|d3420938020ae1435613f731ce7b784ecf1b0987d94213f840ad2136ff831192
+https://clickup.com/llms-full.txt|143b1431cca42cf05eb8b26fa895382f6290d132e9b9e9c41fef529159ac640f
+https://asana.com/llms.txt|37b3d59783f8b1fcda7353631529ecb15068e3677d1c615f6044b105ce5035b6
+https://notion.so/llms.txt|b608cffec33593a8f355e34ee26deaefaa4fe0208d64a10008d3f1deaf7b8819
+https://www.smartsheet.com/llms.txt|00a1dd4bc6c172617be53d63057e5ed5e56d8970c34d7cacd484d3fcb301bdf7
+https://www.smartsheet.com/llms-full.txt|9b3cebfd543128eed5fb1822f085fa675a1f0ee0daf21245d9157e0bde61e39e
+https://www.wrike.com/llms.txt|fe19c3c5bfab3d9d06b3c9db2b0186a25d853dd5e2a07e67b5a35fadc18d20d6
+https://linear.app/llms.txt|46cff039555f8c3bc83b9db00d4b2a8aff5cb656286a8965dba06555322de77a
