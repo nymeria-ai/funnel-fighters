@@ -1,69 +1,32 @@
 'use client';
-import { getScoreColorHex, getScoreLabel } from '@/lib/scoring';
 import DuckIcon from '@/components/ui/DuckIcon';
 
 export default function ProductPage() {
-  const score = 55;
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <DuckIcon color={getScoreColorHex(score)} size={48} />
-          <div>
-            <h1 className="text-2xl font-bold text-text-primary">Product</h1>
-            <p className="text-xs text-text-muted mt-1">The promise. Fix everything in the product.</p>
-          </div>
-        </div>
-        <div className="text-right">
-          <div className="text-3xl font-bold" style={{ color: getScoreColorHex(score) }}>{score}</div>
-          <div className="text-xs" style={{ color: getScoreColorHex(score) }}>{getScoreLabel(score)}</div>
+      <div className="flex items-center gap-3 mb-6">
+        <DuckIcon color="#6B7280" size={48} />
+        <div>
+          <h1 className="text-2xl font-bold text-text-primary">Product</h1>
+          <p className="text-xs text-text-muted mt-1">The promise delivery. Signup → Activation → Paying.</p>
         </div>
       </div>
 
-      {/* Activation Funnel */}
-      <div className="bg-bg-card border border-bg-border rounded-xl p-6 mb-6">
-        <h3 className="text-sm font-semibold text-text-primary mb-4">Activation Funnel</h3>
-        <div className="space-y-4">
-          {[
-            { stage: 'Signups', value: 4180, pct: 100, color: '#3B82F6' },
-            { stage: 'Activated', value: 752, pct: 18, color: '#22C55E' },
-            { stage: 'Paying', value: 32, pct: 4.3, color: '#EAB308' },
-          ].map((s) => (
-            <div key={s.stage}>
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-xs text-text-secondary">{s.stage}</span>
-                <span className="text-xs text-text-primary font-medium">{s.value.toLocaleString()} ({s.pct}%)</span>
-              </div>
-              <div className="w-full h-2 bg-bg-hover rounded-full overflow-hidden">
-                <div className="h-full rounded-full transition-all" style={{ width: `${s.pct}%`, backgroundColor: s.color }} />
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="mt-3 text-center">
-          <span className="text-xs text-text-muted px-2 py-1 bg-bg-hover rounded">MOCK DATA — Week of Apr 6</span>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-        <div className="bg-bg-card border border-bg-border rounded-xl p-5">
-          <div className="text-xs text-text-muted mb-1">Day-7 Retention</div>
-          <div className="text-2xl font-bold text-score-green">72%</div>
-          <div className="text-xs text-text-muted mt-1">of activated users return after 7 days</div>
-        </div>
-        <div className="bg-bg-card border border-bg-border rounded-xl p-5">
-          <div className="text-xs text-text-muted mb-1">Time to Value</div>
-          <div className="text-2xl font-bold text-score-orange">4.2 min</div>
-          <div className="text-xs text-text-muted mt-1">median time to first meaningful action</div>
-        </div>
+      <div className="bg-bg-card border border-bg-border rounded-xl p-12 text-center mb-6">
+        <DuckIcon color="#6B7280" size={80} className="mx-auto mb-4 opacity-40" />
+        <h2 className="text-lg font-semibold text-text-primary mb-2">No Data Connected</h2>
+        <p className="text-sm text-text-muted max-w-md mx-auto">
+          Product funnel metrics require access to product analytics and billing systems for activation, retention, and TROI calculations.
+        </p>
       </div>
 
       <div className="bg-bg-card border border-score-red/30 rounded-xl p-4">
-        <span className="text-xs font-medium text-score-red">🔴 Critical Gap</span>
-        <p className="text-xs text-text-secondary mt-1">
-          No product analytics access. Need Mixpanel/Amplitude connection to get real activation, retention, and payment data.
-          Currently showing estimates based on cohort table.
-        </p>
+        <span className="text-xs font-medium text-score-red">🔴 Critical Integrations</span>
+        <ul className="mt-2 space-y-1 text-xs text-text-secondary">
+          <li>• <strong>Mixpanel/Amplitude</strong> — signup-to-activation, day-7 retention, time to value</li>
+          <li>• <strong>Billing/Payment API</strong> — activation-to-paying conversion, TROI calculation</li>
+          <li>• <strong>BigQuery</strong> — cohort-level product engagement data</li>
+        </ul>
       </div>
     </div>
   );

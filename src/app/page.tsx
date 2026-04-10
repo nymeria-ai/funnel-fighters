@@ -1,36 +1,74 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import DuckCard from '@/components/ducks/DuckCard';
-import FunnelScore from '@/components/ducks/FunnelScore';
-import CohortTable from '@/components/charts/CohortTable';
-import RightPanel from '@/components/layout/RightPanel';
-import { mockDucks, mockCohorts } from '@/data/mock';
-import { DuckData, getScoreColorHex, getScoreLabel } from '@/lib/scoring';
 import DuckIcon from '@/components/ui/DuckIcon';
+import RightPanel from '@/components/layout/RightPanel';
+import { getScoreColorHex } from '@/lib/scoring';
 
-const duckRoutes: Record<string, string> = {
-  audience: '/audience',
-  ads: '/ads',
-  landing_pages: '/landing-pages',
-  product: '/product',
+interface AccountSummary {
+  name: string;
+  spend: number;
+  clicks: number;
+  impressions: number;
+  conversions: number;
+}
+
+function formatCurrency(n: number): string {
+  if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `$${(n / 1_000).toFixed(0)}K`;
+  return `$${n.toFixed(0)}`;
+}
+
+function formatNumber(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`;
+  return n.toLocaleString();
+}
+
+interface DuckStatus {
+  label: string;
+  status: 'live' | 'partial' | 'no_data';
+  description: string;
+  route: string;
+}
+
+const ducks: DuckStatus[] = [
+  { label: 'Audience', status: 'no_data', description: 'Needs Snowflake/Looker integration', route: '/audience' },
+  { label: 'Ads', status: 'live', description: 'Google Ads connected — all accounts', route: '/ads' },
+  { label: 'Landing Pages', status: 'partial', description: 'URLs from ads — no rank/speed yet', route: '/landing-pages' },
+  { label: 'Product', status: 'no_data', description: 'Needs product analytics access', route: '/product' },
+];
+
+const statusColors: Record<string, string> = {
+  live: '#22C55E',
+  partial: '#F97316',
+  no_data: '#6B7280',
 };
 
 export default function HomePage() {
   const router = useRouter();
-  const [selectedDuck, setSelectedDuck] = useState<DuckData | null>(null);
+  const [accounts, setAccounts] = useState<AccountSummary[]>([]);
+  const [loading, setLoading] = useState(true);
   const [panelOpen, setPanelOpen] = useState(false);
+  const [selectedDuck, setSelectedDuck] = useState<DuckStatus | null>(null);
 
-  const scores = mockDucks.map(d => d.score);
+  useEffect(() => {
+    fetch('/api/ads?level=accounts')
+      .then(r => r.json())
+      .then(data => {
+        setAccounts(data.accounts || []);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
 
-  const handleDuckClick = (duck: DuckData) => {
-    setSelectedDuck(duck);
-    setPanelOpen(true);
-  };
+  const totalSpend = accounts.reduce((s, a) => s + a.spend, 0);
+  const totalClicks = accounts.reduce((s, a) => s + a.clicks, 0);
+  const totalImpressions = accounts.reduce((s, a) => s + a.impressions, 0);
+  const totalConversions = accounts.reduce((s, a) => s + a.conversions, 0);
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
-      {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-text-primary">Funnel Overview</h1>
         <p className="text-sm text-text-muted mt-1">
@@ -38,138 +76,134 @@ export default function HomePage() {
         </p>
       </div>
 
-      {/* Top Section: Score + Ducks */}
-      <div className="flex flex-col lg:grid lg:grid-cols-5 gap-4 lg:gap-6 mb-6 lg:mb-8">
-        {/* Overall Score */}
-        <div className="bg-bg-card border border-bg-border rounded-xl p-6 flex items-center justify-center">
-          <FunnelScore scores={scores} />
-        </div>
-
-        {/* 4 Duck Cards */}
-        <div className="lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
-          {mockDucks.map(duck => (
-            <DuckCard
-              key={duck.type}
-              duck={duck}
-              onClick={() => handleDuckClick(duck)}
-            />
-          ))}
-        </div>
+      {/* 4 Duck Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        {ducks.map(duck => (
+          <button
+            key={duck.label}
+            onClick={() => {
+              if (duck.status === 'no_data') {
+                setSelectedDuck(duck);
+                setPanelOpen(true);
+              } else {
+                router.push(duck.route);
+              }
+            }}
+            className="bg-bg-card border border-bg-border rounded-xl p-5 hover:border-bg-hover hover:bg-bg-hover transition-all text-left group"
+          >
+            <div className="flex items-start justify-between">
+              <div className="flex items-start gap-3">
+                <DuckIcon color={statusColors[duck.status]} size={48} />
+                <div>
+                  <span className="text-sm font-medium text-text-primary block">{duck.label}</span>
+                  <p className="text-xs text-text-muted mt-1">{duck.description}</p>
+                </div>
+              </div>
+            </div>
+            <div className="mt-4 flex items-center justify-between">
+              <span className="flex items-center gap-1.5">
+                <span className={`w-2 h-2 rounded-full ${
+                  duck.status === 'live' ? 'bg-score-green animate-pulse' :
+                  duck.status === 'partial' ? 'bg-score-orange' :
+                  'bg-score-gray'
+                }`} />
+                <span className="text-xs text-text-muted capitalize">{duck.status.replace('_', ' ')}</span>
+              </span>
+              <span className="text-xs text-text-muted group-hover:text-accent-blue transition-colors">
+                {duck.status !== 'no_data' ? 'View →' : 'Details →'}
+              </span>
+            </div>
+          </button>
+        ))}
       </div>
 
-      {/* Alerts */}
-      <div className="bg-bg-card border border-score-orange/30 rounded-xl p-4 mb-6 lg:mb-8">
+      {/* Live Metrics from Google Ads */}
+      <div className="bg-bg-card border border-bg-border rounded-xl p-6 mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-sm font-semibold text-text-primary">Google Ads — Last 30 Days</h3>
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-score-green animate-pulse" />
+            <span className="text-xs text-text-muted">LIVE</span>
+          </div>
+        </div>
+
+        {loading ? (
+          <div className="text-text-muted text-sm animate-pulse py-8 text-center">Loading Google Ads data...</div>
+        ) : (
+          <>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+              <div>
+                <div className="text-2xl font-bold text-text-primary">{formatCurrency(totalSpend)}</div>
+                <div className="text-xs text-text-muted">Total Spend</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-text-primary">{formatNumber(totalImpressions)}</div>
+                <div className="text-xs text-text-muted">Impressions</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-text-primary">{formatNumber(totalClicks)}</div>
+                <div className="text-xs text-text-muted">Clicks</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-text-primary">{formatNumber(Math.round(totalConversions))}</div>
+                <div className="text-xs text-text-muted">Conversions</div>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="text-xs font-medium text-text-muted mb-2">ACCOUNTS BY SPEND</div>
+              {accounts.slice(0, 8).map(acc => (
+                <div key={acc.name} className="flex items-center justify-between text-sm">
+                  <span className="text-text-secondary">{acc.name}</span>
+                  <div className="flex items-center gap-4">
+                    <div className="w-32 h-1.5 bg-bg-hover rounded-full overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-accent-blue"
+                        style={{ width: `${Math.min(100, (acc.spend / (accounts[0]?.spend || 1)) * 100)}%` }}
+                      />
+                    </div>
+                    <span className="text-text-primary font-medium w-16 text-right">{formatCurrency(acc.spend)}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* Gaps Alert */}
+      <div className="bg-bg-card border border-score-orange/30 rounded-xl p-4">
         <div className="flex items-center gap-2 mb-2">
           <span className="text-score-orange">⚠️</span>
-          <span className="text-sm font-medium text-score-orange">Attention Needed</span>
+          <span className="text-sm font-medium text-score-orange">Missing Integrations</span>
         </div>
         <ul className="space-y-1 text-sm text-text-secondary">
-          <li>• <strong>Ads</strong> duck scored 47 (Needs Work) — AI Agents campaign has low CTR and misaligned targeting</li>
-          <li>• <strong>4 integrations</strong> pending — Meta, YouTube, LinkedIn, Product Analytics not connected</li>
-          <li>• <strong>Product</strong> duck needs data — no product analytics access yet</li>
+          <li>• <strong>Audience</strong> — Snowflake/Looker access needed for source quality scoring</li>
+          <li>• <strong>Landing Pages</strong> — Ahrefs API for SEO rank, PageSpeed Insights for speed</li>
+          <li>• <strong>Product</strong> — Mixpanel/Amplitude for activation, retention, TROI</li>
+          <li>• <strong>Meta/YouTube/LinkedIn</strong> — API connections for cross-channel view</li>
         </ul>
       </div>
 
-      {/* Cohort Table */}
-      <CohortTable data={mockCohorts} />
-
-      {/* Right Panel */}
       <RightPanel
         isOpen={panelOpen}
         onClose={() => setPanelOpen(false)}
-        title={selectedDuck ? `${selectedDuck.label} — Details` : 'Details'}
+        title={selectedDuck ? `${selectedDuck.label} — Not Connected` : 'Details'}
       >
         {selectedDuck && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <DuckIcon color={getScoreColorHex(selectedDuck.score)} size={40} />
-                <div>
-                  <div className="text-2xl font-bold" style={{ color: getScoreColorHex(selectedDuck.score) }}>
-                    {selectedDuck.score}
-                  </div>
-                  <div className="text-xs text-text-muted">{getScoreLabel(selectedDuck.score)}</div>
-                </div>
-              </div>
-              <button
-                onClick={() => router.push(duckRoutes[selectedDuck.type])}
-                className="px-3 py-1.5 bg-accent-blue text-white text-xs rounded-lg hover:bg-blue-600"
-              >
-                Full Analysis →
-              </button>
+            <DuckIcon color={statusColors[selectedDuck.status]} size={64} className="mx-auto" />
+            <div className="text-center">
+              <div className="text-lg font-bold text-text-primary">{selectedDuck.label}</div>
+              <div className="text-xs text-text-muted mt-1">No data available</div>
             </div>
-
-            <div className="border-t border-bg-border pt-3">
-              <h4 className="text-xs font-medium text-text-muted mb-2">SCORE BREAKDOWN</h4>
-              <div className="space-y-2">
-                {selectedDuck.type === 'ads' && (
-                  <>
-                    <ScoreRow label="CTR Quality" value={52} />
-                    <ScoreRow label="Creative Freshness" value={38} />
-                    <ScoreRow label="Message-LP Alignment" value={45} />
-                    <ScoreRow label="Cost Trend" value={53} />
-                  </>
-                )}
-                {selectedDuck.type === 'audience' && (
-                  <>
-                    <ScoreRow label="Source Conversion Quality" value={65} />
-                    <ScoreRow label="Cost Efficiency Trend" value={58} />
-                    <ScoreRow label="Audience-to-Paying Alignment" value={63} />
-                  </>
-                )}
-                {selectedDuck.type === 'landing_pages' && (
-                  <>
-                    <ScoreRow label="Visit-to-Signup Rate" value={75} />
-                    <ScoreRow label="Google PageRank" value={62} />
-                    <ScoreRow label="Page Speed" value={70} />
-                    <ScoreRow label="Ad-LP Alignment" value={77} />
-                  </>
-                )}
-                {selectedDuck.type === 'product' && (
-                  <>
-                    <ScoreRow label="Signup-to-Activation" value={48} />
-                    <ScoreRow label="Activation-to-Paying" value={42} />
-                    <ScoreRow label="Day-7 Retention" value={72} />
-                    <ScoreRow label="Time to Value" value={58} />
-                  </>
-                )}
-              </div>
-            </div>
-
-            <div className="border-t border-bg-border pt-3">
-              <h4 className="text-xs font-medium text-text-muted mb-2">TREND (8 WEEKS)</h4>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-text-secondary">
-                  {selectedDuck.trend[0]} → {selectedDuck.trend[selectedDuck.trend.length - 1]}
-                </span>
-                <span className="text-xs text-score-green">
-                  +{selectedDuck.trend[selectedDuck.trend.length - 1] - selectedDuck.trend[0]} pts
-                </span>
-              </div>
+            <div className="bg-bg-hover rounded-lg p-3">
+              <span className="text-xs font-medium text-score-orange">⚡ Action Required</span>
+              <p className="text-xs text-text-secondary mt-1">{selectedDuck.description}</p>
             </div>
           </div>
         )}
       </RightPanel>
-    </div>
-  );
-}
-
-function ScoreRow({ label, value }: { label: string; value: number }) {
-  const colorHex = getScoreColorHex(value);
-  return (
-    <div className="flex items-center justify-between">
-      <span className="text-xs text-text-secondary">{label}</span>
-      <div className="flex items-center gap-2">
-        <div className="w-24 h-1.5 bg-bg-hover rounded-full overflow-hidden">
-          <div
-            className="h-full rounded-full transition-all"
-            style={{ width: `${value}%`, backgroundColor: colorHex }}
-          />
-        </div>
-        <span className="text-xs font-medium w-8 text-right" style={{ color: colorHex }}>
-          {value}
-        </span>
-      </div>
     </div>
   );
 }
