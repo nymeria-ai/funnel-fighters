@@ -41,7 +41,7 @@ export default function AdsPage() {
   };
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
@@ -70,7 +70,7 @@ export default function AdsPage() {
 
       {/* Channels View */}
       {level === 'channels' && (
-        <div className="grid grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-4">
           {mockChannels.map(ch => (
             <button
               key={ch.id}
@@ -143,7 +143,7 @@ export default function AdsPage() {
                     {camp.status}
                   </span>
                 </div>
-                <div className="flex gap-6 mt-2 text-xs text-text-muted">
+                <div className="flex flex-wrap gap-x-4 gap-y-1 lg:gap-6 mt-2 text-xs text-text-muted">
                   <span>Spend: ${(camp.spend / 1000).toFixed(0)}K</span>
                   <span>Impressions: {(camp.impressions / 1000000).toFixed(1)}M</span>
                   <span>CTR: {camp.ctr.toFixed(2)}%</span>
@@ -175,7 +175,7 @@ export default function AdsPage() {
             >
               <div className="flex-1">
                 <div className="text-sm font-medium text-text-primary">{ag.name}</div>
-                <div className="flex gap-6 mt-2 text-xs text-text-muted">
+                <div className="flex flex-wrap gap-x-4 gap-y-1 lg:gap-6 mt-2 text-xs text-text-muted">
                   <span>Spend: ${(ag.spend / 1000).toFixed(0)}K</span>
                   <span>Clicks: {ag.clicks.toLocaleString()}</span>
                   <span>Conversions: {ag.conversions.toLocaleString()}</span>
@@ -226,7 +226,7 @@ export default function AdsPage() {
                   <span className="text-sm font-medium text-text-primary">{ad.name}</span>
                   <span className="text-xs px-2 py-0.5 bg-bg-hover rounded text-text-muted">{ad.type}</span>
                 </div>
-                <div className="flex gap-6 mt-2 text-xs text-text-muted">
+                <div className="flex flex-wrap gap-x-4 gap-y-1 lg:gap-6 mt-2 text-xs text-text-muted">
                   <span>Spend: ${ad.spend.toLocaleString()}</span>
                   <span>Clicks: {ad.clicks.toLocaleString()}</span>
                   <span>Conv: {ad.conversions.toLocaleString()}</span>

@@ -5,7 +5,7 @@ import DuckIcon from '@/components/ui/DuckIcon';
 export default function ProductPage() {
   const score = 55;
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <DuckIcon color={getScoreColorHex(score)} size={48} />
@@ -45,7 +45,7 @@ export default function ProductPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
         <div className="bg-bg-card border border-bg-border rounded-xl p-5">
           <div className="text-xs text-text-muted mb-1">Day-7 Retention</div>
           <div className="text-2xl font-bold text-score-green">72%</div>

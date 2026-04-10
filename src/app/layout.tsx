@@ -16,7 +16,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="bg-bg-primary text-text-primary antialiased">
         <Sidebar />
-        <main className="ml-[220px] min-h-screen">
+        <main className="lg:ml-[220px] min-h-screen pt-14 lg:pt-0">
           {children}
         </main>
       </body>

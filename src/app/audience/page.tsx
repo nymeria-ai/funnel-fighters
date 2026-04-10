@@ -5,7 +5,7 @@ import DuckIcon from '@/components/ui/DuckIcon';
 export default function AudiencePage() {
   const score = 62;
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <DuckIcon color={getScoreColorHex(score)} size={48} />
@@ -21,7 +21,7 @@ export default function AudiencePage() {
       </div>
 
       {/* Water Quality Visualization */}
-      <div className="grid grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 lg:mb-8">
         <div className="bg-bg-card border border-bg-border rounded-xl p-5 text-center">
           <DuckIcon color="#22C55E" size={56} className="mx-auto mb-2" />
           <div className="text-sm font-medium text-score-green">Pure Water</div>

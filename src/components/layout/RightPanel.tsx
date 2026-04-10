@@ -24,8 +24,16 @@ export default function RightPanel({ isOpen, onClose, title, children }: RightPa
   };
 
   return (
+    <>
+    {/* Mobile overlay */}
+    {isOpen && (
+      <div
+        className="lg:hidden fixed inset-0 bg-black/60 z-40"
+        onClick={onClose}
+      />
+    )}
     <div
-      className={`fixed right-0 top-0 h-screen w-[420px] bg-bg-secondary border-l border-bg-border z-50 transform transition-transform duration-300 ease-out flex flex-col ${
+      className={`fixed right-0 top-0 h-screen w-full sm:w-[380px] lg:w-[420px] bg-bg-secondary border-l border-bg-border z-50 transform transition-transform duration-300 ease-out flex flex-col ${
         isOpen ? 'translate-x-0' : 'translate-x-full'
       }`}
     >
@@ -85,5 +93,6 @@ export default function RightPanel({ isOpen, onClose, title, children }: RightPa
         </div>
       </div>
     </div>
+    </>
   );
 }

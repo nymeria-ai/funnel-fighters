@@ -28,12 +28,12 @@ function getTrendColor(current: number, previous: number | null): string {
 export default function CohortTable({ data }: CohortTableProps) {
   return (
     <div className="bg-bg-card border border-bg-border rounded-xl overflow-hidden">
-      <div className="px-5 py-3 border-b border-bg-border flex items-center justify-between">
+      <div className="px-4 lg:px-5 py-3 border-b border-bg-border flex items-center justify-between">
         <h3 className="text-sm font-semibold text-text-primary">Weekly Cohort Table</h3>
         <span className="text-xs text-text-muted px-2 py-1 bg-bg-hover rounded">MOCK</span>
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+      <div className="overflow-x-auto -webkit-overflow-scrolling-touch">
+        <table className="w-full text-sm min-w-[700px]">
           <thead>
             <tr className="text-text-muted text-xs border-b border-bg-border">
               <th className="text-left px-4 py-3 font-medium">Week</th>

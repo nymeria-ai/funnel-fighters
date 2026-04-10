@@ -12,7 +12,7 @@ export default function LandingPagesPage() {
   const overallScore = 71;
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <DuckIcon color={getScoreColorHex(overallScore)} size={48} />
@@ -27,8 +27,8 @@ export default function LandingPagesPage() {
         </div>
       </div>
 
-      <div className="bg-bg-card border border-bg-border rounded-xl overflow-hidden">
-        <table className="w-full text-sm">
+      <div className="bg-bg-card border border-bg-border rounded-xl overflow-hidden overflow-x-auto">
+        <table className="w-full text-sm min-w-[700px]">
           <thead>
             <tr className="text-text-muted text-xs border-b border-bg-border">
               <th className="text-left px-5 py-3 font-medium">Landing Page</th>

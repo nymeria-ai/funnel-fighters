@@ -29,7 +29,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-text-primary">Funnel Overview</h1>
@@ -39,14 +39,14 @@ export default function HomePage() {
       </div>
 
       {/* Top Section: Score + Ducks */}
-      <div className="grid grid-cols-5 gap-6 mb-8">
+      <div className="flex flex-col lg:grid lg:grid-cols-5 gap-4 lg:gap-6 mb-6 lg:mb-8">
         {/* Overall Score */}
         <div className="bg-bg-card border border-bg-border rounded-xl p-6 flex items-center justify-center">
           <FunnelScore scores={scores} />
         </div>
 
         {/* 4 Duck Cards */}
-        <div className="col-span-4 grid grid-cols-4 gap-4">
+        <div className="lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
           {mockDucks.map(duck => (
             <DuckCard
               key={duck.type}
@@ -58,7 +58,7 @@ export default function HomePage() {
       </div>
 
       {/* Alerts */}
-      <div className="bg-bg-card border border-score-orange/30 rounded-xl p-4 mb-8">
+      <div className="bg-bg-card border border-score-orange/30 rounded-xl p-4 mb-6 lg:mb-8">
         <div className="flex items-center gap-2 mb-2">
           <span className="text-score-orange">⚠️</span>
           <span className="text-sm font-medium text-score-orange">Attention Needed</span>
