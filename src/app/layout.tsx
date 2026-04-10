@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Sidebar from "@/components/layout/Sidebar";
+import AuthProvider from "@/components/layout/AuthProvider";
 
 export const metadata: Metadata = {
   title: "Funnel Fighters HQ",
@@ -15,10 +16,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-bg-primary text-text-primary antialiased">
-        <Sidebar />
-        <main className="lg:ml-[220px] min-h-screen pt-14 lg:pt-0">
-          {children}
-        </main>
+        <AuthProvider>
+          <Sidebar />
+          <main className="lg:ml-[220px] min-h-screen pt-14 lg:pt-0">
+            {children}
+          </main>
+        </AuthProvider>
       </body>
     </html>
   );
