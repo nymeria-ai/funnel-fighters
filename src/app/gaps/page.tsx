@@ -1,5 +1,6 @@
 'use client';
 import { mockGaps, GapItem } from '@/data/mock';
+import DuckIcon from '@/components/ui/DuckIcon';
 
 const priorityColors: Record<string, string> = {
   critical: 'text-score-red bg-score-red/10 border-score-red/30',
@@ -14,11 +15,11 @@ const statusIcons: Record<string, string> = {
   done: '✅',
 };
 
-const duckLabels: Record<string, string> = {
-  audience: '🦆 Audience',
-  ads: '🦆 Ads',
-  landing_pages: '🦆 Landing Pages',
-  product: '🦆 Product',
+const duckLabels: Record<string, { label: string; color: string }> = {
+  audience: { label: 'Audience', color: '#22C55E' },
+  ads: { label: 'Ads', color: '#F97316' },
+  landing_pages: { label: 'Landing Pages', color: '#22C55E' },
+  product: { label: 'Product', color: '#F97316' },
 };
 
 export default function GapsPage() {
@@ -53,8 +54,9 @@ export default function GapsPage() {
       <div className="space-y-6">
         {Object.entries(grouped).map(([duck, gaps]) => (
           <div key={duck} className="bg-bg-card border border-bg-border rounded-xl overflow-hidden">
-            <div className="px-5 py-3 border-b border-bg-border bg-bg-secondary">
-              <span className="text-sm font-semibold text-text-primary">{duckLabels[duck] || duck}</span>
+            <div className="px-5 py-3 border-b border-bg-border bg-bg-secondary flex items-center gap-2">
+              <DuckIcon color={duckLabels[duck]?.color || '#6B7280'} size={24} />
+              <span className="text-sm font-semibold text-text-primary">{duckLabels[duck]?.label || duck}</span>
               <span className="text-xs text-text-muted ml-2">({gaps.filter(g => g.status !== 'done').length} open)</span>
             </div>
             <div className="divide-y divide-bg-border/50">

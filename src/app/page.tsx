@@ -7,6 +7,7 @@ import CohortTable from '@/components/charts/CohortTable';
 import RightPanel from '@/components/layout/RightPanel';
 import { mockDucks, mockCohorts } from '@/data/mock';
 import { DuckData, getScoreColorHex, getScoreLabel } from '@/lib/scoring';
+import DuckIcon from '@/components/ui/DuckIcon';
 
 const duckRoutes: Record<string, string> = {
   audience: '/audience',
@@ -76,16 +77,19 @@ export default function HomePage() {
       <RightPanel
         isOpen={panelOpen}
         onClose={() => setPanelOpen(false)}
-        title={selectedDuck ? `${selectedDuck.emoji} ${selectedDuck.label} — Details` : 'Details'}
+        title={selectedDuck ? `${selectedDuck.label} — Details` : 'Details'}
       >
         {selectedDuck && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <div>
-                <div className="text-2xl font-bold" style={{ color: getScoreColorHex(selectedDuck.score) }}>
-                  {selectedDuck.score}
+              <div className="flex items-center gap-3">
+                <DuckIcon color={getScoreColorHex(selectedDuck.score)} size={40} />
+                <div>
+                  <div className="text-2xl font-bold" style={{ color: getScoreColorHex(selectedDuck.score) }}>
+                    {selectedDuck.score}
+                  </div>
+                  <div className="text-xs text-text-muted">{getScoreLabel(selectedDuck.score)}</div>
                 </div>
-                <div className="text-xs text-text-muted">{getScoreLabel(selectedDuck.score)}</div>
               </div>
               <button
                 onClick={() => router.push(duckRoutes[selectedDuck.type])}

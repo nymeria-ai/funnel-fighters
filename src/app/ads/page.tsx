@@ -3,6 +3,7 @@ import { useState } from 'react';
 import RightPanel from '@/components/layout/RightPanel';
 import { mockChannels, ChannelData, CampaignData, AdGroupData, AdData } from '@/data/mock';
 import { getScoreColorHex, getScoreLabel } from '@/lib/scoring';
+import DuckIcon from '@/components/ui/DuckIcon';
 
 type DrillLevel = 'channels' | 'campaigns' | 'adgroups' | 'ads';
 
@@ -24,8 +25,8 @@ export default function AdsPage() {
   };
 
   const breadcrumb = () => {
-    const parts: { label: string; onClick: () => void }[] = [
-      { label: '🦆 Ads', onClick: () => { setLevel('channels'); setSelectedChannel(null); } },
+    const parts: { label: string; onClick: () => void; isDuck?: boolean }[] = [
+      { label: 'Ads', onClick: () => { setLevel('channels'); setSelectedChannel(null); }, isDuck: true },
     ];
     if (selectedChannel) {
       parts.push({ label: `${selectedChannel.icon} ${selectedChannel.name}`, onClick: () => { setLevel('campaigns'); setSelectedCampaign(null); } });
@@ -45,10 +46,11 @@ export default function AdsPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-3 mb-1">
-            {breadcrumb().map((b, i) => (
+            {breadcrumb().map((b: { label: string; onClick: () => void; isDuck?: boolean }, i: number) => (
               <span key={i} className="flex items-center gap-2">
                 {i > 0 && <span className="text-text-muted">/</span>}
-                <button onClick={b.onClick} className="text-sm text-text-secondary hover:text-text-primary transition-colors">
+                <button onClick={b.onClick} className="flex items-center gap-1.5 text-sm text-text-secondary hover:text-text-primary transition-colors">
+                  {b.isDuck && <DuckIcon color={getScoreColorHex(overallScore)} size={24} />}
                   {b.label}
                 </button>
               </span>

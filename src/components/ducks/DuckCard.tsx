@@ -1,5 +1,6 @@
 'use client';
 import { DuckData, getScoreColor, getScoreColorHex, getScoreLabel } from '@/lib/scoring';
+import DuckIcon from '@/components/ui/DuckIcon';
 
 interface DuckCardProps {
   duck: DuckData;
@@ -43,12 +44,12 @@ export default function DuckCard({ duck, onClick }: DuckCardProps) {
       className="bg-bg-card border border-bg-border rounded-xl p-5 hover:border-bg-hover hover:bg-bg-hover transition-all cursor-pointer text-left w-full group"
     >
       <div className="flex items-start justify-between">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-2xl">{duck.emoji}</span>
-            <span className="text-sm font-medium text-text-primary">{duck.label}</span>
+        <div className="flex items-start gap-3">
+          <DuckIcon color={colorHex} size={48} />
+          <div>
+            <span className="text-sm font-medium text-text-primary block">{duck.label}</span>
+            <p className="text-xs text-text-muted">{duck.subLabel}</p>
           </div>
-          <p className="text-xs text-text-muted">{duck.subLabel}</p>
         </div>
         <div className="text-right">
           <div

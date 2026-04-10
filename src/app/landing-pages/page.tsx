@@ -3,6 +3,7 @@ import { useState } from 'react';
 import RightPanel from '@/components/layout/RightPanel';
 import { mockLandingPages, LandingPageData } from '@/data/mock';
 import { getScoreColorHex, getScoreLabel } from '@/lib/scoring';
+import DuckIcon from '@/components/ui/DuckIcon';
 
 export default function LandingPagesPage() {
   const [panelOpen, setPanelOpen] = useState(false);
@@ -13,9 +14,12 @@ export default function LandingPagesPage() {
   return (
     <div className="p-8 max-w-7xl mx-auto">
       <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-text-primary">🦆 Landing Pages</h1>
-          <p className="text-xs text-text-muted mt-1">The enhancer. Don&apos;t ruin the intent!</p>
+        <div className="flex items-center gap-3">
+          <DuckIcon color={getScoreColorHex(overallScore)} size={48} />
+          <div>
+            <h1 className="text-2xl font-bold text-text-primary">Landing Pages</h1>
+            <p className="text-xs text-text-muted mt-1">The enhancer. Don&apos;t ruin the intent!</p>
+          </div>
         </div>
         <div className="text-right">
           <div className="text-3xl font-bold" style={{ color: getScoreColorHex(overallScore) }}>{overallScore}</div>
@@ -90,13 +94,16 @@ export default function LandingPagesPage() {
       <RightPanel
         isOpen={panelOpen}
         onClose={() => setPanelOpen(false)}
-        title={selected ? `📄 ${selected.title}` : 'Details'}
+        title={selected ? selected.title : 'Details'}
       >
         {selected && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <div className="text-2xl font-bold" style={{ color: getScoreColorHex(selected.score) }}>
-                {selected.score}
+              <div className="flex items-center gap-3">
+                <DuckIcon color={getScoreColorHex(selected.score)} size={36} />
+                <div className="text-2xl font-bold" style={{ color: getScoreColorHex(selected.score) }}>
+                  {selected.score}
+                </div>
               </div>
               <button className="px-3 py-1.5 bg-bg-hover text-text-secondary text-xs rounded-lg hover:bg-bg-border transition-colors">
                 🔄 Refresh Rank

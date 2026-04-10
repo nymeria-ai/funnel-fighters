@@ -1,14 +1,18 @@
 'use client';
 import { getScoreColorHex, getScoreLabel } from '@/lib/scoring';
+import DuckIcon from '@/components/ui/DuckIcon';
 
 export default function ProductPage() {
   const score = 55;
   return (
     <div className="p-8 max-w-7xl mx-auto">
       <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-text-primary">🦆 Product</h1>
-          <p className="text-xs text-text-muted mt-1">The promise. Fix everything in the product.</p>
+        <div className="flex items-center gap-3">
+          <DuckIcon color={getScoreColorHex(score)} size={48} />
+          <div>
+            <h1 className="text-2xl font-bold text-text-primary">Product</h1>
+            <p className="text-xs text-text-muted mt-1">The promise. Fix everything in the product.</p>
+          </div>
         </div>
         <div className="text-right">
           <div className="text-3xl font-bold" style={{ color: getScoreColorHex(score) }}>{score}</div>

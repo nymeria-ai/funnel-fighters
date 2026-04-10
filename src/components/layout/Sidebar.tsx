@@ -1,14 +1,15 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import DuckIcon from '@/components/ui/DuckIcon';
 
 const navItems = [
-  { href: '/', label: 'Overview', icon: '🎯' },
-  { href: '/audience', label: 'Audience', icon: '🦆' },
-  { href: '/ads', label: 'Ads', icon: '🦆' },
-  { href: '/landing-pages', label: 'Landing Pages', icon: '🦆' },
-  { href: '/product', label: 'Product', icon: '🦆' },
-  { href: '/gaps', label: 'Gaps & Actions', icon: '⚡' },
+  { href: '/', label: 'Overview', type: 'icon', icon: '🎯' },
+  { href: '/audience', label: 'Audience', type: 'duck', color: '#22C55E' },
+  { href: '/ads', label: 'Ads', type: 'duck', color: '#F97316' },
+  { href: '/landing-pages', label: 'Landing Pages', type: 'duck', color: '#22C55E' },
+  { href: '/product', label: 'Product', type: 'duck', color: '#F97316' },
+  { href: '/gaps', label: 'Gaps & Actions', type: 'icon', icon: '⚡' },
 ];
 
 export default function Sidebar() {
@@ -36,7 +37,11 @@ export default function Sidebar() {
                   : 'text-text-secondary hover:text-text-primary hover:bg-bg-hover'
               }`}
             >
-              <span className="text-base">{item.icon}</span>
+              {item.type === 'duck' ? (
+                <DuckIcon color={item.color!} size={22} />
+              ) : (
+                <span className="text-base w-[22px] text-center">{item.icon}</span>
+              )}
               <span>{item.label}</span>
             </Link>
           );
