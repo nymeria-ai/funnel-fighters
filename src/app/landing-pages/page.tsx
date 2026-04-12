@@ -124,6 +124,7 @@ export default function LandingPagesPage() {
         isOpen={panelOpen}
         onClose={() => setPanelOpen(false)}
         title={selected ? selected.url.replace('https://monday.com', '') : 'Details'}
+        context={selected ? { url: selected.url, totalSpend: selected.totalSpend, totalClicks: selected.totalClicks, totalConversions: selected.totalConversions } : undefined}
       >
         {selected && (
           <div className="space-y-4">

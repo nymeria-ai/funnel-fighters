@@ -189,6 +189,7 @@ export default function HomePage() {
         isOpen={panelOpen}
         onClose={() => setPanelOpen(false)}
         title={selectedDuck ? `${selectedDuck.label} — Not Connected` : 'Details'}
+        context={selectedDuck ? { label: selectedDuck.label, status: selectedDuck.status, description: selectedDuck.description } : undefined}
       >
         {selectedDuck && (
           <div className="space-y-4">

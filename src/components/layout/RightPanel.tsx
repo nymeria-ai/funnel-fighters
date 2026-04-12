@@ -1,26 +1,92 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 interface RightPanelProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
   children?: React.ReactNode;
+  context?: Record<string, unknown>;
 }
 
-export default function RightPanel({ isOpen, onClose, title, children }: RightPanelProps) {
+interface ChatMessage {
+  role: 'user' | 'ai';
+  text: string;
+}
+
+export default function RightPanel({ isOpen, onClose, title, children, context }: RightPanelProps) {
   const [chatInput, setChatInput] = useState('');
-  const [messages, setMessages] = useState<{ role: 'user' | 'ai'; text: string }[]>([
+  const [messages, setMessages] = useState<ChatMessage[]>([
     { role: 'ai', text: 'I can help you analyze this data. Ask me anything about the selected element.' },
   ]);
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const abortRef = useRef<AbortController | null>(null);
 
-  const handleSend = () => {
-    if (!chatInput.trim()) return;
-    setMessages(prev => [...prev, { role: 'user', text: chatInput }]);
-    setTimeout(() => {
-      setMessages(prev => [...prev, { role: 'ai', text: `Analyzing "${chatInput}"... This feature will connect to an AI agent for real-time analysis. Stay tuned! 🦆` }]);
-    }, 500);
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  const handleSend = async () => {
+    const trimmed = chatInput.trim();
+    if (!trimmed || isLoading) return;
+
     setChatInput('');
+    setMessages(prev => [...prev, { role: 'user', text: trimmed }]);
+    setIsLoading(true);
+
+    // Add placeholder AI message for streaming
+    const aiIndex = messages.length + 1; // +1 for the user message we just added
+    setMessages(prev => [...prev, { role: 'ai', text: '' }]);
+
+    try {
+      abortRef.current = new AbortController();
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: trimmed, context }),
+        signal: abortRef.current.signal,
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: 'Request failed' }));
+        setMessages(prev => {
+          const updated = [...prev];
+          updated[aiIndex] = { role: 'ai', text: err.error || 'Something went wrong. Please try again.' };
+          return updated;
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      const reader = res.body?.getReader();
+      if (!reader) throw new Error('No response stream');
+
+      const decoder = new TextDecoder();
+      let accumulated = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        accumulated += decoder.decode(value, { stream: true });
+        const text = accumulated;
+        setMessages(prev => {
+          const updated = [...prev];
+          updated[aiIndex] = { role: 'ai', text };
+          return updated;
+        });
+      }
+    } catch (err: unknown) {
+      if (err instanceof Error && err.name === 'AbortError') return;
+      setMessages(prev => {
+        const updated = [...prev];
+        updated[aiIndex] = { role: 'ai', text: 'Something went wrong. Please try again.' };
+        return updated;
+      });
+    } finally {
+      setIsLoading(false);
+      abortRef.current = null;
+    }
   };
 
   return (
@@ -65,16 +131,23 @@ export default function RightPanel({ isOpen, onClose, title, children }: RightPa
           {messages.map((msg, i) => (
             <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               <div
-                className={`max-w-[85%] px-3 py-2 rounded-lg text-sm ${
+                className={`max-w-[85%] px-3 py-2 rounded-lg text-sm whitespace-pre-wrap ${
                   msg.role === 'user'
                     ? 'bg-accent-blue text-white'
                     : 'bg-bg-card text-text-secondary'
                 }`}
               >
-                {msg.text}
+                {msg.text || (isLoading && i === messages.length - 1 ? (
+                  <span className="inline-flex gap-1">
+                    <span className="animate-pulse">●</span>
+                    <span className="animate-pulse" style={{ animationDelay: '0.2s' }}>●</span>
+                    <span className="animate-pulse" style={{ animationDelay: '0.4s' }}>●</span>
+                  </span>
+                ) : msg.text)}
               </div>
             </div>
           ))}
+          <div ref={messagesEndRef} />
         </div>
         <div className="p-3 border-t border-bg-border flex gap-2">
           <input
@@ -83,11 +156,13 @@ export default function RightPanel({ isOpen, onClose, title, children }: RightPa
             onChange={(e) => setChatInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             placeholder="Ask about this data..."
-            className="flex-1 bg-bg-card border border-bg-border rounded-lg px-3 py-2 text-sm text-text-primary placeholder-text-muted outline-none focus:border-accent-blue"
+            disabled={isLoading}
+            className="flex-1 bg-bg-card border border-bg-border rounded-lg px-3 py-2 text-sm text-text-primary placeholder-text-muted outline-none focus:border-accent-blue disabled:opacity-50"
           />
           <button
             onClick={handleSend}
-            className="px-3 py-2 bg-accent-blue text-white rounded-lg text-sm hover:bg-blue-600 transition-colors"
+            disabled={isLoading}
+            className="px-3 py-2 bg-accent-blue text-white rounded-lg text-sm hover:bg-blue-600 transition-colors disabled:opacity-50"
           >
             Send
           </button>

@@ -243,6 +243,7 @@ export default function AdsPage() {
   const [panelOpen, setPanelOpen] = useState(false);
   const [panelTitle, setPanelTitle] = useState('');
   const [panelContent, setPanelContent] = useState<React.ReactNode>(null);
+  const [panelContext, setPanelContext] = useState<Record<string, unknown> | undefined>(undefined);
   const [detailsLoading, setDetailsLoading] = useState(false);
 
   // Fetch accounts on load
@@ -419,6 +420,19 @@ export default function AdsPage() {
                 setPanelOpen(true);
                 setDetailsLoading(true);
                 setPanelContent(null);
+                setPanelContext({
+                  adName: ad.adName,
+                  adType: ad.adType,
+                  spend: ad.spend,
+                  impressions: ad.impressions,
+                  clicks: ad.clicks,
+                  conversions: ad.conversions,
+                  ctr: ad.impressions > 0 ? ((ad.clicks / ad.impressions) * 100).toFixed(2) + '%' : '0%',
+                  cpa: ad.conversions > 0 ? (ad.spend / ad.conversions).toFixed(2) : 'N/A',
+                  finalUrls: ad.finalUrls,
+                  campaignName: selectedCampaign?.campaignName,
+                  accountName: selectedAccount?.name,
+                });
 
                 // Show basic metrics immediately, then enrich with API data
                 const basicContent = (
@@ -493,7 +507,7 @@ export default function AdsPage() {
         </div>
       )}
 
-      <RightPanel isOpen={panelOpen} onClose={() => setPanelOpen(false)} title={panelTitle}>
+      <RightPanel isOpen={panelOpen} onClose={() => setPanelOpen(false)} title={panelTitle} context={panelContext}>
         {panelContent}
       </RightPanel>
     </div>
