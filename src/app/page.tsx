@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import DuckIcon from '@/components/ui/DuckIcon';
 import RightPanel from '@/components/layout/RightPanel';
@@ -30,12 +30,13 @@ interface DuckStatus {
   status: 'live' | 'partial' | 'no_data';
   description: string;
   route: string;
+  avgRank?: number | null;
 }
 
 const ducks: DuckStatus[] = [
   { label: 'Audience', status: 'no_data', description: 'Needs Snowflake/Looker integration', route: '/audience' },
   { label: 'Ads', status: 'live', description: 'Google Ads connected — all accounts', route: '/ads' },
-  { label: 'Landing Pages', status: 'partial', description: 'URLs from ads — no rank/speed yet', route: '/landing-pages' },
+  { label: 'Landing Pages', status: 'partial', description: 'Rank: GSC + Ahrefs', route: '/landing-pages' },
   { label: 'Product', status: 'no_data', description: 'Needs product analytics access', route: '/product' },
 ];
 
@@ -45,12 +46,22 @@ const statusColors: Record<string, string> = {
   no_data: '#6B7280',
 };
 
+function getRankColor(score: number | null): string {
+  if (score === null) return '#6B7280';
+  if (score >= 8) return '#22C55E';
+  if (score >= 6) return '#84CC16';
+  if (score >= 4) return '#F97316';
+  return '#EF4444';
+}
+
 export default function HomePage() {
   const router = useRouter();
   const [accounts, setAccounts] = useState<AccountSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [panelOpen, setPanelOpen] = useState(false);
   const [selectedDuck, setSelectedDuck] = useState<DuckStatus | null>(null);
+  const [lpAvgRank, setLpAvgRank] = useState<number | null>(null);
+  const rankFetched = useRef(false);
 
   useEffect(() => {
     fetch('/api/ads?level=accounts')
@@ -60,6 +71,35 @@ export default function HomePage() {
         setLoading(false);
       })
       .catch(() => setLoading(false));
+  }, []);
+
+  // Fetch landing page rank data for overview
+  useEffect(() => {
+    if (rankFetched.current) return;
+    rankFetched.current = true;
+
+    fetch('/api/landing-pages')
+      .then(r => r.json())
+      .then(data => {
+        const urls = (data.landingPages || []).map((lp: { url: string }) => lp.url);
+        if (urls.length === 0) return;
+        return fetch('/api/page-rank', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ urls }),
+        });
+      })
+      .then(r => r?.json())
+      .then(data => {
+        if (!data?.results) return;
+        const scores = data.results
+          .map((r: { compositeScore: number | null }) => r.compositeScore)
+          .filter((s: number | null): s is number => s != null);
+        if (scores.length > 0) {
+          setLpAvgRank(scores.reduce((a: number, b: number) => a + b, 0) / scores.length);
+        }
+      })
+      .catch(() => {});
   }, []);
 
   const totalSpend = accounts.reduce((s, a) => s + a.spend, 0);
@@ -78,43 +118,54 @@ export default function HomePage() {
 
       {/* 4 Duck Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        {ducks.map(duck => (
-          <button
-            key={duck.label}
-            onClick={() => {
-              if (duck.status === 'no_data') {
-                setSelectedDuck(duck);
-                setPanelOpen(true);
-              } else {
-                router.push(duck.route);
-              }
-            }}
-            className="bg-bg-card border border-bg-border rounded-xl p-5 hover:border-bg-hover hover:bg-bg-hover transition-all text-left group"
-          >
-            <div className="flex items-start justify-between">
-              <div className="flex items-start gap-3">
-                <DuckIcon color={statusColors[duck.status]} size={48} />
-                <div>
-                  <span className="text-sm font-medium text-text-primary block">{duck.label}</span>
-                  <p className="text-xs text-text-muted mt-1">{duck.description}</p>
+        {ducks.map(duck => {
+          const showRank = duck.label === 'Landing Pages' && lpAvgRank !== null;
+          return (
+            <button
+              key={duck.label}
+              onClick={() => {
+                if (duck.status === 'no_data') {
+                  setSelectedDuck(duck);
+                  setPanelOpen(true);
+                } else {
+                  router.push(duck.route);
+                }
+              }}
+              className="bg-bg-card border border-bg-border rounded-xl p-5 hover:border-bg-hover hover:bg-bg-hover transition-all text-left group"
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex items-start gap-3">
+                  <DuckIcon color={statusColors[duck.status]} size={48} />
+                  <div>
+                    <span className="text-sm font-medium text-text-primary block">{duck.label}</span>
+                    <p className="text-xs text-text-muted mt-1">{duck.description}</p>
+                  </div>
                 </div>
+                {showRank && (
+                  <div className="text-right">
+                    <div className="text-2xl font-bold" style={{ color: getRankColor(lpAvgRank) }}>
+                      {lpAvgRank!.toFixed(1)}
+                    </div>
+                    <div className="text-xs text-text-muted">Avg Rank</div>
+                  </div>
+                )}
               </div>
-            </div>
-            <div className="mt-4 flex items-center justify-between">
-              <span className="flex items-center gap-1.5">
-                <span className={`w-2 h-2 rounded-full ${
-                  duck.status === 'live' ? 'bg-score-green animate-pulse' :
-                  duck.status === 'partial' ? 'bg-score-orange' :
-                  'bg-score-gray'
-                }`} />
-                <span className="text-xs text-text-muted capitalize">{duck.status.replace('_', ' ')}</span>
-              </span>
-              <span className="text-xs text-text-muted group-hover:text-accent-blue transition-colors">
-                {duck.status !== 'no_data' ? 'View →' : 'Details →'}
-              </span>
-            </div>
-          </button>
-        ))}
+              <div className="mt-4 flex items-center justify-between">
+                <span className="flex items-center gap-1.5">
+                  <span className={`w-2 h-2 rounded-full ${
+                    duck.status === 'live' ? 'bg-score-green animate-pulse' :
+                    duck.status === 'partial' ? 'bg-score-orange' :
+                    'bg-score-gray'
+                  }`} />
+                  <span className="text-xs text-text-muted capitalize">{duck.status.replace('_', ' ')}</span>
+                </span>
+                <span className="text-xs text-text-muted group-hover:text-accent-blue transition-colors">
+                  {duck.status !== 'no_data' ? 'View →' : 'Details →'}
+                </span>
+              </div>
+            </button>
+          );
+        })}
       </div>
 
       {/* Live Metrics from Google Ads */}
@@ -179,7 +230,7 @@ export default function HomePage() {
         </div>
         <ul className="space-y-1 text-sm text-text-secondary">
           <li>• <strong>Audience</strong> — Snowflake/Looker access needed for source quality scoring</li>
-          <li>• <strong>Landing Pages</strong> — Ahrefs API for SEO rank, PageSpeed Insights for speed</li>
+          <li>• <strong>Landing Pages</strong> — PageSpeed Insights for speed (GSC + Ahrefs rank connected)</li>
           <li>• <strong>Product</strong> — Mixpanel/Amplitude for activation, retention, TROI</li>
           <li>• <strong>Meta/YouTube/LinkedIn</strong> — API connections for cross-channel view</li>
         </ul>
