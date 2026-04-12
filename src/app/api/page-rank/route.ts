@@ -6,6 +6,7 @@ import {
   ahrefsURToScore,
   computeCompositeScore,
 } from '@/lib/ranking/config';
+import { getCached, setCached } from '@/lib/ranking/cache';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
@@ -112,40 +113,71 @@ export interface PageRankResult {
   compositeScore: number | null;
 }
 
+async function fetchAndScore(url: string): Promise<PageRankResult> {
+  const [gscData, ahrefsUR] = await Promise.all([
+    fetchGSCPosition(url),
+    fetchAhrefsUR(url),
+  ]);
+
+  const gscScore = gscData ? gscPositionToScore(gscData.position) : null;
+  const ahrefsScore = ahrefsUR != null ? ahrefsURToScore(ahrefsUR) : null;
+  const compositeScore = computeCompositeScore({ gscScore, ahrefsScore });
+
+  return {
+    url,
+    gscPosition: gscData?.position ?? null,
+    gscImpressions: gscData?.impressions ?? null,
+    gscScore,
+    ahrefsUR,
+    ahrefsScore,
+    compositeScore,
+  };
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const urls: string[] = body.urls || [];
+    const forceRefresh: boolean = body.forceRefresh || false;
 
     if (urls.length === 0) {
       return NextResponse.json({ results: [] });
     }
 
-    // Fetch data for all URLs in parallel
-    const results: PageRankResult[] = await Promise.all(
-      urls.map(async (url): Promise<PageRankResult> => {
-        const [gscData, ahrefsUR] = await Promise.all([
-          fetchGSCPosition(url),
-          fetchAhrefsUR(url),
-        ]);
+    // Split into cached vs needs-fetch
+    const results: PageRankResult[] = [];
+    const toFetch: string[] = [];
 
-        const gscScore = gscData ? gscPositionToScore(gscData.position) : null;
-        const ahrefsScore = ahrefsUR != null ? ahrefsURToScore(ahrefsUR) : null;
-        const compositeScore = computeCompositeScore({ gscScore, ahrefsScore });
+    for (const url of urls) {
+      if (!forceRefresh) {
+        const cached = getCached(url);
+        if (cached) {
+          results.push(cached);
+          continue;
+        }
+      }
+      toFetch.push(url);
+    }
 
-        return {
-          url,
-          gscPosition: gscData?.position ?? null,
-          gscImpressions: gscData?.impressions ?? null,
-          gscScore,
-          ahrefsUR,
-          ahrefsScore,
-          compositeScore,
-        };
-      })
-    );
+    // Fetch uncached URLs in parallel (batch of 5 to avoid rate limits)
+    const BATCH_SIZE = 5;
+    for (let i = 0; i < toFetch.length; i += BATCH_SIZE) {
+      const batch = toFetch.slice(i, i + BATCH_SIZE);
+      const batchResults = await Promise.all(batch.map(fetchAndScore));
+      for (const result of batchResults) {
+        setCached(result.url, result);
+        results.push(result);
+      }
+    }
 
-    return NextResponse.json({ results });
+    return NextResponse.json({
+      results,
+      meta: {
+        total: urls.length,
+        cached: urls.length - toFetch.length,
+        fetched: toFetch.length,
+      },
+    });
   } catch (error) {
     console.error('Error in page-rank API:', error);
     return NextResponse.json({ error: 'Failed to fetch page rank data' }, { status: 500 });
