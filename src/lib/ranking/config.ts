@@ -17,14 +17,23 @@ export const RANKING_CONFIG = {
 
 /**
  * Convert GSC average position to a 1-10 score (10 = best).
- * Position 1 → 10, position >= worstPosition → 1.
+ * 
+ * Aggressive curve reflecting real-world CTR drop-off:
+ *   Position 1    → 10
+ *   Position 2    → 9
+ *   Position 3    → 8
+ *   Position 4-5  → 6-7  (still page 1, but below the fold)
+ *   Position 6-10 → 3-5  (bottom of page 1)
+ *   Position 11-20 → 1.5-2.5 (page 2 = almost invisible)
+ *   Position 21+  → 1
  */
 export function gscPositionToScore(position: number): number {
-  const { bestPosition, worstPosition } = RANKING_CONFIG.gsc;
-  if (position <= bestPosition) return 10;
-  if (position >= worstPosition) return 1;
-  // Linear interpolation: position 1 → 10, position 50 → 1
-  return Math.round((1 + (9 * (worstPosition - position)) / (worstPosition - bestPosition)) * 10) / 10;
+  if (position <= 1) return 10;
+  if (position <= 3) return Math.round((10 - (position - 1)) * 10) / 10;        // 2→9, 3→8
+  if (position <= 5) return Math.round((8 - (position - 3) * 1.5) * 10) / 10;   // 4→6.5, 5→5
+  if (position <= 10) return Math.round((5 - (position - 5) * 0.4) * 10) / 10;  // 6→4.6, 10→3
+  if (position <= 20) return Math.round((2.5 - (position - 11) * 0.15) * 10) / 10; // 11→2.5, 20→1.2
+  return 1;
 }
 
 /**
