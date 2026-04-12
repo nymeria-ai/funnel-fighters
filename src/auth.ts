@@ -16,6 +16,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   callbacks: {
     signIn({ profile }) {
+      console.log("[AUTH] signIn callback", { email: profile?.email, allowlist: ALLOWED_EMAILS });
       if (!profile?.email) return false;
       const email = profile.email.toLowerCase();
       // If no allowlist configured, allow all Google logins
@@ -24,6 +25,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     session({ session }) {
       return session;
+    },
+  },
+  debug: true,
+  logger: {
+    error(error) {
+      console.error("[AUTH ERROR]", error);
+    },
+    warn(code) {
+      console.warn("[AUTH WARN]", code);
+    },
+    debug(message, metadata) {
+      console.log("[AUTH DEBUG]", message, metadata);
     },
   },
   pages: {
