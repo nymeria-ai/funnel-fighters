@@ -47,6 +47,39 @@ interface AdData {
   conversions: number;
 }
 
+interface KeywordData {
+  keyword: string;
+  matchType: string;
+  status: string;
+  impressions: number;
+  clicks: number;
+  spend: number;
+  conversions: number;
+}
+
+interface AdCopyData {
+  adId: string;
+  adType: string;
+  headlines: string[];
+  descriptions: string[];
+  finalUrls: string[];
+  status: string;
+}
+
+interface AudienceData {
+  criterionType: string;
+  criterionName: string;
+  bidModifier: number;
+}
+
+interface SearchTermData {
+  searchTerm: string;
+  impressions: number;
+  clicks: number;
+  spend: number;
+  conversions: number;
+}
+
 type DrillLevel = 'accounts' | 'campaigns' | 'ads';
 
 function formatCurrency(n: number): string {
@@ -61,6 +94,143 @@ function formatNumber(n: number): string {
   return n.toLocaleString();
 }
 
+function SectionHeader({ label }: { label: string }) {
+  return (
+    <div className="border-t border-bg-border pt-3 mt-3">
+      <span className="text-xs font-semibold text-text-muted uppercase tracking-wider">{label}</span>
+    </div>
+  );
+}
+
+function AdDetailPanel({ ad, keywords, adCopy, audience, searchTerms }: {
+  ad: AdData;
+  keywords: KeywordData[];
+  adCopy: AdCopyData[];
+  audience: AudienceData[];
+  searchTerms: SearchTermData[];
+}) {
+  return (
+    <div className="space-y-3">
+      {/* Basic Metrics */}
+      <div className="space-y-2 text-xs text-text-secondary">
+        <div className="flex justify-between"><span>Type</span><span>{ad.adType}</span></div>
+        <div className="flex justify-between"><span>Spend</span><span>{formatCurrency(ad.spend)}</span></div>
+        <div className="flex justify-between"><span>Impressions</span><span>{formatNumber(ad.impressions)}</span></div>
+        <div className="flex justify-between"><span>Clicks</span><span>{formatNumber(ad.clicks)}</span></div>
+        <div className="flex justify-between"><span>Conversions</span><span>{Math.round(ad.conversions)}</span></div>
+        <div className="flex justify-between"><span>CTR</span><span>{ad.impressions > 0 ? ((ad.clicks / ad.impressions) * 100).toFixed(2) : 0}%</span></div>
+        <div className="flex justify-between"><span>CPA</span><span>{ad.conversions > 0 ? formatCurrency(ad.spend / ad.conversions) : 'N/A'}</span></div>
+      </div>
+
+      {ad.finalUrls.length > 0 && (
+        <div className="border-t border-bg-border pt-3">
+          <span className="text-xs font-medium text-text-muted">DESTINATION URLs</span>
+          {ad.finalUrls.map((url, i) => (
+            <a key={i} href={url} target="_blank" className="block text-xs text-accent-blue mt-1 hover:underline truncate">
+              {url}
+            </a>
+          ))}
+        </div>
+      )}
+
+      {/* Ad Copy */}
+      {adCopy.length > 0 && (
+        <>
+          <SectionHeader label="Ad Copy" />
+          <div className="space-y-3">
+            {adCopy.map((copy, i) => (
+              <div key={i} className="bg-bg-card rounded-lg p-3 border border-bg-border">
+                {copy.headlines.length > 0 && (
+                  <div className="mb-2">
+                    <span className="text-xs text-text-muted block mb-1">Headlines</span>
+                    {copy.headlines.map((h, j) => (
+                      <div key={j} className="text-xs text-accent-blue font-medium">{h}</div>
+                    ))}
+                  </div>
+                )}
+                {copy.descriptions.length > 0 && (
+                  <div>
+                    <span className="text-xs text-text-muted block mb-1">Descriptions</span>
+                    {copy.descriptions.map((d, j) => (
+                      <div key={j} className="text-xs text-text-secondary">{d}</div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* Keywords */}
+      {keywords.length > 0 && (
+        <>
+          <SectionHeader label="Keywords" />
+          <div className="space-y-1.5">
+            {keywords.map((kw, i) => (
+              <div key={i} className="flex items-center justify-between text-xs py-1.5 px-2 rounded bg-bg-card border border-bg-border">
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="text-text-primary truncate">{kw.keyword}</span>
+                  <span className="text-text-muted shrink-0 px-1.5 py-0.5 bg-bg-hover rounded text-[10px]">
+                    {kw.matchType.replace('_', ' ').toLowerCase()}
+                  </span>
+                </div>
+                <div className="flex gap-3 text-text-muted shrink-0 ml-2">
+                  <span>{formatNumber(kw.clicks)} clicks</span>
+                  <span>{formatCurrency(kw.spend)}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* Search Terms */}
+      {searchTerms.length > 0 && (
+        <>
+          <SectionHeader label="Search Terms" />
+          <div className="space-y-1.5">
+            {searchTerms.map((st, i) => (
+              <div key={i} className="flex items-center justify-between text-xs py-1.5 px-2 rounded bg-bg-card border border-bg-border">
+                <span className="text-text-primary truncate">{st.searchTerm}</span>
+                <div className="flex gap-3 text-text-muted shrink-0 ml-2">
+                  <span>{formatNumber(st.impressions)} imp</span>
+                  <span>{formatNumber(st.clicks)} clicks</span>
+                  <span>{formatCurrency(st.spend)}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* Audience Targeting */}
+      {audience.length > 0 && (
+        <>
+          <SectionHeader label="Target Audience" />
+          <div className="space-y-1.5">
+            {audience.map((aud, i) => (
+              <div key={i} className="flex items-center justify-between text-xs py-1.5 px-2 rounded bg-bg-card border border-bg-border">
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="text-text-muted shrink-0 px-1.5 py-0.5 bg-bg-hover rounded text-[10px]">
+                    {aud.criterionType.toLowerCase().replace(/_/g, ' ')}
+                  </span>
+                  <span className="text-text-primary truncate">{aud.criterionName}</span>
+                </div>
+                {aud.bidModifier !== 1.0 && (
+                  <span className="text-text-muted shrink-0 ml-2">
+                    {aud.bidModifier > 1 ? '+' : ''}{((aud.bidModifier - 1) * 100).toFixed(0)}%
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 export default function AdsPage() {
   const [level, setLevel] = useState<DrillLevel>('accounts');
   const [accounts, setAccounts] = useState<AccountData[]>([]);
@@ -73,6 +243,7 @@ export default function AdsPage() {
   const [panelOpen, setPanelOpen] = useState(false);
   const [panelTitle, setPanelTitle] = useState('');
   const [panelContent, setPanelContent] = useState<React.ReactNode>(null);
+  const [detailsLoading, setDetailsLoading] = useState(false);
 
   // Fetch accounts on load
   useEffect(() => {
@@ -245,7 +416,12 @@ export default function AdsPage() {
               key={ad.adId}
               onClick={() => {
                 setPanelTitle(ad.adName);
-                setPanelContent(
+                setPanelOpen(true);
+                setDetailsLoading(true);
+                setPanelContent(null);
+
+                // Show basic metrics immediately, then enrich with API data
+                const basicContent = (
                   <div className="space-y-3">
                     <div className="space-y-2 text-xs text-text-secondary">
                       <div className="flex justify-between"><span>Type</span><span>{ad.adType}</span></div>
@@ -266,9 +442,31 @@ export default function AdsPage() {
                         ))}
                       </div>
                     )}
+                    <div className="border-t border-bg-border pt-3 text-xs text-text-muted animate-pulse">
+                      Loading keywords, ad copy, audience & search terms...
+                    </div>
                   </div>
                 );
-                setPanelOpen(true);
+                setPanelContent(basicContent);
+
+                fetch(`/api/ad-details?accountId=${selectedAccount?.id}&adGroupId=${ad.adGroupId}&campaignId=${ad.campaignId}`)
+                  .then(r => r.json())
+                  .then(details => {
+                    setPanelContent(
+                      <AdDetailPanel
+                        ad={ad}
+                        keywords={details.keywords || []}
+                        adCopy={details.adCopy || []}
+                        audience={details.audience || []}
+                        searchTerms={details.searchTerms || []}
+                      />
+                    );
+                    setDetailsLoading(false);
+                  })
+                  .catch(() => {
+                    setPanelContent(basicContent);
+                    setDetailsLoading(false);
+                  });
               }}
               className="w-full bg-bg-card border border-bg-border rounded-xl p-5 hover:border-bg-hover hover:bg-bg-hover transition-all text-left flex items-center justify-between"
             >
