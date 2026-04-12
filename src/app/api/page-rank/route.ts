@@ -7,6 +7,7 @@ import {
   computeCompositeScore,
 } from '@/lib/ranking/config';
 import { getCached, setCached } from '@/lib/ranking/cache';
+import { fetchAhrefsURLRatings } from '@/lib/ranking/ahrefs-mcp';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
@@ -70,38 +71,7 @@ async function fetchGSCPosition(url: string): Promise<{ position: number; impres
   }
 }
 
-async function fetchAhrefsUR(url: string): Promise<number | null> {
-  try {
-    const apiKey = process.env.AHREFS_API_KEY;
-    if (!apiKey) return null;
-
-    const params = new URLSearchParams({
-      target: url,
-      output: 'json',
-    });
-
-    const res = await fetch(
-      `https://api.ahrefs.com/v3/site-explorer/url-rating?${params}`,
-      {
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          Accept: 'application/json',
-        },
-      }
-    );
-
-    if (!res.ok) {
-      console.error(`Ahrefs error for ${url}: ${res.status} ${await res.text()}`);
-      return null;
-    }
-
-    const data = await res.json();
-    return data.url_rating ?? null;
-  } catch (err) {
-    console.error(`Ahrefs error for ${url}:`, err);
-    return null;
-  }
-}
+// Ahrefs URL Rating is now fetched via MCP batch call (fetchAhrefsURLRatings)
 
 export interface PageRankResult {
   url: string;
@@ -113,25 +83,30 @@ export interface PageRankResult {
   compositeScore: number | null;
 }
 
-async function fetchAndScore(url: string): Promise<PageRankResult> {
-  const [gscData, ahrefsUR] = await Promise.all([
-    fetchGSCPosition(url),
-    fetchAhrefsUR(url),
+async function fetchAndScoreBatch(urls: string[]): Promise<PageRankResult[]> {
+  // Fetch GSC data per URL + Ahrefs batch in parallel
+  const [gscResults, ahrefsRatings] = await Promise.all([
+    Promise.all(urls.map(fetchGSCPosition)),
+    fetchAhrefsURLRatings(urls),
   ]);
 
-  const gscScore = gscData ? gscPositionToScore(gscData.position) : null;
-  const ahrefsScore = ahrefsUR != null ? ahrefsURToScore(ahrefsUR) : null;
-  const compositeScore = computeCompositeScore({ gscScore, ahrefsScore });
+  return urls.map((url, i) => {
+    const gscData = gscResults[i];
+    const ahrefsUR = ahrefsRatings.get(url) ?? null;
+    const gscScore = gscData ? gscPositionToScore(gscData.position) : null;
+    const ahrefsScore = ahrefsUR != null ? ahrefsURToScore(ahrefsUR) : null;
+    const compositeScore = computeCompositeScore({ gscScore, ahrefsScore });
 
-  return {
-    url,
-    gscPosition: gscData?.position ?? null,
-    gscImpressions: gscData?.impressions ?? null,
-    gscScore,
-    ahrefsUR,
-    ahrefsScore,
-    compositeScore,
-  };
+    return {
+      url,
+      gscPosition: gscData?.position ?? null,
+      gscImpressions: gscData?.impressions ?? null,
+      gscScore,
+      ahrefsUR,
+      ahrefsScore,
+      compositeScore,
+    };
+  });
 }
 
 export async function POST(request: Request) {
@@ -159,11 +134,9 @@ export async function POST(request: Request) {
       toFetch.push(url);
     }
 
-    // Fetch uncached URLs in parallel (batch of 5 to avoid rate limits)
-    const BATCH_SIZE = 5;
-    for (let i = 0; i < toFetch.length; i += BATCH_SIZE) {
-      const batch = toFetch.slice(i, i + BATCH_SIZE);
-      const batchResults = await Promise.all(batch.map(fetchAndScore));
+    // Fetch uncached URLs in batch (GSC per-URL + Ahrefs single batch call)
+    if (toFetch.length > 0) {
+      const batchResults = await fetchAndScoreBatch(toFetch);
       for (const result of batchResults) {
         setCached(result.url, result);
         results.push(result);
