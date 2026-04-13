@@ -1,11 +1,18 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 
+export interface TabDef {
+  id: string;
+  label: string;
+  content: React.ReactNode;
+}
+
 interface RightPanelProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
   children?: React.ReactNode;
+  tabs?: TabDef[];
   context?: Record<string, unknown>;
 }
 
@@ -14,14 +21,22 @@ interface ChatMessage {
   text: string;
 }
 
-export default function RightPanel({ isOpen, onClose, title, children, context }: RightPanelProps) {
+export default function RightPanel({ isOpen, onClose, title, children, tabs, context }: RightPanelProps) {
   const [chatInput, setChatInput] = useState('');
   const [messages, setMessages] = useState<ChatMessage[]>([
     { role: 'ai', text: 'I can help you analyze this data. Ask me anything about the selected element.' },
   ]);
   const [isLoading, setIsLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState<string>('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const abortRef = useRef<AbortController | null>(null);
+
+  // Reset active tab when tabs change
+  useEffect(() => {
+    if (tabs && tabs.length > 0) {
+      setActiveTab(tabs[0].id);
+    }
+  }, [tabs]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -35,8 +50,7 @@ export default function RightPanel({ isOpen, onClose, title, children, context }
     setMessages(prev => [...prev, { role: 'user', text: trimmed }]);
     setIsLoading(true);
 
-    // Add placeholder AI message for streaming
-    const aiIndex = messages.length + 1; // +1 for the user message we just added
+    const aiIndex = messages.length + 1;
     setMessages(prev => [...prev, { role: 'ai', text: '' }]);
 
     try {
@@ -89,6 +103,8 @@ export default function RightPanel({ isOpen, onClose, title, children, context }
     }
   };
 
+  const activeTabContent = tabs?.find(t => t.id === activeTab)?.content;
+
   return (
     <>
     {/* Mobile overlay */}
@@ -115,11 +131,34 @@ export default function RightPanel({ isOpen, onClose, title, children, context }
         </button>
       </div>
 
+      {/* Tabs bar (if tabs provided) */}
+      {tabs && tabs.length > 0 && (
+        <div className="flex border-b border-bg-border px-4">
+          {tabs.map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`px-4 py-2.5 text-xs font-medium transition-colors relative ${
+                activeTab === tab.id
+                  ? 'text-accent-blue'
+                  : 'text-text-muted hover:text-text-secondary'
+              }`}
+            >
+              {tab.label}
+              {activeTab === tab.id && (
+                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-accent-blue rounded-t" />
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* Detail Content */}
       <div className="flex-1 overflow-y-auto p-4 border-b border-bg-border">
-        {children || (
-          <div className="text-text-muted text-sm">Select an element to see details.</div>
-        )}
+        {tabs && tabs.length > 0
+          ? (activeTabContent || <div className="text-text-muted text-sm">No content.</div>)
+          : (children || <div className="text-text-muted text-sm">Select an element to see details.</div>)
+        }
       </div>
 
       {/* AI Chat */}

@@ -1,6 +1,8 @@
 'use client';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import RightPanel from '@/components/layout/RightPanel';
+import type { TabDef } from '@/components/layout/RightPanel';
+import CollapsibleSection from '@/components/ui/CollapsibleSection';
 import DuckIcon from '@/components/ui/DuckIcon';
 
 interface AudienceInfo {
@@ -44,6 +46,16 @@ interface Pagination {
   totalPages: number;
 }
 
+interface PageRankResult {
+  url: string;
+  gscPosition: number | null;
+  gscImpressions: number | null;
+  gscScore: number | null;
+  ahrefsUR: number | null;
+  ahrefsScore: number | null;
+  compositeScore: number | null;
+}
+
 function getRelevanceColor(score: number): string {
   if (score >= 91) return '#059669';
   if (score >= 81) return '#16A34A';
@@ -57,10 +69,24 @@ function getRelevanceColor(score: number): string {
   return '#DC2626';
 }
 
+function getRankColor(score: number | null): string {
+  if (score === null) return '#6B7280';
+  if (score >= 8) return '#22C55E';
+  if (score >= 6) return '#84CC16';
+  if (score >= 4) return '#F97316';
+  return '#EF4444';
+}
+
 function formatCurrency(n: number): string {
   if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`;
   if (n >= 1_000) return `$${(n / 1_000).toFixed(0)}K`;
   return `$${n.toFixed(0)}`;
+}
+
+function formatNumber(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`;
+  return n.toLocaleString();
 }
 
 // Group rows by account → campaign
@@ -77,6 +103,269 @@ function groupRows(rows: CockpitRow[]): Map<string, Map<string, CockpitRow[]>> {
   return map;
 }
 
+// --- Ad Tab content ---
+function AdTab({ row }: { row: CockpitRow }) {
+  const ctr = row.impressions > 0 ? ((row.clicks / row.impressions) * 100).toFixed(2) : '0.00';
+  const cpa = row.conversions > 0 ? formatCurrency(row.spend / row.conversions) : 'N/A';
+
+  return (
+    <div className="space-y-4">
+      {/* Ad Copy */}
+      <div>
+        <h3 className="text-xs font-semibold text-text-muted uppercase mb-2">Ad Copy</h3>
+        <div className="bg-bg-hover rounded-lg p-3 space-y-2">
+          {row.headlines.length > 0 && (
+            <div>
+              <span className="text-[10px] text-text-muted">Headlines</span>
+              <p className="text-sm text-text-primary">{row.headlines.join(' | ')}</p>
+            </div>
+          )}
+          {row.descriptions.length > 0 && (
+            <div>
+              <span className="text-[10px] text-text-muted">Descriptions</span>
+              <p className="text-xs text-text-secondary">{row.descriptions.join(' | ')}</p>
+            </div>
+          )}
+          {row.adSellingPoint && (
+            <div>
+              <span className="text-[10px] text-text-muted">Selling Point</span>
+              <p className="text-xs italic text-accent-cyan">{row.adSellingPoint}</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Info */}
+      <div>
+        <h3 className="text-xs font-semibold text-text-muted uppercase mb-2">Details</h3>
+        <div className="space-y-1.5 text-xs">
+          <div className="flex justify-between"><span className="text-text-muted">Campaign</span><span className="text-text-primary truncate ml-2">{row.campaignName}</span></div>
+          <div className="flex justify-between"><span className="text-text-muted">Ad Group</span><span className="text-text-primary truncate ml-2">{row.adGroupName}</span></div>
+          <div className="flex justify-between"><span className="text-text-muted">Type</span><span className="text-text-secondary">{row.adType.replace('RESPONSIVE_SEARCH_AD', 'RSA').replace('EXPANDED_TEXT_AD', 'ETA')}</span></div>
+          {row.finalUrl && (
+            <div className="flex justify-between items-start">
+              <span className="text-text-muted shrink-0">Final URL</span>
+              <a href={row.finalUrl} target="_blank" rel="noopener" className="text-accent-blue hover:underline truncate ml-2">
+                {row.finalUrl.replace(/^https?:\/\//, '')}
+              </a>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Performance Metrics */}
+      <div>
+        <h3 className="text-xs font-semibold text-text-muted uppercase mb-2">Performance (30d)</h3>
+        <div className="grid grid-cols-3 gap-2">
+          <div className="bg-bg-hover rounded-lg p-2 text-center">
+            <div className="text-sm font-bold text-text-primary">{formatNumber(row.impressions)}</div>
+            <div className="text-[10px] text-text-muted">Impressions</div>
+          </div>
+          <div className="bg-bg-hover rounded-lg p-2 text-center">
+            <div className="text-sm font-bold text-text-primary">{formatNumber(row.clicks)}</div>
+            <div className="text-[10px] text-text-muted">Clicks</div>
+          </div>
+          <div className="bg-bg-hover rounded-lg p-2 text-center">
+            <div className="text-sm font-bold text-text-primary">{ctr}%</div>
+            <div className="text-[10px] text-text-muted">CTR</div>
+          </div>
+          <div className="bg-bg-hover rounded-lg p-2 text-center">
+            <div className="text-sm font-bold text-text-primary">{Math.round(row.conversions)}</div>
+            <div className="text-[10px] text-text-muted">Conversions</div>
+          </div>
+          <div className="bg-bg-hover rounded-lg p-2 text-center">
+            <div className="text-sm font-bold text-text-primary">{formatCurrency(row.spend)}</div>
+            <div className="text-[10px] text-text-muted">Spend</div>
+          </div>
+          <div className="bg-bg-hover rounded-lg p-2 text-center">
+            <div className="text-sm font-bold text-text-primary">{cpa}</div>
+            <div className="text-[10px] text-text-muted">CPA</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Audience */}
+      <div>
+        <h3 className="text-xs font-semibold text-text-muted uppercase mb-2">Audience Targeting</h3>
+        <div className="bg-bg-hover rounded-lg p-3">
+          {row.audience.length > 0 ? (
+            <div className="space-y-1">
+              {row.audience.map((a) => (
+                <div key={a.criterionId} className="flex items-center gap-2">
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-bg-card text-text-muted uppercase">
+                    {a.criterionType.replace('_', ' ')}
+                  </span>
+                  <span className="text-xs text-text-secondary">{a.criterionName}</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <span className="text-xs text-text-muted">No targeting criteria available</span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// --- Landing Page Tab content ---
+function LandingPageTab({ row, rankData }: { row: CockpitRow; rankData: PageRankResult | null }) {
+  if (!row.finalUrl) {
+    return <div className="text-sm text-text-muted py-4 text-center">No landing page URL for this ad.</div>;
+  }
+
+  const rank = rankData;
+
+  return (
+    <div className="space-y-3">
+      <a href={row.finalUrl} target="_blank" rel="noopener" className="text-xs text-accent-blue hover:underline block truncate">
+        {row.finalUrl}
+      </a>
+
+      {/* 1. Ad → LP Relevance */}
+      <CollapsibleSection
+        title="Ad → Landing Page Relevance"
+        badge={row.relevanceScore > 0 ? `${row.relevanceScore}%` : 'N/A'}
+        badgeColor={row.relevanceScore > 0 ? getRelevanceColor(row.relevanceScore) : '#6B7280'}
+        defaultOpen={false}
+      >
+        <div className="space-y-3">
+          {row.relevanceScore > 0 ? (
+            <>
+              {/* Score bar */}
+              <div className="w-full h-2 bg-bg-card rounded-full overflow-hidden">
+                <div
+                  className="h-full rounded-full transition-all"
+                  style={{
+                    width: `${row.relevanceScore}%`,
+                    backgroundColor: getRelevanceColor(row.relevanceScore),
+                  }}
+                />
+              </div>
+
+              {/* Selling points comparison */}
+              <div className="space-y-2">
+                {row.adSellingPoint && (
+                  <div className="bg-bg-card rounded-lg p-2.5 border-l-2 border-accent-blue">
+                    <span className="text-[10px] font-semibold text-text-muted uppercase block mb-1">Ad Selling Point</span>
+                    <p className="text-xs text-text-secondary">{row.adSellingPoint}</p>
+                  </div>
+                )}
+                {row.lpSellingPoint && (
+                  <div className="bg-bg-card rounded-lg p-2.5 border-l-2 border-accent-cyan">
+                    <span className="text-[10px] font-semibold text-text-muted uppercase block mb-1">LP Selling Point</span>
+                    <p className="text-xs text-text-secondary">{row.lpSellingPoint}</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Explanation */}
+              {row.relevanceReason && (
+                <div className="bg-bg-card rounded-lg p-2.5 border-l-2" style={{ borderColor: getRelevanceColor(row.relevanceScore) }}>
+                  <span className="text-[10px] font-semibold text-text-muted uppercase block mb-1">Why this score</span>
+                  <p className="text-xs text-text-secondary leading-relaxed">{row.relevanceReason}</p>
+                </div>
+              )}
+            </>
+          ) : (
+            <p className="text-xs text-text-muted">No relevance analysis available for this ad.</p>
+          )}
+        </div>
+      </CollapsibleSection>
+
+      {/* 2. Page Rank */}
+      <CollapsibleSection
+        title="Page Rank"
+        badge={rank?.compositeScore != null ? `${rank.compositeScore.toFixed(1)}/10` : 'N/A'}
+        badgeColor={getRankColor(rank?.compositeScore ?? null)}
+        defaultOpen={false}
+      >
+        {rank && rank.compositeScore != null ? (
+          <div className="space-y-3">
+            {/* Score bar */}
+            <div className="w-full h-2 bg-bg-card rounded-full overflow-hidden">
+              <div
+                className="h-full rounded-full transition-all"
+                style={{
+                  width: `${(rank.compositeScore / 10) * 100}%`,
+                  backgroundColor: getRankColor(rank.compositeScore),
+                }}
+              />
+            </div>
+
+            <div className="space-y-2 text-xs">
+              <div className="flex justify-between">
+                <span className="text-text-muted">GSC Avg Position</span>
+                <span className="text-text-primary">{rank.gscPosition != null ? `#${rank.gscPosition.toFixed(1)}` : 'N/A'}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-text-muted">GSC Impressions</span>
+                <span className="text-text-primary">{rank.gscImpressions != null ? formatNumber(rank.gscImpressions) : 'N/A'}</span>
+              </div>
+              {rank.gscScore != null && (
+                <div className="flex justify-between">
+                  <span className="text-text-muted">GSC Score</span>
+                  <span className="font-medium" style={{ color: getRankColor(rank.gscScore) }}>{rank.gscScore.toFixed(1)}/10</span>
+                </div>
+              )}
+              <div className="flex justify-between">
+                <span className="text-text-muted">Ahrefs URL Rating</span>
+                <span className="text-text-primary">{rank.ahrefsUR != null ? `${rank.ahrefsUR}/100` : 'N/A'}</span>
+              </div>
+              {rank.ahrefsScore != null && (
+                <div className="flex justify-between">
+                  <span className="text-text-muted">Ahrefs Score</span>
+                  <span className="font-medium" style={{ color: getRankColor(rank.ahrefsScore) }}>{rank.ahrefsScore.toFixed(1)}/10</span>
+                </div>
+              )}
+            </div>
+          </div>
+        ) : (
+          <p className="text-xs text-text-muted">No page rank data available. Requires GSC and Ahrefs integration.</p>
+        )}
+      </CollapsibleSection>
+
+      {/* 3. Page Speed */}
+      <CollapsibleSection
+        title="Page Speed"
+        badge="—"
+        badgeColor="#6B7280"
+        defaultOpen={false}
+      >
+        <p className="text-xs text-text-muted">
+          Page Speed analysis requires Google PageSpeed Insights integration.
+          Core Web Vitals (LCP, FID, CLS) will appear here once connected.
+        </p>
+      </CollapsibleSection>
+
+      {/* 4. Content Quality */}
+      <CollapsibleSection
+        title="Content Quality"
+        badge="—"
+        badgeColor="#6B7280"
+        defaultOpen={false}
+      >
+        <div className="space-y-2">
+          {row.lpSellingPoint ? (
+            <div>
+              <span className="text-[10px] font-semibold text-text-muted uppercase block mb-1">Extracted Selling Point</span>
+              <p className="text-xs text-text-secondary italic">{row.lpSellingPoint}</p>
+            </div>
+          ) : row.lpError ? (
+            <p className="text-xs text-score-red">Unable to analyze landing page content.</p>
+          ) : (
+            <p className="text-xs text-text-muted">No content analysis available.</p>
+          )}
+          <p className="text-xs text-text-muted mt-2">
+            Full content quality scoring (readability, keyword density, content structure) coming soon.
+          </p>
+        </div>
+      </CollapsibleSection>
+    </div>
+  );
+}
+
+
 export default function CockpitPage() {
   const [rows, setRows] = useState<CockpitRow[]>([]);
   const [pagination, setPagination] = useState<Pagination | null>(null);
@@ -88,6 +377,8 @@ export default function CockpitPage() {
   const [panelOpen, setPanelOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState<CockpitRow | null>(null);
   const [page, setPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [rankData, setRankData] = useState<Record<string, PageRankResult>>({});
 
   const fetchData = useCallback(async (pageNum: number, analyze: boolean = true) => {
     if (analyze) setAnalyzing(true);
@@ -108,15 +399,34 @@ export default function CockpitPage() {
   }, []);
 
   useEffect(() => {
-    // First load: fetch without analysis for quick render
     fetchData(1, false).then(() => {
-      // Then re-fetch with analysis
       fetchData(1, true);
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Fetch rank data when rows have URLs
+  useEffect(() => {
+    if (rows.length === 0) return;
+    const urls = [...new Set(rows.map(r => r.finalUrl).filter(Boolean))];
+    if (urls.length === 0) return;
+
+    fetch('/api/page-rank', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ urls }),
+    })
+      .then(r => r.json())
+      .then(data => {
+        const map: Record<string, PageRankResult> = {};
+        for (const result of (data.results || [])) {
+          map[result.url] = result;
+        }
+        setRankData(map);
+      })
+      .catch(() => { /* silently fail */ });
+  }, [rows]);
+
   const handleRefresh = async () => {
-    // Clear cache then re-fetch
     await fetch('/api/selling-points', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -151,7 +461,34 @@ export default function CockpitPage() {
     setPanelOpen(true);
   };
 
-  const grouped = groupRows(rows);
+  // Filter rows by search
+  const filteredRows = useMemo(() => {
+    if (!searchQuery.trim()) return rows;
+    const q = searchQuery.toLowerCase();
+    return rows.filter(row =>
+      row.headlines.some(h => h.toLowerCase().includes(q)) ||
+      row.descriptions.some(d => d.toLowerCase().includes(q)) ||
+      row.adGroupName.toLowerCase().includes(q) ||
+      row.campaignName.toLowerCase().includes(q) ||
+      row.finalUrl.toLowerCase().includes(q)
+    );
+  }, [rows, searchQuery]);
+
+  const grouped = groupRows(filteredRows);
+
+  // Build tabs for selected row
+  const panelTabs: TabDef[] | undefined = selectedRow ? [
+    {
+      id: 'ad',
+      label: 'Ad',
+      content: <AdTab row={selectedRow} />,
+    },
+    {
+      id: 'landing-page',
+      label: 'Landing Page',
+      content: <LandingPageTab row={selectedRow} rankData={rankData[selectedRow.finalUrl] || null} />,
+    },
+  ] : undefined;
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-[1600px] mx-auto">
@@ -175,6 +512,22 @@ export default function CockpitPage() {
             Refresh Selling Points
           </button>
         </div>
+      </div>
+
+      {/* Search */}
+      <div className="mb-4">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search ads by headline, description, ad group, campaign, or URL..."
+          className="w-full bg-bg-card border border-bg-border rounded-lg px-4 py-2.5 text-sm text-text-primary placeholder-text-muted outline-none focus:border-accent-blue transition-colors"
+        />
+        {searchQuery.trim() && (
+          <p className="text-xs text-text-muted mt-1.5 ml-1">
+            {filteredRows.length} of {rows.length} ads match &quot;{searchQuery}&quot;
+          </p>
+        )}
       </div>
 
       {error && (
@@ -216,9 +569,9 @@ export default function CockpitPage() {
             </div>
             <p className="text-sm text-text-muted mt-4">Loading ads data...</p>
           </div>
-        ) : rows.length === 0 ? (
+        ) : filteredRows.length === 0 ? (
           <div className="p-8 text-center text-text-muted text-sm">
-            No ads data available. Make sure Google Ads is connected.
+            {searchQuery.trim() ? `No ads matching "${searchQuery}"` : 'No ads data available. Make sure Google Ads is connected.'}
           </div>
         ) : (
           Array.from(grouped.entries()).map(([accountKey, campaigns]) => {
@@ -411,6 +764,7 @@ export default function CockpitPage() {
         isOpen={panelOpen}
         onClose={() => setPanelOpen(false)}
         title={selectedRow ? `Ad: ${selectedRow.adGroupName}` : 'Ad Details'}
+        tabs={panelTabs}
         context={selectedRow ? {
           adId: selectedRow.adId,
           accountName: selectedRow.accountName,
@@ -427,109 +781,7 @@ export default function CockpitPage() {
           clicks: selectedRow.clicks,
           conversions: selectedRow.conversions,
         } : undefined}
-      >
-        {selectedRow && (
-          <div className="space-y-4">
-            {/* Ad Info */}
-            <div>
-              <h3 className="text-xs font-semibold text-text-muted uppercase mb-2">Ad Copy</h3>
-              <div className="bg-bg-hover rounded-lg p-3 space-y-2">
-                <div>
-                  <span className="text-[10px] text-text-muted">Headlines</span>
-                  <p className="text-sm text-text-primary">{selectedRow.headlines.join(' | ')}</p>
-                </div>
-                <div>
-                  <span className="text-[10px] text-text-muted">Descriptions</span>
-                  <p className="text-xs text-text-secondary">{selectedRow.descriptions.join(' | ')}</p>
-                </div>
-                {selectedRow.adSellingPoint && (
-                  <div>
-                    <span className="text-[10px] text-text-muted">Selling Point</span>
-                    <p className="text-xs italic text-accent-cyan">{selectedRow.adSellingPoint}</p>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Metrics */}
-            <div>
-              <h3 className="text-xs font-semibold text-text-muted uppercase mb-2">Metrics (30d)</h3>
-              <div className="grid grid-cols-3 gap-2">
-                <div className="bg-bg-hover rounded-lg p-2 text-center">
-                  <div className="text-sm font-bold text-text-primary">{formatCurrency(selectedRow.spend)}</div>
-                  <div className="text-[10px] text-text-muted">Spend</div>
-                </div>
-                <div className="bg-bg-hover rounded-lg p-2 text-center">
-                  <div className="text-sm font-bold text-text-primary">{selectedRow.clicks}</div>
-                  <div className="text-[10px] text-text-muted">Clicks</div>
-                </div>
-                <div className="bg-bg-hover rounded-lg p-2 text-center">
-                  <div className="text-sm font-bold text-text-primary">{Math.round(selectedRow.conversions)}</div>
-                  <div className="text-[10px] text-text-muted">Conv</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Landing Page */}
-            <div>
-              <h3 className="text-xs font-semibold text-text-muted uppercase mb-2">Landing Page</h3>
-              <div className="bg-bg-hover rounded-lg p-3 space-y-2">
-                <p className="text-xs text-text-secondary break-all">{selectedRow.finalUrl || 'No URL'}</p>
-                {selectedRow.lpSellingPoint && (
-                  <div>
-                    <span className="text-[10px] text-text-muted">LP Selling Point</span>
-                    <p className="text-xs italic text-accent-cyan">{selectedRow.lpSellingPoint}</p>
-                  </div>
-                )}
-                {selectedRow.relevanceScore > 0 && (
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[10px] text-text-muted">Relevance:</span>
-                      <span
-                        className="text-sm font-bold px-3 py-1 rounded-full"
-                        style={{
-                          backgroundColor: `${getRelevanceColor(selectedRow.relevanceScore)}25`,
-                          color: getRelevanceColor(selectedRow.relevanceScore),
-                          border: `1px solid ${getRelevanceColor(selectedRow.relevanceScore)}50`,
-                        }}
-                      >
-                        {selectedRow.relevanceScore}%
-                      </span>
-                    </div>
-                    {selectedRow.relevanceReason && (
-                      <div className="bg-bg-card rounded-lg p-2.5 border-l-2" style={{ borderColor: getRelevanceColor(selectedRow.relevanceScore) }}>
-                        <span className="text-[10px] font-semibold text-text-muted uppercase block mb-1">Why this score</span>
-                        <p className="text-xs text-text-secondary leading-relaxed">{selectedRow.relevanceReason}</p>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Audience */}
-            <div>
-              <h3 className="text-xs font-semibold text-text-muted uppercase mb-2">Audience Targeting</h3>
-              <div className="bg-bg-hover rounded-lg p-3">
-                {selectedRow.audience.length > 0 ? (
-                  <div className="space-y-1">
-                    {selectedRow.audience.map((a) => (
-                      <div key={a.criterionId} className="flex items-center gap-2">
-                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-bg-card text-text-muted uppercase">
-                          {a.criterionType.replace('_', ' ')}
-                        </span>
-                        <span className="text-xs text-text-secondary">{a.criterionName}</span>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <span className="text-xs text-text-muted">No targeting criteria available</span>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-      </RightPanel>
+      />
     </div>
   );
 }
