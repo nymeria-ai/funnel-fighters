@@ -12,6 +12,7 @@ const navItems = [
   { href: '/landing-pages', label: 'Landing Pages', type: 'duck', color: '#22C55E' },
   { href: '/product', label: 'Product', type: 'duck', color: '#F97316' },
   { href: '/gaps', label: 'Gaps & Actions', type: 'icon', icon: '⚡' },
+  { href: '/recommendations', label: 'Recommendations', type: 'icon', icon: '💡' },
 ];
 
 export default function Sidebar() {

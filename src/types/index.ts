@@ -41,6 +41,20 @@ export interface CockpitRow {
   conversions: number;
 }
 
+export interface Recommendation {
+  id: string;
+  priority: 'P0' | 'P1' | 'P2' | 'P3';
+  type: 'Ad Copy' | 'Landing Page' | 'Budget' | 'Audience' | 'SEO' | 'Alignment';
+  description: string;
+  reasoning: string;
+  timestamp: string;
+  status: 'active' | 'acknowledged' | 'dismissed' | 'doing';
+  actionType: 'auto' | 'manual';
+  actionDetails?: string;
+  relatedAdId?: string;
+  relatedUrl?: string;
+}
+
 export interface PageRankResult {
   url: string;
   gscPosition: number | null;
