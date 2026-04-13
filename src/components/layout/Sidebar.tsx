@@ -5,7 +5,8 @@ import { usePathname } from 'next/navigation';
 import DuckIcon from '@/components/ui/DuckIcon';
 
 const navItems = [
-  { href: '/', label: 'Overview', type: 'icon', icon: '🎯' },
+  { href: '/cockpit', label: 'Cockpit', type: 'icon', icon: '🎛️' },
+  { href: '/overview', label: 'Overview', type: 'icon', icon: '🎯' },
   { href: '/audience', label: 'Audience', type: 'duck', color: '#22C55E' },
   { href: '/ads', label: 'Ads', type: 'duck', color: '#F97316' },
   { href: '/landing-pages', label: 'Landing Pages', type: 'duck', color: '#22C55E' },

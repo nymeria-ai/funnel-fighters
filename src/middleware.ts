@@ -10,6 +10,6 @@ export default auth((req) => {
 export const config = {
   matcher: [
     // Protect everything except login page, auth API, data APIs, static files, OG image
-    "/((?!login|api/auth|api/landing-pages|api/page-rank|api/ads|api/ad-details|api/accounts|_next/static|_next/image|favicon.ico|icon.svg|og-image.png).*)",
+    "/((?!login|api/auth|api/landing-pages|api/page-rank|api/ads|api/ad-details|api/accounts|api/cockpit|api/selling-points|api/relevance-score|_next/static|_next/image|favicon.ico|icon.svg|og-image.png).*)",
   ],
 };
