@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 import RightPanel from '@/components/layout/RightPanel';
+import DuckIcon from '@/components/ui/DuckIcon';
 
 interface AudienceInfo {
   campaignId: string;
@@ -184,16 +185,20 @@ export default function CockpitPage() {
       {/* Table Header */}
       <div className="bg-bg-secondary border border-bg-border rounded-t-xl">
         <div className="grid grid-cols-[1.2fr_1.5fr_1.5fr_0.8fr] gap-0">
-          <div className="px-4 py-3 border-r border-bg-border">
+          <div className="px-4 py-3 border-r border-bg-border flex items-center gap-2">
+            <DuckIcon color="#22C55E" size={22} />
             <span className="text-xs font-semibold text-text-muted uppercase tracking-wider">Audience</span>
           </div>
-          <div className="px-4 py-3 border-r border-bg-border">
+          <div className="px-4 py-3 border-r border-bg-border flex items-center gap-2">
+            <DuckIcon color="#F97316" size={22} />
             <span className="text-xs font-semibold text-text-muted uppercase tracking-wider">Ads</span>
           </div>
-          <div className="px-4 py-3 border-r border-bg-border">
+          <div className="px-4 py-3 border-r border-bg-border flex items-center gap-2">
+            <DuckIcon color="#EAB308" size={22} />
             <span className="text-xs font-semibold text-text-muted uppercase tracking-wider">Landing Page</span>
           </div>
-          <div className="px-4 py-3">
+          <div className="px-4 py-3 flex items-center gap-2">
+            <DuckIcon color="#3B82F6" size={22} />
             <span className="text-xs font-semibold text-text-muted uppercase tracking-wider">Product</span>
           </div>
         </div>
@@ -299,12 +304,14 @@ export default function CockpitPage() {
                                 </p>
                               )}
                               {row.adSellingPoint ? (
-                                <p className="text-[11px] italic text-accent-cyan line-clamp-1">
-                                  SP: {row.adSellingPoint}
+                                <p className="text-[11px] italic text-accent-cyan mt-1 line-clamp-2 bg-accent-cyan/10 px-2 py-1 rounded">
+                                  💡 {row.adSellingPoint}
                                 </p>
                               ) : analyzing ? (
-                                <span className="text-[10px] text-text-muted animate-pulse">Extracting...</span>
-                              ) : null}
+                                <span className="text-[10px] text-text-muted animate-pulse mt-1 block">⏳ Extracting selling point...</span>
+                              ) : (
+                                <span className="text-[10px] text-score-red mt-1 block">⚠ No selling point</span>
+                              )}
                             </div>
                           </div>
 
@@ -312,32 +319,40 @@ export default function CockpitPage() {
                           <div
                             className="px-4 py-3 border-r border-bg-border"
                             style={row.relevanceScore > 0 ? {
-                              backgroundColor: `${getRelevanceColor(row.relevanceScore)}10`,
+                              backgroundColor: `${getRelevanceColor(row.relevanceScore)}30`,
+                              borderLeft: `3px solid ${getRelevanceColor(row.relevanceScore)}`,
                             } : undefined}
                           >
                             <div className="space-y-1">
                               {row.finalUrl ? (
                                 <>
                                   <p className="text-xs text-text-secondary truncate">{row.finalUrl.replace(/^https?:\/\//, '')}</p>
-                                  {row.relevanceScore > 0 && (
-                                    <span
-                                      className="inline-block text-[11px] font-bold px-2 py-0.5 rounded-full"
-                                      style={{
-                                        backgroundColor: `${getRelevanceColor(row.relevanceScore)}20`,
-                                        color: getRelevanceColor(row.relevanceScore),
-                                      }}
-                                    >
-                                      {row.relevanceScore}% match
-                                    </span>
+                                  {row.relevanceScore > 0 ? (
+                                    <div className="flex items-center gap-2 mt-1">
+                                      <span
+                                        className="inline-block text-xs font-bold px-2.5 py-1 rounded-full"
+                                        style={{
+                                          backgroundColor: `${getRelevanceColor(row.relevanceScore)}25`,
+                                          color: getRelevanceColor(row.relevanceScore),
+                                          border: `1px solid ${getRelevanceColor(row.relevanceScore)}50`,
+                                        }}
+                                      >
+                                        {row.relevanceScore}% match
+                                      </span>
+                                    </div>
+                                  ) : analyzing ? (
+                                    <span className="text-[10px] text-text-muted animate-pulse mt-1 block">⏳ Scoring relevance...</span>
+                                  ) : (
+                                    <span className="text-[10px] text-score-orange mt-1 block">⚠ No relevance score</span>
                                   )}
                                   {row.lpSellingPoint ? (
-                                    <p className="text-[11px] italic text-accent-cyan line-clamp-1">
-                                      SP: {row.lpSellingPoint}
+                                    <p className="text-[11px] italic text-accent-cyan mt-1 line-clamp-2 bg-accent-cyan/10 px-2 py-1 rounded">
+                                      💡 {row.lpSellingPoint}
                                     </p>
                                   ) : row.lpError ? (
-                                    <span className="text-[10px] text-score-red">Unable to analyze</span>
+                                    <span className="text-[10px] text-score-red mt-1 block">Unable to analyze LP</span>
                                   ) : analyzing ? (
-                                    <span className="text-[10px] text-text-muted animate-pulse">Analyzing...</span>
+                                    <span className="text-[10px] text-text-muted animate-pulse mt-1 block">Analyzing LP...</span>
                                   ) : null}
                                 </>
                               ) : (

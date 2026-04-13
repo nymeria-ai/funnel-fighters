@@ -137,12 +137,15 @@ export async function GET(request: Request) {
 
     // 4. If analyze=true, run selling point extraction + relevance scoring
     if (analyze && paginatedRows.length > 0) {
+      console.log(`[Cockpit] Starting analysis for ${paginatedRows.length} rows...`);
+      
       // Collect unique LP URLs to avoid duplicate fetches
       const uniqueUrls = new Set(paginatedRows.map(r => r.finalUrl).filter(Boolean));
       const lpContentMap = new Map<string, string>();
 
       // Fetch LP content in parallel (max 5 concurrent)
       const urlArray = Array.from(uniqueUrls);
+      console.log(`[Cockpit] Fetching ${urlArray.length} unique LP URLs...`);
       for (let i = 0; i < urlArray.length; i += 5) {
         const batch = urlArray.slice(i, i + 5);
         const contents = await Promise.allSettled(batch.map(url => fetchLPContent(url)));
@@ -152,34 +155,61 @@ export async function GET(request: Request) {
         });
       }
 
-      // Extract selling points and score relevance in batches
-      await Promise.allSettled(
-        paginatedRows.map(async (row) => {
-          try {
-            // Ad selling point
+      // Extract selling points in batches of 10 to avoid overwhelming the API
+      const batchSize = 10;
+      for (let i = 0; i < paginatedRows.length; i += batchSize) {
+        const batch = paginatedRows.slice(i, i + batchSize);
+        
+        // Step 1: Extract ad selling points
+        const adSpResults = await Promise.allSettled(
+          batch.map(async (row) => {
             if (row.headlines.length > 0 || row.descriptions.length > 0) {
-              row.adSellingPoint = await extractAdSellingPoint(row.headlines, row.descriptions);
+              try {
+                row.adSellingPoint = await extractAdSellingPoint(row.headlines, row.descriptions);
+                console.log(`[Cockpit] Ad SP extracted for ${row.adId}: ${row.adSellingPoint.slice(0, 50)}`);
+              } catch (e) {
+                console.error(`[Cockpit] Ad SP failed for ${row.adId}:`, e);
+              }
             }
+          })
+        );
 
-            // LP selling point
+        // Step 2: Extract LP selling points
+        const lpSpResults = await Promise.allSettled(
+          batch.map(async (row) => {
             if (row.finalUrl) {
               const content = lpContentMap.get(row.finalUrl) || '';
               if (content) {
-                row.lpSellingPoint = await extractLPSellingPoint(row.finalUrl, content);
+                try {
+                  row.lpSellingPoint = await extractLPSellingPoint(row.finalUrl, content);
+                  console.log(`[Cockpit] LP SP extracted for ${row.finalUrl.slice(0, 40)}: ${row.lpSellingPoint.slice(0, 50)}`);
+                } catch (e) {
+                  console.error(`[Cockpit] LP SP failed for ${row.finalUrl}:`, e);
+                  row.lpError = true;
+                }
               } else {
                 row.lpError = true;
               }
             }
+          })
+        );
 
-            // Relevance score
+        // Step 3: Score relevance
+        const relResults = await Promise.allSettled(
+          batch.map(async (row) => {
             if (row.adSellingPoint && row.lpSellingPoint) {
-              row.relevanceScore = await scoreRelevance(row.adSellingPoint, row.lpSellingPoint);
+              try {
+                row.relevanceScore = await scoreRelevance(row.adSellingPoint, row.lpSellingPoint);
+                console.log(`[Cockpit] Relevance for ${row.adId}: ${row.relevanceScore}%`);
+              } catch (e) {
+                console.error(`[Cockpit] Relevance failed for ${row.adId}:`, e);
+              }
             }
-          } catch {
-            // Individual row errors don't break the whole response
-          }
-        })
-      );
+          })
+        );
+      }
+      
+      console.log(`[Cockpit] Analysis complete. Rows with ad SP: ${paginatedRows.filter(r => r.adSellingPoint).length}, LP SP: ${paginatedRows.filter(r => r.lpSellingPoint).length}, Relevance: ${paginatedRows.filter(r => r.relevanceScore > 0).length}`);
     }
 
     return NextResponse.json({
