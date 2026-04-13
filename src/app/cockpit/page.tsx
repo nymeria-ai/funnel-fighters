@@ -285,7 +285,7 @@ export default function CockpitPage() {
                           {/* Ads Column */}
                           <div className="px-4 py-3 border-r border-bg-border">
                             <div className="space-y-1">
-                              <div className="flex items-center gap-2">
+                              <div className="flex items-center gap-2 flex-wrap">
                                 <span className="text-[10px] px-1 py-0.5 rounded bg-accent-blue/20 text-accent-blue">
                                   {row.adType.replace('RESPONSIVE_SEARCH_AD', 'RSA').replace('EXPANDED_TEXT_AD', 'ETA')}
                                 </span>
@@ -293,10 +293,12 @@ export default function CockpitPage() {
                                   {formatCurrency(row.spend)} · {row.clicks} clicks
                                 </span>
                               </div>
-                              {row.headlines.length > 0 && (
+                              {row.headlines.length > 0 ? (
                                 <p className="text-xs text-text-primary line-clamp-2">
                                   {row.headlines.slice(0, 3).join(' | ')}
                                 </p>
+                              ) : (
+                                <p className="text-[10px] text-text-muted">No headlines available</p>
                               )}
                               {row.descriptions.length > 0 && (
                                 <p className="text-[11px] text-text-muted line-clamp-1">
@@ -307,6 +309,8 @@ export default function CockpitPage() {
                                 <p className="text-[11px] italic text-accent-cyan mt-1 line-clamp-2 bg-accent-cyan/10 px-2 py-1 rounded">
                                   💡 {row.adSellingPoint}
                                 </p>
+                              ) : row.headlines.length === 0 ? (
+                                <span className="text-[10px] text-score-orange mt-1 block">⚠ No ad copy to extract SP from</span>
                               ) : analyzing ? (
                                 <span className="text-[10px] text-text-muted animate-pulse mt-1 block">⏳ Extracting selling point...</span>
                               ) : (

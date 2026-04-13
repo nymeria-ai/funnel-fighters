@@ -2,14 +2,13 @@ import { NextResponse } from 'next/server';
 import {
   getAccounts,
   getAdsWithUrls,
-  getAdCopy,
   getAudienceTargeting,
   type AdRow,
-  type AdCopyRow,
   type AudienceRow,
 } from '@/lib/google-ads/queries';
 import { extractAdSellingPoint, extractLPSellingPoint, fetchLPContent } from '@/lib/selling-points/extractor';
 import { scoreRelevance } from '@/lib/selling-points/relevance';
+import { flushCaches, getCacheStats } from '@/lib/selling-points/cache';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 120;
@@ -62,15 +61,14 @@ export async function GET(request: Request) {
       a => !a.isManager && TARGET_ACCOUNTS.includes(a.name)
     );
 
-    // 2. Fetch ads + ad copy + audience for all accounts in parallel
+    // 2. Fetch ads (with RSA headlines) + audience for all accounts in parallel
     const accountResults = await Promise.allSettled(
       targetAccounts.map(async (account) => {
-        const [ads, adCopy, audience] = await Promise.all([
+        const [ads, audience] = await Promise.all([
           getAdsWithUrls(account.id),
-          getAdCopy(account.id),
           getAudienceTargeting(account.id),
         ]);
-        return { account, ads, adCopy, audience };
+        return { account, ads, audience };
       })
     );
 
@@ -79,13 +77,7 @@ export async function GET(request: Request) {
 
     for (const result of accountResults) {
       if (result.status !== 'fulfilled') continue;
-      const { account, ads, adCopy, audience } = result.value;
-
-      // Index ad copy by adGroupId + adId for quick lookup
-      const copyMap = new Map<string, AdCopyRow>();
-      for (const copy of adCopy) {
-        copyMap.set(`${copy.adGroupId}:${copy.adId}`, copy);
-      }
+      const { account, ads, audience } = result.value;
 
       // Index audience by campaignId
       const audienceMap = new Map<string, AudienceRow[]>();
@@ -95,7 +87,6 @@ export async function GET(request: Request) {
       }
 
       for (const ad of ads) {
-        const copy = copyMap.get(`${ad.adGroupId}:${ad.adId}`);
         const url = ad.finalUrls[0] || '';
         let domain = '';
         try {
@@ -113,8 +104,8 @@ export async function GET(request: Request) {
           adType: ad.adType,
           finalUrl: url,
           finalUrlDomain: domain,
-          headlines: copy?.headlines || [],
-          descriptions: copy?.descriptions || [],
+          headlines: ad.headlines || [],
+          descriptions: ad.descriptions || [],
           adSellingPoint: '',
           audience: audienceMap.get(ad.campaignId) || [],
           lpSellingPoint: '',
@@ -210,8 +201,12 @@ export async function GET(request: Request) {
       }
       
       console.log(`[Cockpit] Analysis complete. Rows with ad SP: ${paginatedRows.filter(r => r.adSellingPoint).length}, LP SP: ${paginatedRows.filter(r => r.lpSellingPoint).length}, Relevance: ${paginatedRows.filter(r => r.relevanceScore > 0).length}`);
+      
+      // Flush cache to disk
+      flushCaches();
     }
 
+    const cacheStats = getCacheStats();
     return NextResponse.json({
       rows: paginatedRows,
       pagination: {
@@ -220,6 +215,7 @@ export async function GET(request: Request) {
         totalRows,
         totalPages: Math.ceil(totalRows / pageSize),
       },
+      cache: cacheStats,
     });
   } catch (error) {
     console.error('Cockpit API error:', error);

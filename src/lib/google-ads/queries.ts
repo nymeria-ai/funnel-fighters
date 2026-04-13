@@ -30,6 +30,8 @@ export interface AdRow {
   adType: string;
   status: string;
   finalUrls: string[];
+  headlines: string[];
+  descriptions: string[];
   impressions: number;
   clicks: number;
   costMicros: number;
@@ -83,6 +85,8 @@ export async function getAdsWithUrls(accountId: string): Promise<AdRow[]> {
   const results = await queryGoogleAds(
     accountId,
     `SELECT ad_group_ad.ad.id, ad_group_ad.ad.name, ad_group_ad.ad.final_urls, ad_group_ad.ad.type,
+            ad_group_ad.ad.responsive_search_ad.headlines,
+            ad_group_ad.ad.responsive_search_ad.descriptions,
             ad_group_ad.status, ad_group.name, ad_group.id, campaign.name, campaign.id,
             metrics.impressions, metrics.clicks, metrics.cost_micros, metrics.conversions
      FROM ad_group_ad
@@ -94,21 +98,26 @@ export async function getAdsWithUrls(accountId: string): Promise<AdRow[]> {
     MCC_ID
   );
 
-  return results.map((r: any) => ({
-    campaignId: r.campaign.id,
-    campaignName: r.campaign.name,
-    adGroupId: r.adGroup.id,
-    adGroupName: r.adGroup.name,
-    adId: r.adGroupAd.ad.id,
-    adName: r.adGroupAd.ad.name || `Ad ${r.adGroupAd.ad.id}`,
-    adType: r.adGroupAd.ad.type || 'UNKNOWN',
-    status: r.adGroupAd.status,
-    finalUrls: r.adGroupAd.ad.finalUrls || [],
-    impressions: parseInt(r.metrics.impressions) || 0,
-    clicks: parseInt(r.metrics.clicks) || 0,
-    costMicros: parseInt(r.metrics.costMicros) || 0,
-    conversions: r.metrics.conversions || 0,
-  }));
+  return results.map((r: any) => {
+    const rsa = r.adGroupAd?.ad?.responsiveSearchAd;
+    return {
+      campaignId: r.campaign.id,
+      campaignName: r.campaign.name,
+      adGroupId: r.adGroup.id,
+      adGroupName: r.adGroup.name,
+      adId: r.adGroupAd.ad.id,
+      adName: r.adGroupAd.ad.name || `Ad ${r.adGroupAd.ad.id}`,
+      adType: r.adGroupAd.ad.type || 'UNKNOWN',
+      status: r.adGroupAd.status,
+      finalUrls: r.adGroupAd.ad.finalUrls || [],
+      headlines: rsa?.headlines?.map((h: any) => h.text).filter(Boolean) || [],
+      descriptions: rsa?.descriptions?.map((d: any) => d.text).filter(Boolean) || [],
+      impressions: parseInt(r.metrics.impressions) || 0,
+      clicks: parseInt(r.metrics.clicks) || 0,
+      costMicros: parseInt(r.metrics.costMicros) || 0,
+      conversions: r.metrics.conversions || 0,
+    };
+  });
 }
 
 export interface KeywordRow {
