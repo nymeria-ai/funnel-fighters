@@ -77,4 +77,4 @@ export async function queryGoogleAds(
   return results;
 }
 
-export const MCC_ID = '7645779471';
+export const MCC_ID = process.env.GOOGLE_ADS_MCC_ID || '7645779471';

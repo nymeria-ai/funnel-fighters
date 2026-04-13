@@ -5,7 +5,9 @@
  */
 
 import Anthropic from '@anthropic-ai/sdk';
-import { getRelevanceScore, setRelevanceScore } from './cache';
+import { getRelevanceScoreAsync, setRelevanceScore, type RelevanceResult } from './cache';
+
+export type { RelevanceResult };
 
 const anthropic = new Anthropic();
 
@@ -31,23 +33,18 @@ function releaseSlot(): void {
   }
 }
 
-export interface RelevanceResult {
-  score: number;
-  reason: string;
-}
-
 export async function scoreRelevance(
   adSellingPoint: string,
   lpSellingPoint: string,
 ): Promise<RelevanceResult> {
   if (!adSellingPoint || !lpSellingPoint) return { score: 0, reason: '' };
 
-  const cached = getRelevanceScore(adSellingPoint, lpSellingPoint);
+  const cached = await getRelevanceScoreAsync(adSellingPoint, lpSellingPoint);
   if (cached !== null) return cached;
 
   await acquireSlot();
   try {
-    const rechecked = getRelevanceScore(adSellingPoint, lpSellingPoint);
+    const rechecked = await getRelevanceScoreAsync(adSellingPoint, lpSellingPoint);
     if (rechecked !== null) return rechecked;
 
     const prompt = `Rate the alignment between this ad message and this landing page message on a scale of 0-100.
@@ -98,15 +95,4 @@ REASON: <1-2 sentence explanation of why this score, specifically what matches o
   }
 }
 
-export function getRelevanceColor(score: number): string {
-  if (score >= 91) return '#059669';
-  if (score >= 81) return '#16A34A';
-  if (score >= 71) return '#22C55E';
-  if (score >= 61) return '#84CC16';
-  if (score >= 51) return '#A3E635';
-  if (score >= 41) return '#EAB308';
-  if (score >= 31) return '#FB923C';
-  if (score >= 21) return '#F97316';
-  if (score >= 11) return '#EF4444';
-  return '#DC2626';
-}
+export { getRelevanceColor } from './colors';

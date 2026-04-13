@@ -3,51 +3,20 @@ import {
   getAccounts,
   getAdsWithUrls,
   getAudienceTargeting,
-  type AdRow,
   type AudienceRow,
 } from '@/lib/google-ads/queries';
 import { extractAdSellingPoint, extractLPSellingPoint, fetchLPContent } from '@/lib/selling-points/extractor';
 import { scoreRelevance } from '@/lib/selling-points/relevance';
-import { flushCaches, getCacheStats } from '@/lib/selling-points/cache';
+import { flushCaches, getCacheStats, getSellingPointAsync, getRelevanceScoreAsync } from '@/lib/selling-points/cache';
+import type { CockpitRow } from '@/types';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 120;
 
-const TARGET_ACCOUNTS = [
-  'Main', 'Verticals', 'Verticals2', 'Locals', 'AW mobile',
-  'agent factory', 'Canvas by monday.com', 'monday.com brand',
-  'monday.com CRM - Product Growth', 'harp AI',
-];
-
-interface CockpitRow {
-  accountId: string;
-  accountName: string;
-  campaignId: string;
-  campaignName: string;
-  adGroupId: string;
-  adGroupName: string;
-  adId: string;
-  adType: string;
-  finalUrl: string;
-  finalUrlDomain: string;
-  // Ad info
-  headlines: string[];
-  descriptions: string[];
-  adSellingPoint: string;
-  // Audience
-  audience: AudienceRow[];
-  // Landing page
-  lpSellingPoint: string;
-  lpError: boolean;
-  // Relevance
-  relevanceScore: number;
-  relevanceReason: string;
-  // Metrics
-  impressions: number;
-  clicks: number;
-  spend: number;
-  conversions: number;
-}
+const TARGET_ACCOUNTS = (process.env.GOOGLE_ADS_TARGET_ACCOUNTS || 'Main,Verticals,Verticals2,Locals,AW mobile,agent factory,Canvas by monday.com,monday.com brand,monday.com CRM - Product Growth,harp AI')
+  .split(',')
+  .map(s => s.trim())
+  .filter(Boolean);
 
 export async function GET(request: Request) {
   try {
@@ -131,7 +100,36 @@ export async function GET(request: Request) {
     // 4. If analyze=true, run selling point extraction + relevance scoring
     if (analyze && paginatedRows.length > 0) {
       console.log(`[Cockpit] Starting analysis for ${paginatedRows.length} rows...`);
-      
+
+      // DB fast path: try to hydrate selling points + relevance from cache/DB first
+      await Promise.allSettled(
+        paginatedRows.map(async (row) => {
+          const adKey = `ad:${row.headlines.join('|')}:${row.descriptions.join('|')}`;
+          const lpKey = `lp:${row.finalUrl}`;
+          const [adSp, lpSp] = await Promise.all([
+            (row.headlines.length > 0 || row.descriptions.length > 0) ? getSellingPointAsync(adKey) : null,
+            row.finalUrl ? getSellingPointAsync(lpKey) : null,
+          ]);
+          if (adSp) row.adSellingPoint = adSp;
+          if (lpSp) row.lpSellingPoint = lpSp;
+          if (adSp && lpSp) {
+            const rel = await getRelevanceScoreAsync(adSp, lpSp);
+            if (rel) { row.relevanceScore = rel.score; row.relevanceReason = rel.reason; }
+          }
+        }),
+      );
+
+      const preHydrated = paginatedRows.filter(r => r.relevanceScore > 0).length;
+      console.log(`[Cockpit] DB fast path: ${preHydrated}/${paginatedRows.length} rows fully hydrated`);
+
+      // Only fetch + compute for rows that are still missing data
+      const needsAnalysis = paginatedRows.filter(r => !r.adSellingPoint || !r.lpSellingPoint || r.relevanceScore === 0);
+      if (needsAnalysis.length === 0) {
+        console.log('[Cockpit] All rows served from cache/DB — skipping LLM calls');
+      } else {
+        console.log(`[Cockpit] ${needsAnalysis.length} rows need analysis...`);
+      }
+
       // Collect unique LP URLs to avoid duplicate fetches
       const uniqueUrls = new Set(paginatedRows.map(r => r.finalUrl).filter(Boolean));
       const lpContentMap = new Map<string, string>();

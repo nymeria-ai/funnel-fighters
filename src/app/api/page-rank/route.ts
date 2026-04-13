@@ -8,9 +8,12 @@ import {
 } from '@/lib/ranking/config';
 import { getCached, setCached } from '@/lib/ranking/cache';
 import { fetchAhrefsURLRatings } from '@/lib/ranking/ahrefs-mcp';
+import type { PageRankResult } from '@/types';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
+
+const GSC_SITE_URL = process.env.GSC_SITE_URL || 'sc-domain:monday.com';
 
 interface GSCRow {
   keys?: string[];
@@ -41,7 +44,7 @@ async function fetchGSCPosition(url: string): Promise<{ position: number; impres
     startDate.setDate(startDate.getDate() - 30);
 
     const res = await searchconsole.searchanalytics.query({
-      siteUrl: 'sc-domain:monday.com',
+      siteUrl: GSC_SITE_URL,
       requestBody: {
         startDate: startDate.toISOString().split('T')[0],
         endDate: endDate.toISOString().split('T')[0],
@@ -72,16 +75,6 @@ async function fetchGSCPosition(url: string): Promise<{ position: number; impres
 }
 
 // Ahrefs URL Rating is now fetched via MCP batch call (fetchAhrefsURLRatings)
-
-export interface PageRankResult {
-  url: string;
-  gscPosition: number | null;
-  gscImpressions: number | null;
-  gscScore: number | null;
-  ahrefsUR: number | null;
-  ahrefsScore: number | null;
-  compositeScore: number | null;
-}
 
 async function fetchAndScoreBatch(urls: string[]): Promise<PageRankResult[]> {
   // Fetch GSC data per URL + Ahrefs batch in parallel

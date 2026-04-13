@@ -4,69 +4,14 @@ import RightPanel from '@/components/layout/RightPanel';
 import type { TabDef } from '@/components/layout/RightPanel';
 import CollapsibleSection from '@/components/ui/CollapsibleSection';
 import DuckIcon from '@/components/ui/DuckIcon';
-
-interface AudienceInfo {
-  campaignId: string;
-  campaignName: string;
-  criterionId: string;
-  criterionType: string;
-  criterionName: string;
-  bidModifier: number;
-}
-
-interface CockpitRow {
-  accountId: string;
-  accountName: string;
-  campaignId: string;
-  campaignName: string;
-  adGroupId: string;
-  adGroupName: string;
-  adId: string;
-  adType: string;
-  finalUrl: string;
-  finalUrlDomain: string;
-  headlines: string[];
-  descriptions: string[];
-  adSellingPoint: string;
-  audience: AudienceInfo[];
-  lpSellingPoint: string;
-  lpError: boolean;
-  relevanceScore: number;
-  relevanceReason: string;
-  impressions: number;
-  clicks: number;
-  spend: number;
-  conversions: number;
-}
+import { getRelevanceColor } from '@/lib/selling-points/colors';
+import type { CockpitRow, PageRankResult } from '@/types';
 
 interface Pagination {
   page: number;
   pageSize: number;
   totalRows: number;
   totalPages: number;
-}
-
-interface PageRankResult {
-  url: string;
-  gscPosition: number | null;
-  gscImpressions: number | null;
-  gscScore: number | null;
-  ahrefsUR: number | null;
-  ahrefsScore: number | null;
-  compositeScore: number | null;
-}
-
-function getRelevanceColor(score: number): string {
-  if (score >= 91) return '#059669';
-  if (score >= 81) return '#16A34A';
-  if (score >= 71) return '#22C55E';
-  if (score >= 61) return '#84CC16';
-  if (score >= 51) return '#A3E635';
-  if (score >= 41) return '#EAB308';
-  if (score >= 31) return '#FB923C';
-  if (score >= 21) return '#F97316';
-  if (score >= 11) return '#EF4444';
-  return '#DC2626';
 }
 
 function getRankColor(score: number | null): string {

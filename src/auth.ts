@@ -27,7 +27,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return session;
     },
   },
-  debug: true,
+  debug: process.env.NODE_ENV === 'development',
   logger: {
     error(error) {
       console.error("[AUTH ERROR]", error);

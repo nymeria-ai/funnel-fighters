@@ -4,7 +4,7 @@
  */
 
 import Anthropic from '@anthropic-ai/sdk';
-import { getSellingPoint, setSellingPoint } from './cache';
+import { getSellingPointAsync, setSellingPoint } from './cache';
 
 const anthropic = new Anthropic();
 
@@ -36,13 +36,13 @@ export async function extractAdSellingPoint(
   descriptions: string[],
 ): Promise<string> {
   const cacheKey = `ad:${headlines.join('|')}:${descriptions.join('|')}`;
-  const cached = getSellingPoint(cacheKey);
+  const cached = await getSellingPointAsync(cacheKey);
   if (cached) return cached;
 
   await acquireSlot();
   try {
     // Re-check cache after acquiring slot (another request may have filled it)
-    const rechecked = getSellingPoint(cacheKey);
+    const rechecked = await getSellingPointAsync(cacheKey);
     if (rechecked) return rechecked;
 
     const prompt = `You are analyzing a Google Ads Responsive Search Ad.
@@ -73,12 +73,12 @@ export async function extractLPSellingPoint(
   content: string,
 ): Promise<string> {
   const cacheKey = `lp:${url}`;
-  const cached = getSellingPoint(cacheKey);
+  const cached = await getSellingPointAsync(cacheKey);
   if (cached) return cached;
 
   await acquireSlot();
   try {
-    const rechecked = getSellingPoint(cacheKey);
+    const rechecked = await getSellingPointAsync(cacheKey);
     if (rechecked) return rechecked;
 
     const prompt = `You are analyzing a landing page.
