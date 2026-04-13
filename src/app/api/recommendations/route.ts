@@ -191,7 +191,7 @@ function deduplicate(recs: Recommendation[]): Recommendation[] {
   });
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const CACHE_TTL = 5 * 60 * 1000; // 5 min
     const now = Date.now();
@@ -202,13 +202,14 @@ export async function GET() {
       return NextResponse.json({ recommendations: all, cached: true });
     }
 
-    // Fetch cockpit data (without heavy LLM analysis to be fast, use cached data)
+    // Fetch cockpit data — forward auth cookies from the original request
     const baseUrl = process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}`
       : 'http://localhost:3000';
 
-    const cockpitRes = await fetch(`${baseUrl}/api/cockpit?pageSize=200`, {
-      headers: { cookie: '' },
+    const cookieHeader = request.headers.get('cookie') || '';
+    const cockpitRes = await fetch(`${baseUrl}/api/cockpit?pageSize=200&analyze=false`, {
+      headers: { cookie: cookieHeader },
     });
 
     if (!cockpitRes.ok) {
