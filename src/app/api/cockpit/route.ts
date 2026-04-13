@@ -41,6 +41,7 @@ interface CockpitRow {
   lpError: boolean;
   // Relevance
   relevanceScore: number;
+  relevanceReason: string;
   // Metrics
   impressions: number;
   clicks: number;
@@ -111,6 +112,7 @@ export async function GET(request: Request) {
           lpSellingPoint: '',
           lpError: false,
           relevanceScore: 0,
+          relevanceReason: '',
           impressions: ad.impressions,
           clicks: ad.clicks,
           spend: ad.costMicros / 1_000_000,
@@ -190,8 +192,10 @@ export async function GET(request: Request) {
           batch.map(async (row) => {
             if (row.adSellingPoint && row.lpSellingPoint) {
               try {
-                row.relevanceScore = await scoreRelevance(row.adSellingPoint, row.lpSellingPoint);
-                console.log(`[Cockpit] Relevance for ${row.adId}: ${row.relevanceScore}%`);
+                const result = await scoreRelevance(row.adSellingPoint, row.lpSellingPoint);
+                row.relevanceScore = result.score;
+                row.relevanceReason = result.reason;
+                console.log(`[Cockpit] Relevance for ${row.adId}: ${result.score}% — ${result.reason.slice(0, 60)}`);
               } catch (e) {
                 console.error(`[Cockpit] Relevance failed for ${row.adId}:`, e);
               }

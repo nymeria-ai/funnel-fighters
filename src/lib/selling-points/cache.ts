@@ -19,8 +19,13 @@ interface CacheEntry {
   ts: number;
 }
 
-interface RelCacheEntry {
+interface RelevanceResult {
   score: number;
+  reason: string;
+}
+
+interface RelCacheEntry {
+  value: RelevanceResult;
   ts: number;
 }
 
@@ -132,7 +137,7 @@ export function setSellingPoint(key: string, value: string): void {
   debouncedPersistSp();
 }
 
-export function getRelevanceScore(adSp: string, lpSp: string): number | null {
+export function getRelevanceScore(adSp: string, lpSp: string): RelevanceResult | null {
   const cache = loadRelCache();
   const key = `${adSp}::${lpSp}`;
   const entry = cache.get(key);
@@ -141,13 +146,13 @@ export function getRelevanceScore(adSp: string, lpSp: string): number | null {
     cache.delete(key);
     return null;
   }
-  return entry.score;
+  return entry.value;
 }
 
-export function setRelevanceScore(adSp: string, lpSp: string, score: number): void {
+export function setRelevanceScore(adSp: string, lpSp: string, result: RelevanceResult): void {
   const cache = loadRelCache();
   const key = `${adSp}::${lpSp}`;
-  cache.set(key, { score, ts: Date.now() });
+  cache.set(key, { value: result, ts: Date.now() });
   debouncedPersistRel();
 }
 

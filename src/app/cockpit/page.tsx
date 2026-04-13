@@ -30,6 +30,7 @@ interface CockpitRow {
   lpSellingPoint: string;
   lpError: boolean;
   relevanceScore: number;
+  relevanceReason: string;
   impressions: number;
   clicks: number;
   spend: number;
@@ -420,6 +421,7 @@ export default function CockpitPage() {
           adSellingPoint: selectedRow.adSellingPoint,
           lpSellingPoint: selectedRow.lpSellingPoint,
           relevanceScore: selectedRow.relevanceScore,
+          relevanceReason: selectedRow.relevanceReason,
           finalUrl: selectedRow.finalUrl,
           spend: selectedRow.spend,
           clicks: selectedRow.clicks,
@@ -480,17 +482,26 @@ export default function CockpitPage() {
                   </div>
                 )}
                 {selectedRow.relevanceScore > 0 && (
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] text-text-muted">Relevance:</span>
-                    <span
-                      className="text-xs font-bold px-2 py-0.5 rounded-full"
-                      style={{
-                        backgroundColor: `${getRelevanceColor(selectedRow.relevanceScore)}20`,
-                        color: getRelevanceColor(selectedRow.relevanceScore),
-                      }}
-                    >
-                      {selectedRow.relevanceScore}%
-                    </span>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] text-text-muted">Relevance:</span>
+                      <span
+                        className="text-sm font-bold px-3 py-1 rounded-full"
+                        style={{
+                          backgroundColor: `${getRelevanceColor(selectedRow.relevanceScore)}25`,
+                          color: getRelevanceColor(selectedRow.relevanceScore),
+                          border: `1px solid ${getRelevanceColor(selectedRow.relevanceScore)}50`,
+                        }}
+                      >
+                        {selectedRow.relevanceScore}%
+                      </span>
+                    </div>
+                    {selectedRow.relevanceReason && (
+                      <div className="bg-bg-card rounded-lg p-2.5 border-l-2" style={{ borderColor: getRelevanceColor(selectedRow.relevanceScore) }}>
+                        <span className="text-[10px] font-semibold text-text-muted uppercase block mb-1">Why this score</span>
+                        <p className="text-xs text-text-secondary leading-relaxed">{selectedRow.relevanceReason}</p>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

@@ -1,6 +1,7 @@
 /**
  * Relevance scoring between ad selling points and landing page selling points.
  * Uses LLM to score alignment on 0-100 scale with aggressive scoring.
+ * Returns score + reason explanation.
  */
 
 import Anthropic from '@anthropic-ai/sdk';
@@ -8,8 +9,6 @@ import { getRelevanceScore, setRelevanceScore } from './cache';
 
 const anthropic = new Anthropic();
 
-// Shares the same rate limiter concept — but relevance calls are typically
-// made after selling points are already extracted, so contention is lower.
 let activeCalls = 0;
 const queue: Array<{ resolve: () => void }> = [];
 
@@ -32,11 +31,16 @@ function releaseSlot(): void {
   }
 }
 
+export interface RelevanceResult {
+  score: number;
+  reason: string;
+}
+
 export async function scoreRelevance(
   adSellingPoint: string,
   lpSellingPoint: string,
-): Promise<number> {
-  if (!adSellingPoint || !lpSellingPoint) return 0;
+): Promise<RelevanceResult> {
+  if (!adSellingPoint || !lpSellingPoint) return { score: 0, reason: '' };
 
   const cached = getRelevanceScore(adSellingPoint, lpSellingPoint);
   if (cached !== null) return cached;
@@ -67,18 +71,28 @@ Scoring guide:
 - 10-29: Poor match. Tangentially related at best
 - 0-9: No match. Completely different messages
 
-Reply with ONLY a number 0-100, nothing else.`;
+Reply in EXACTLY this format (two lines, nothing else):
+SCORE: <number>
+REASON: <1-2 sentence explanation of why this score, specifically what matches or mismatches>`;
 
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 10,
+      max_tokens: 150,
       messages: [{ role: 'user', content: prompt }],
     });
 
-    const text = response.content[0].type === 'text' ? response.content[0].text.trim() : '0';
-    const score = Math.max(0, Math.min(100, parseInt(text) || 0));
-    setRelevanceScore(adSellingPoint, lpSellingPoint, score);
-    return score;
+    const text = response.content[0].type === 'text' ? response.content[0].text.trim() : 'SCORE: 0\nREASON: Unable to analyze';
+    
+    // Parse score and reason
+    const scoreMatch = text.match(/SCORE:\s*(\d+)/i);
+    const reasonMatch = text.match(/REASON:\s*(.+)/i);
+    
+    const score = Math.max(0, Math.min(100, parseInt(scoreMatch?.[1] || '0') || 0));
+    const reason = reasonMatch?.[1]?.trim() || 'No explanation available';
+    
+    const result: RelevanceResult = { score, reason };
+    setRelevanceScore(adSellingPoint, lpSellingPoint, result);
+    return result;
   } finally {
     releaseSlot();
   }
