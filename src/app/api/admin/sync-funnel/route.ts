@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { timingSafeEqual } from 'crypto';
 import { query, exec } from '@/lib/db/client';
 
 export const maxDuration = 60;
@@ -14,7 +15,8 @@ function verifyAuth(req: NextRequest): boolean {
   const auth = req.headers.get('authorization');
   if (!auth) return false;
   const token = auth.replace(/^Bearer\s+/i, '');
-  return token === SYNC_SECRET;
+  if (token.length !== SYNC_SECRET.length) return false;
+  return timingSafeEqual(Buffer.from(token), Buffer.from(SYNC_SECRET));
 }
 
 type SyncType = 'lp_funnel' | 'product_funnel' | 'weekly' | 'duck_scores';

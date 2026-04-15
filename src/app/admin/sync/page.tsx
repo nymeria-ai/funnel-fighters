@@ -48,20 +48,7 @@ export default function AdminSyncPage() {
   };
 
   useEffect(() => {
-    // Auto-fetch on mount if we can
-    fetch('/api/admin/sync-funnel', {
-      headers: { Authorization: 'Bearer check' },
-    })
-      .then(r => {
-        if (r.ok) return r.json();
-        setLoading(false);
-        return null;
-      })
-      .then(data => {
-        if (data?.status) setStatus(data.status);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    setLoading(false);
   }, []);
 
   const copyCommand = async () => {

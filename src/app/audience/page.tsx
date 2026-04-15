@@ -22,13 +22,6 @@ interface CampaignData {
   conversions: number;
 }
 
-interface AudienceCriterion {
-  criterionId: string;
-  criterionType: string;
-  criterionName: string;
-  bidModifier: number;
-}
-
 function formatNumber(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
   if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`;
@@ -39,7 +32,6 @@ export default function AudiencePage() {
   const [accounts, setAccounts] = useState<AccountData[]>([]);
   const [campaigns, setCampaigns] = useState<CampaignData[]>([]);
   const [selectedAccount, setSelectedAccount] = useState<string | null>(null);
-  const [audienceData, setAudienceData] = useState<Record<string, AudienceCriterion[]>>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -66,14 +58,6 @@ export default function AudiencePage() {
       setCampaigns([]);
     }
   };
-
-  // Group targeting criteria by type
-  const groupedTargeting = new Map<string, AudienceCriterion[]>();
-  for (const criteria of Object.values(audienceData).flat()) {
-    const type = criteria.criterionType;
-    if (!groupedTargeting.has(type)) groupedTargeting.set(type, []);
-    groupedTargeting.get(type)!.push(criteria);
-  }
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
