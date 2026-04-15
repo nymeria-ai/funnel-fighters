@@ -9,7 +9,7 @@ export default auth((req) => {
 
 export const config = {
   matcher: [
-    // Protect everything except login page, auth API, static files, OG image
-    "/((?!login|api/auth|_next/static|_next/image|favicon.ico|icon.svg|og-image.png).*)",
+    // Protect everything except login page, auth API, admin sync (has own bearer auth), static files, OG image
+    "/((?!login|api/auth|api/admin/sync-funnel|_next/static|_next/image|favicon.ico|icon.svg|og-image.png).*)",
   ],
 };

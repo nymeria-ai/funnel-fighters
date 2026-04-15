@@ -182,6 +182,62 @@ CREATE TABLE IF NOT EXISTS settings (
   updated_at       TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- ============================================================
+-- FUNNEL DATA (seeded from BigBrain via admin sync)
+-- All tables store AGGREGATED data only — no PII.
+-- ============================================================
+
+-- LP funnel metrics: visit → get_started per campaign/LP
+CREATE TABLE IF NOT EXISTS lp_funnel_metrics (
+  campaign_name     TEXT NOT NULL,
+  landing_page      TEXT NOT NULL,
+  device            TEXT NOT NULL DEFAULT 'all',
+  visits            INTEGER DEFAULT 0,
+  get_started       INTEGER DEFAULT 0,
+  gs_rate           NUMERIC(5,2) DEFAULT 0,
+  updated_at        TIMESTAMPTZ DEFAULT NOW(),
+  PRIMARY KEY (campaign_name, landing_page, device)
+);
+
+-- Product funnel metrics: signup → payer + product alignment
+CREATE TABLE IF NOT EXISTS product_funnel_metrics (
+  campaign_name       TEXT NOT NULL,
+  landing_page        TEXT NOT NULL,
+  device              TEXT NOT NULL DEFAULT 'all',
+  lp_product          TEXT NOT NULL DEFAULT '(unknown)',
+  signup_product      TEXT NOT NULL DEFAULT '(unknown)',
+  installed_product   TEXT NOT NULL DEFAULT '(unknown)',
+  soft_signups        INTEGER DEFAULT 0,
+  hard_signups        INTEGER DEFAULT 0,
+  payers_28d          INTEGER DEFAULT 0,
+  acv_28d             NUMERIC(12,2) DEFAULT 0,
+  updated_at          TIMESTAMPTZ DEFAULT NOW(),
+  PRIMARY KEY (campaign_name, landing_page, device, signup_product)
+);
+
+-- Weekly cohort funnel (Roy's funnel table)
+CREATE TABLE IF NOT EXISTS funnel_weekly (
+  week_start        DATE NOT NULL,
+  device            TEXT NOT NULL DEFAULT 'all',
+  visits            INTEGER DEFAULT 0,
+  get_started       INTEGER DEFAULT 0,
+  soft_signups      INTEGER DEFAULT 0,
+  hard_signups      INTEGER DEFAULT 0,
+  payers_28d        INTEGER DEFAULT 0,
+  acv_28d           NUMERIC(12,2) DEFAULT 0,
+  updated_at        TIMESTAMPTZ DEFAULT NOW(),
+  PRIMARY KEY (week_start, device)
+);
+
+-- Duck scores over time
+CREATE TABLE IF NOT EXISTS duck_scores (
+  measured_at       DATE NOT NULL,
+  duck_type         TEXT NOT NULL,
+  score             NUMERIC(5,2),
+  sub_scores        JSONB DEFAULT '{}',
+  PRIMARY KEY (measured_at, duck_type)
+);
+
 -- Seed defaults (only if not already present)
 INSERT INTO settings (key, value) VALUES
   ('mcc_id', '"7645779471"'),

@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import DuckIcon from '@/components/ui/DuckIcon';
 import RightPanel from '@/components/layout/RightPanel';
-import { getScoreColorHex } from '@/lib/scoring';
+import { getScoreColorHex, geometricMean } from '@/lib/scoring';
 
 interface AccountSummary {
   name: string;
@@ -11,6 +11,23 @@ interface AccountSummary {
   clicks: number;
   impressions: number;
   conversions: number;
+}
+
+interface DuckScore {
+  duckType: string;
+  score: number;
+  subScores: Record<string, unknown>;
+  trend: number[];
+}
+
+interface WeeklyCohort {
+  week_start: string;
+  visits: number;
+  get_started: number;
+  soft_signups: number;
+  hard_signups: number;
+  payers_28d: number;
+  acv_28d: number;
 }
 
 function formatCurrency(n: number): string {
@@ -25,26 +42,27 @@ function formatNumber(n: number): string {
   return n.toLocaleString();
 }
 
-interface DuckStatus {
+interface DuckInfo {
   label: string;
-  status: 'live' | 'partial' | 'no_data';
+  duckType: string;
+  baseStatus: 'live' | 'partial' | 'no_data';
   description: string;
   route: string;
-  avgRank?: number | null;
 }
 
-const ducks: DuckStatus[] = [
-  { label: 'Audience', status: 'no_data', description: 'Needs Snowflake/Looker integration', route: '/audience' },
-  { label: 'Ads', status: 'live', description: 'Google Ads connected — all accounts', route: '/ads' },
-  { label: 'Landing Pages', status: 'partial', description: 'Rank: GSC + Ahrefs', route: '/landing-pages' },
-  { label: 'Product', status: 'no_data', description: 'Needs product analytics access', route: '/product' },
+const duckDefs: DuckInfo[] = [
+  { label: 'Audience', duckType: 'audience', baseStatus: 'partial', description: 'Google Ads targeting', route: '/audience' },
+  { label: 'Ads', duckType: 'ads', baseStatus: 'live', description: 'Google Ads connected', route: '/ads' },
+  { label: 'Landing Pages', duckType: 'landing_pages', baseStatus: 'partial', description: 'Rank + Funnel data', route: '/landing-pages' },
+  { label: 'Product', duckType: 'product', baseStatus: 'no_data', description: 'Signup → Paying funnel', route: '/product' },
 ];
 
-const statusColors: Record<string, string> = {
-  live: '#22C55E',
-  partial: '#F97316',
-  no_data: '#6B7280',
-};
+function rateColor(rate: number, thresholds: [number, number, number]): string {
+  if (rate >= thresholds[2]) return '#22C55E';
+  if (rate >= thresholds[1]) return '#84CC16';
+  if (rate >= thresholds[0]) return '#F97316';
+  return '#EF4444';
+}
 
 function getRankColor(score: number | null): string {
   if (score === null) return '#6B7280';
@@ -59,18 +77,24 @@ export default function OverviewPage() {
   const [accounts, setAccounts] = useState<AccountSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [panelOpen, setPanelOpen] = useState(false);
-  const [selectedDuck, setSelectedDuck] = useState<DuckStatus | null>(null);
+  const [selectedDuck, setSelectedDuck] = useState<DuckInfo | null>(null);
   const [lpAvgRank, setLpAvgRank] = useState<number | null>(null);
+  const [duckScores, setDuckScores] = useState<DuckScore[]>([]);
+  const [cohorts, setCohorts] = useState<WeeklyCohort[]>([]);
   const rankFetched = useRef(false);
 
   useEffect(() => {
-    fetch('/api/ads?level=accounts')
-      .then(r => r.json())
-      .then(data => {
-        setAccounts(data.accounts || []);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    // Fetch all data in parallel
+    Promise.all([
+      fetch('/api/ads?level=accounts').then(r => r.json()).catch(() => ({ accounts: [] })),
+      fetch('/api/funnel/scores').then(r => r.json()).catch(() => ({ scores: [] })),
+      fetch('/api/funnel/cohorts').then(r => r.json()).catch(() => ({ rows: [] })),
+    ]).then(([adsData, scoresData, cohortsData]) => {
+      setAccounts(adsData.accounts || []);
+      setDuckScores(scoresData.scores || []);
+      setCohorts(cohortsData.rows || []);
+      setLoading(false);
+    });
   }, []);
 
   // Fetch landing page rank data for overview
@@ -107,6 +131,13 @@ export default function OverviewPage() {
   const totalImpressions = accounts.reduce((s, a) => s + a.impressions, 0);
   const totalConversions = accounts.reduce((s, a) => s + a.conversions, 0);
 
+  // Build score map from API
+  const scoreMap = new Map<string, DuckScore>();
+  for (const ds of duckScores) scoreMap.set(ds.duckType, ds);
+
+  const allDuckScoreValues = duckDefs.map(d => scoreMap.get(d.duckType)?.score ?? null);
+  const overallScore = geometricMean(allDuckScoreValues);
+
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
       <div className="mb-8">
@@ -116,52 +147,59 @@ export default function OverviewPage() {
         </p>
       </div>
 
+      {/* Overall Score */}
+      {overallScore !== null && (
+        <div className="flex items-center gap-4 mb-6 bg-bg-card border border-bg-border rounded-xl p-4">
+          <div className="text-4xl font-bold" style={{ color: getScoreColorHex(overallScore) }}>{overallScore}</div>
+          <div>
+            <div className="text-sm font-semibold text-text-primary">Overall Funnel Score</div>
+            <div className="text-xs text-text-muted">Geometric mean of all duck scores</div>
+          </div>
+        </div>
+      )}
+
       {/* 4 Duck Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        {ducks.map(duck => {
-          const showRank = duck.label === 'Landing Pages' && lpAvgRank !== null;
+        {duckDefs.map(duck => {
+          const ds = scoreMap.get(duck.duckType);
+          const score = ds?.score ?? null;
+          const hasScore = score !== null;
+          const status = hasScore ? 'live' : duck.baseStatus;
+          const color = hasScore ? getScoreColorHex(score) : (status === 'live' ? '#22C55E' : status === 'partial' ? '#F97316' : '#6B7280');
+          const showRank = duck.duckType === 'landing_pages' && lpAvgRank !== null && !hasScore;
+
           return (
             <button
               key={duck.label}
-              onClick={() => {
-                if (duck.status === 'no_data') {
-                  setSelectedDuck(duck);
-                  setPanelOpen(true);
-                } else {
-                  router.push(duck.route);
-                }
-              }}
+              onClick={() => router.push(duck.route)}
               className="bg-bg-card border border-bg-border rounded-xl p-5 hover:border-bg-hover hover:bg-bg-hover transition-all text-left group"
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-start gap-3">
-                  <DuckIcon color={statusColors[duck.status]} size={48} />
+                  <DuckIcon color={color} size={48} />
                   <div>
                     <span className="text-sm font-medium text-text-primary block">{duck.label}</span>
                     <p className="text-xs text-text-muted mt-1">{duck.description}</p>
                   </div>
                 </div>
-                {showRank && (
+                {hasScore ? (
                   <div className="text-right">
-                    <div className="text-2xl font-bold" style={{ color: getRankColor(lpAvgRank) }}>
-                      {lpAvgRank!.toFixed(1)}
-                    </div>
+                    <div className="text-2xl font-bold" style={{ color }}>{score}</div>
+                    <div className="text-xs text-text-muted">Score</div>
+                  </div>
+                ) : showRank ? (
+                  <div className="text-right">
+                    <div className="text-2xl font-bold" style={{ color: getRankColor(lpAvgRank) }}>{lpAvgRank!.toFixed(1)}</div>
                     <div className="text-xs text-text-muted">Avg Rank</div>
                   </div>
-                )}
+                ) : null}
               </div>
               <div className="mt-4 flex items-center justify-between">
                 <span className="flex items-center gap-1.5">
-                  <span className={`w-2 h-2 rounded-full ${
-                    duck.status === 'live' ? 'bg-score-green animate-pulse' :
-                    duck.status === 'partial' ? 'bg-score-orange' :
-                    'bg-score-gray'
-                  }`} />
-                  <span className="text-xs text-text-muted capitalize">{duck.status.replace('_', ' ')}</span>
+                  <span className={`w-2 h-2 rounded-full`} style={{ backgroundColor: color }} />
+                  <span className="text-xs text-text-muted capitalize">{status.replace('_', ' ')}</span>
                 </span>
-                <span className="text-xs text-text-muted group-hover:text-accent-blue transition-colors">
-                  {duck.status !== 'no_data' ? 'View →' : 'Details →'}
-                </span>
+                <span className="text-xs text-text-muted group-hover:text-accent-blue transition-colors">View →</span>
               </div>
             </button>
           );
@@ -222,6 +260,57 @@ export default function OverviewPage() {
         )}
       </div>
 
+      {/* Weekly Cohort Table */}
+      {cohorts.length > 0 && (
+        <div className="bg-bg-card border border-bg-border rounded-xl p-6 mb-8">
+          <h3 className="text-sm font-semibold text-text-primary mb-4">Weekly Funnel Cohorts</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="border-b border-bg-border">
+                  <th className="text-left text-text-muted py-2 px-2">Week</th>
+                  <th className="text-right text-text-muted py-2 px-2">Visits</th>
+                  <th className="text-right text-text-muted py-2 px-2">Get Started</th>
+                  <th className="text-right text-text-muted py-2 px-2">%GS</th>
+                  <th className="text-right text-text-muted py-2 px-2">Signups</th>
+                  <th className="text-right text-text-muted py-2 px-2">%Signup</th>
+                  <th className="text-right text-text-muted py-2 px-2">Payers</th>
+                  <th className="text-right text-text-muted py-2 px-2">%Pay</th>
+                  <th className="text-right text-text-muted py-2 px-2">ACV</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cohorts.map((c, i) => {
+                  const v = Number(c.visits); const gs = Number(c.get_started); const hs = Number(c.hard_signups);
+                  const p = Number(c.payers_28d); const acv = Number(c.acv_28d);
+                  const gsRate = v > 0 ? (gs / v * 100) : 0;
+                  const signupRate = gs > 0 ? (hs / gs * 100) : 0;
+                  const payRate = hs > 0 ? (p / hs * 100) : 0;
+                  // Compare to previous week for color
+                  const prev = cohorts[i + 1];
+                  const prevGsRate = prev ? (Number(prev.visits) > 0 ? Number(prev.get_started) / Number(prev.visits) * 100 : 0) : null;
+                  const prevPayRate = prev ? (Number(prev.hard_signups) > 0 ? Number(prev.payers_28d) / Number(prev.hard_signups) * 100 : 0) : null;
+
+                  return (
+                    <tr key={c.week_start} className="border-b border-bg-border/50 hover:bg-bg-hover/30">
+                      <td className="py-2 px-2 text-text-secondary">{c.week_start}</td>
+                      <td className="py-2 px-2 text-right text-text-primary">{formatNumber(v)}</td>
+                      <td className="py-2 px-2 text-right text-text-primary">{formatNumber(gs)}</td>
+                      <td className="py-2 px-2 text-right font-medium" style={{ color: prevGsRate !== null ? (gsRate >= prevGsRate ? '#22C55E' : '#EF4444') : rateColor(gsRate, [10, 20, 30]) }}>{gsRate.toFixed(1)}%</td>
+                      <td className="py-2 px-2 text-right text-text-primary">{formatNumber(hs)}</td>
+                      <td className="py-2 px-2 text-right font-medium" style={{ color: rateColor(signupRate, [20, 35, 50]) }}>{signupRate.toFixed(1)}%</td>
+                      <td className="py-2 px-2 text-right text-text-primary">{p}</td>
+                      <td className="py-2 px-2 text-right font-medium" style={{ color: prevPayRate !== null ? (payRate >= prevPayRate ? '#22C55E' : '#EF4444') : rateColor(payRate, [0.3, 0.7, 1.5]) }}>{payRate.toFixed(2)}%</td>
+                      <td className="py-2 px-2 text-right text-score-gold">{formatCurrency(acv)}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
       {/* Gaps Alert */}
       <div className="bg-bg-card border border-score-orange/30 rounded-xl p-4">
         <div className="flex items-center gap-2 mb-2">
@@ -229,9 +318,9 @@ export default function OverviewPage() {
           <span className="text-sm font-medium text-score-orange">Missing Integrations</span>
         </div>
         <ul className="space-y-1 text-sm text-text-secondary">
-          <li>• <strong>Audience</strong> — Snowflake/Looker access needed for source quality scoring</li>
-          <li>• <strong>Landing Pages</strong> — PageSpeed Insights for speed (GSC + Ahrefs rank connected)</li>
-          <li>• <strong>Product</strong> — Mixpanel/Amplitude for activation, retention, TROI</li>
+          <li>• <strong>Audience</strong> — Meta, YouTube, LinkedIn targeting not yet connected</li>
+          <li>• <strong>Landing Pages</strong> — PageSpeed Insights for speed scores</li>
+          <li>• <strong>Product</strong> — Sync BigBrain data from Admin → Sync for full funnel</li>
           <li>• <strong>Meta/YouTube/LinkedIn</strong> — API connections for cross-channel view</li>
         </ul>
       </div>
@@ -239,19 +328,15 @@ export default function OverviewPage() {
       <RightPanel
         isOpen={panelOpen}
         onClose={() => setPanelOpen(false)}
-        title={selectedDuck ? `${selectedDuck.label} — Not Connected` : 'Details'}
-        context={selectedDuck ? { label: selectedDuck.label, status: selectedDuck.status, description: selectedDuck.description } : undefined}
+        title={selectedDuck ? selectedDuck.label : 'Details'}
+        context={selectedDuck ? { label: selectedDuck.label, description: selectedDuck.description } : undefined}
       >
         {selectedDuck && (
           <div className="space-y-4">
-            <DuckIcon color={statusColors[selectedDuck.status]} size={64} className="mx-auto" />
+            <DuckIcon color="#6B7280" size={64} className="mx-auto" />
             <div className="text-center">
               <div className="text-lg font-bold text-text-primary">{selectedDuck.label}</div>
-              <div className="text-xs text-text-muted mt-1">No data available</div>
-            </div>
-            <div className="bg-bg-hover rounded-lg p-3">
-              <span className="text-xs font-medium text-score-orange">⚡ Action Required</span>
-              <p className="text-xs text-text-secondary mt-1">{selectedDuck.description}</p>
+              <div className="text-xs text-text-muted mt-1">{selectedDuck.description}</div>
             </div>
           </div>
         )}

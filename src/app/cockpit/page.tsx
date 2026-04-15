@@ -7,6 +7,28 @@ import DuckIcon from '@/components/ui/DuckIcon';
 import { getRelevanceColor } from '@/lib/selling-points/colors';
 import type { CockpitRow, PageRankResult } from '@/types';
 
+interface LPFunnelData {
+  campaign_name: string;
+  landing_page: string;
+  device: string;
+  visits: number;
+  get_started: number;
+  gs_rate: number;
+}
+
+interface ProductFunnelData {
+  campaign_name: string;
+  landing_page: string;
+  device: string;
+  lp_product: string;
+  signup_product: string;
+  installed_product: string;
+  soft_signups: number;
+  hard_signups: number;
+  payers_28d: number;
+  acv_28d: number;
+}
+
 interface Pagination {
   page: number;
   pageSize: number;
@@ -153,8 +175,15 @@ function AdTab({ row }: { row: CockpitRow }) {
   );
 }
 
+function getGsRateColor(rate: number): string {
+  if (rate >= 30) return '#22C55E';
+  if (rate >= 20) return '#84CC16';
+  if (rate >= 10) return '#F97316';
+  return '#EF4444';
+}
+
 // --- Landing Page Tab content ---
-function LandingPageTab({ row, rankData }: { row: CockpitRow; rankData: PageRankResult | null }) {
+function LandingPageTab({ row, rankData, lpFunnel }: { row: CockpitRow; rankData: PageRankResult | null; lpFunnel: LPFunnelData[] }) {
   if (!row.finalUrl) {
     return <div className="text-sm text-text-muted py-4 text-center">No landing page URL for this ad.</div>;
   }
@@ -218,7 +247,71 @@ function LandingPageTab({ row, rankData }: { row: CockpitRow; rankData: PageRank
         </div>
       </CollapsibleSection>
 
-      {/* 2. Page Rank */}
+      {/* 2. Funnel Performance (from BigBrain) */}
+      <CollapsibleSection
+        title="Funnel Performance"
+        badge={lpFunnel.length > 0 ? `${lpFunnel.reduce((s, r) => s + r.gs_rate, 0) / lpFunnel.length > 0 ? (lpFunnel.reduce((s, r) => s + r.gs_rate, 0) / lpFunnel.length).toFixed(1) : '0'}%` : 'N/A'}
+        badgeColor={lpFunnel.length > 0 ? getGsRateColor(lpFunnel.reduce((s, r) => s + r.gs_rate, 0) / lpFunnel.length) : '#6B7280'}
+        defaultOpen={false}
+      >
+        {lpFunnel.length > 0 ? (
+          <div className="space-y-3">
+            {lpFunnel.map((f, i) => {
+              const gsRate = f.gs_rate || (f.visits > 0 ? (f.get_started / f.visits * 100) : 0);
+              return (
+                <div key={i} className="space-y-2">
+                  {lpFunnel.length > 1 && (
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-bg-card text-text-muted uppercase">{f.device}</span>
+                  )}
+                  {/* Visits → Get Started bar */}
+                  <div className="flex items-center gap-3">
+                    <div className="flex-1">
+                      <div className="flex justify-between text-xs mb-1">
+                        <span className="text-text-muted">Visits</span>
+                        <span className="text-text-primary font-medium">{formatNumber(f.visits)}</span>
+                      </div>
+                      <div className="w-full h-2 bg-bg-card rounded-full overflow-hidden">
+                        <div className="h-full rounded-full bg-accent-blue" style={{ width: '100%' }} />
+                      </div>
+                    </div>
+                    <span className="text-text-muted text-xs">→</span>
+                    <div className="flex-1">
+                      <div className="flex justify-between text-xs mb-1">
+                        <span className="text-text-muted">Get Started</span>
+                        <span className="text-text-primary font-medium">{formatNumber(f.get_started)}</span>
+                      </div>
+                      <div className="w-full h-2 bg-bg-card rounded-full overflow-hidden">
+                        <div
+                          className="h-full rounded-full"
+                          style={{
+                            width: `${Math.min(100, gsRate)}%`,
+                            backgroundColor: getGsRateColor(gsRate),
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <span
+                      className="text-xs font-bold px-2 py-0.5 rounded-full"
+                      style={{
+                        backgroundColor: `${getGsRateColor(gsRate)}20`,
+                        color: getGsRateColor(gsRate),
+                      }}
+                    >
+                      {gsRate.toFixed(1)}% conversion
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <p className="text-xs text-text-muted">No funnel data available. Sync BigBrain data from Admin → Sync.</p>
+        )}
+      </CollapsibleSection>
+
+      {/* 3. Page Rank */}
       <CollapsibleSection
         title="Page Rank"
         badge={rank?.compositeScore != null ? `${rank.compositeScore.toFixed(1)}/10` : 'N/A'}
@@ -311,6 +404,117 @@ function LandingPageTab({ row, rankData }: { row: CockpitRow; rankData: PageRank
 }
 
 
+// --- Product Tab content ---
+function ProductTab({ row, productFunnel }: { row: CockpitRow; productFunnel: ProductFunnelData[] }) {
+  const totalSoft = productFunnel.reduce((s, r) => s + r.soft_signups, 0);
+  const totalHard = productFunnel.reduce((s, r) => s + r.hard_signups, 0);
+  const totalPayers = productFunnel.reduce((s, r) => s + r.payers_28d, 0);
+  const totalAcv = productFunnel.reduce((s, r) => s + r.acv_28d, 0);
+
+  // Group by signup_product for alignment view
+  const byProduct = new Map<string, { signups: number; payers: number; acv: number; installed: string }>();
+  for (const r of productFunnel) {
+    const key = r.signup_product || '(unknown)';
+    const existing = byProduct.get(key) || { signups: 0, payers: 0, acv: 0, installed: r.installed_product };
+    existing.signups += r.hard_signups;
+    existing.payers += r.payers_28d;
+    existing.acv += r.acv_28d;
+    byProduct.set(key, existing);
+  }
+
+  // Check product alignment: does the ad's selling point match the signup product?
+  const adSP = row.adSellingPoint?.toLowerCase() || '';
+  const lpProduct = productFunnel[0]?.lp_product?.toLowerCase() || '';
+
+  return (
+    <div className="space-y-4">
+      {productFunnel.length === 0 ? (
+        <div className="text-center py-6">
+          <span className="text-xs text-text-muted">No product funnel data available. Sync BigBrain data from Admin → Sync.</span>
+        </div>
+      ) : (
+        <>
+          {/* Funnel Summary */}
+          <div>
+            <h3 className="text-xs font-semibold text-text-muted uppercase mb-2">Signup → Payer Funnel</h3>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="bg-bg-hover rounded-lg p-2 text-center">
+                <div className="text-sm font-bold text-text-primary">{formatNumber(totalSoft)}</div>
+                <div className="text-[10px] text-text-muted">Soft Signups</div>
+              </div>
+              <div className="bg-bg-hover rounded-lg p-2 text-center">
+                <div className="text-sm font-bold text-text-primary">{formatNumber(totalHard)}</div>
+                <div className="text-[10px] text-text-muted">Hard Signups</div>
+              </div>
+              <div className="bg-bg-hover rounded-lg p-2 text-center">
+                <div className="text-sm font-bold text-score-green">{totalPayers}</div>
+                <div className="text-[10px] text-text-muted">Payers (28d)</div>
+              </div>
+              <div className="bg-bg-hover rounded-lg p-2 text-center">
+                <div className="text-sm font-bold text-score-gold">{formatCurrency(totalAcv)}</div>
+                <div className="text-[10px] text-text-muted">ACV (28d)</div>
+              </div>
+            </div>
+
+            {/* Conversion rates */}
+            {totalHard > 0 && (
+              <div className="mt-2 flex gap-2 justify-center">
+                {totalSoft > 0 && (
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-bg-hover text-text-secondary">
+                    Soft→Hard: {(totalHard / totalSoft * 100).toFixed(1)}%
+                  </span>
+                )}
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-bg-hover text-text-secondary">
+                  Hard→Payer: {(totalPayers / totalHard * 100).toFixed(2)}%
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Product Alignment */}
+          <div>
+            <h3 className="text-xs font-semibold text-text-muted uppercase mb-2">Product Alignment</h3>
+            {row.adSellingPoint && (
+              <div className="bg-bg-card rounded-lg p-2.5 border-l-2 border-accent-blue mb-2">
+                <span className="text-[10px] font-semibold text-text-muted uppercase block mb-1">Ad Promise</span>
+                <p className="text-xs text-text-secondary">{row.adSellingPoint}</p>
+              </div>
+            )}
+
+            <div className="space-y-1.5">
+              {Array.from(byProduct.entries()).map(([product, data]) => {
+                // Simple alignment check: does the product name appear in the ad selling point or LP product?
+                const productLower = product.toLowerCase();
+                const isAligned = adSP.includes(productLower) || lpProduct.includes(productLower) || productLower === lpProduct;
+                const alignColor = isAligned ? '#22C55E' : product === '(unknown)' ? '#6B7280' : '#F97316';
+
+                return (
+                  <div key={product} className="bg-bg-hover rounded-lg p-2.5 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className="w-2 h-2 rounded-full"
+                        style={{ backgroundColor: alignColor }}
+                      />
+                      <div>
+                        <span className="text-xs font-medium text-text-primary">{product}</span>
+                        <span className="text-[10px] text-text-muted ml-2">{data.signups} signups</span>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-xs text-text-primary">{data.payers} payers</div>
+                      {data.acv > 0 && <div className="text-[10px] text-score-gold">{formatCurrency(data.acv)}</div>}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 export default function CockpitPage() {
   const [rows, setRows] = useState<CockpitRow[]>([]);
   const [pagination, setPagination] = useState<Pagination | null>(null);
@@ -324,6 +528,8 @@ export default function CockpitPage() {
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [rankData, setRankData] = useState<Record<string, PageRankResult>>({});
+  const [lpFunnelData, setLpFunnelData] = useState<LPFunnelData[]>([]);
+  const [productFunnelData, setProductFunnelData] = useState<ProductFunnelData[]>([]);
 
   const fetchData = useCallback(async (pageNum: number, analyze: boolean = true) => {
     if (analyze) setAnalyzing(true);
@@ -404,6 +610,22 @@ export default function CockpitPage() {
   const openRow = (row: CockpitRow) => {
     setSelectedRow(row);
     setPanelOpen(true);
+
+    // Fetch funnel data for this row's campaign + landing page
+    const params = new URLSearchParams();
+    if (row.campaignName) params.set('campaign', row.campaignName);
+    if (row.finalUrl) params.set('landing_page', row.finalUrl);
+    const qs = params.toString();
+
+    fetch(`/api/funnel/lp?${qs}`)
+      .then(r => r.json())
+      .then(data => setLpFunnelData(data.rows || []))
+      .catch(() => setLpFunnelData([]));
+
+    fetch(`/api/funnel/product?${qs}`)
+      .then(r => r.json())
+      .then(data => setProductFunnelData(data.rows || []))
+      .catch(() => setProductFunnelData([]));
   };
 
   // Filter rows by search
@@ -431,7 +653,12 @@ export default function CockpitPage() {
     {
       id: 'landing-page',
       label: 'Landing Page',
-      content: <LandingPageTab row={selectedRow} rankData={rankData[selectedRow.finalUrl] || null} />,
+      content: <LandingPageTab row={selectedRow} rankData={rankData[selectedRow.finalUrl] || null} lpFunnel={lpFunnelData} />,
+    },
+    {
+      id: 'product',
+      label: 'Product',
+      content: <ProductTab row={selectedRow} productFunnel={productFunnelData} />,
     },
   ] : undefined;
 
