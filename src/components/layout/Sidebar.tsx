@@ -12,6 +12,7 @@ const navItems = [
   { href: '/landing-pages', label: 'Landing Pages', type: 'duck', color: '#22C55E' },
   { href: '/product', label: 'Product', type: 'duck', color: '#F97316' },
   { href: '/gaps', label: 'Gaps & Actions', type: 'icon', icon: '⚡' },
+  { href: '/insights', label: 'Insights', type: 'icon', icon: '🎯' },
   { href: '/recommendations', label: 'Recommendations', type: 'icon', icon: '💡' },
 ];
 
@@ -68,8 +69,12 @@ export default function Sidebar() {
           <span className="text-xs text-text-muted">Google Ads connected</span>
         </div>
         <div className="flex items-center gap-2 mt-1">
+          <div className="w-2 h-2 rounded-full bg-score-green animate-pulse" />
+          <span className="text-xs text-text-muted">BigBrain BI connected</span>
+        </div>
+        <div className="flex items-center gap-2 mt-1">
           <div className="w-2 h-2 rounded-full bg-score-gray" />
-          <span className="text-xs text-text-muted">4 integrations pending</span>
+          <span className="text-xs text-text-muted">3 integrations pending</span>
         </div>
       </div>
     </>
