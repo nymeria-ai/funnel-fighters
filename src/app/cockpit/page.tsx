@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import ChannelFilter from '@/components/cockpit/ChannelFilter';
-import FunnelRow, { fmt, fmtCost } from '@/components/cockpit/FunnelRow';
+import FunnelRow, { FunnelMetrics, fmt, fmtCost } from '@/components/cockpit/FunnelRow';
 import type { ChannelData, DrilldownItem, AdCreative } from '@/app/api/cockpit/funnel/route';
 
 const CHANNEL_ICONS: Record<string, string> = {
@@ -24,6 +24,53 @@ const CHANNEL_LABELS: Record<string, string> = {
 
 function sourceLabel(source: string): string {
   return CHANNEL_LABELS[source] ?? source;
+}
+
+function computePercentiles(values: (number | null)[]): (number | null)[] {
+  const valids = values.filter((v): v is number => v !== null && isFinite(v));
+  if (valids.length < 2) return values.map(() => null);
+  const sorted = [...valids].sort((a, b) => a - b);
+  return values.map((v) => {
+    if (v === null || !isFinite(v)) return null;
+    const rank = sorted.filter((s) => s <= v).length;
+    return (rank / sorted.length) * 100;
+  });
+}
+
+function computeDrillQuality(items: DrilldownItem[]): DrilldownItem[] {
+  const ctrs = items.map((i) => (i.impressions > 0 ? i.clicks / i.impressions : 0));
+  const cvrs = items.map((i) => {
+    if (i.signups === null || i.clicks === 0) return null;
+    return i.signups / i.clicks;
+  });
+  const engRates = items.map((i) => {
+    if (i.engaged_2nd_day === null || i.signups === null || i.signups === 0) return null;
+    return i.engaged_2nd_day / i.signups;
+  });
+  const adQuals = computePercentiles(ctrs);
+  const lpQuals = computePercentiles(cvrs);
+  const prodScores = computePercentiles(engRates);
+  return items.map((item, i) => ({
+    ...item,
+    ad_quality: adQuals[i] !== null ? Math.round(adQuals[i]!) : null,
+    lp_quality: lpQuals[i] !== null ? Math.round(lpQuals[i]!) : null,
+    product_score: prodScores[i] !== null ? Math.round(prodScores[i]!) : null,
+  }));
+}
+
+function toMetrics(item: DrilldownItem): FunnelMetrics {
+  return {
+    impressions: item.impressions,
+    clicks: item.clicks,
+    ctr: item.ctr,
+    cost: item.cost,
+    signups: item.signups,
+    engaged_2nd_day: item.engaged_2nd_day,
+    paying: item.paying,
+    ad_quality: item.ad_quality,
+    lp_quality: item.lp_quality,
+    product_score: item.product_score,
+  };
 }
 
 type PresetDays = 1 | 7 | 14 | 30 | 90;
@@ -118,7 +165,7 @@ export default function CockpitFunnelPage() {
       const data = await res.json();
       setDrilldown((prev) => ({
         ...prev,
-        countries: { ...prev.countries, [source]: data.drilldown ?? [] },
+        countries: { ...prev.countries, [source]: computeDrillQuality(data.drilldown ?? []) },
       }));
     } catch {
       setDrilldown((prev) => ({
@@ -139,7 +186,7 @@ export default function CockpitFunnelPage() {
       const data = await res.json();
       setDrilldown((prev) => ({
         ...prev,
-        campaigns: { ...prev.campaigns, [stateKey]: data.drilldown ?? [] },
+        campaigns: { ...prev.campaigns, [stateKey]: computeDrillQuality(data.drilldown ?? []) },
       }));
     } catch {
       setDrilldown((prev) => ({
@@ -340,7 +387,7 @@ export default function CockpitFunnelPage() {
             <span className="w-4 text-center">→</span>
             <span className="min-w-[48px] text-center">CVR%</span>
             <span className="w-4 text-center">→</span>
-            <span className="min-w-[56px] text-center">H.Signups</span>
+            <span className="min-w-[56px] text-center">Signups</span>
             <span className="min-w-[8px]" />
             <span className="min-w-[52px] text-center">LP Quality</span>
             <span className="min-w-[8px]" />
@@ -404,7 +451,7 @@ export default function CockpitFunnelPage() {
                         clicks: ch.clicks,
                         ctr: ch.ctr,
                         cost: ch.cost,
-                        hard_signups: ch.hard_signups,
+                        signups: ch.signups,
                         engaged_2nd_day: ch.engaged_2nd_day,
                         paying: ch.paying,
                         ad_quality: ch.ad_quality,
@@ -444,7 +491,7 @@ export default function CockpitFunnelPage() {
                                 <span className="text-xs font-medium text-text-secondary uppercase">{cty.label || '—'}</span>
                               </div>
                               <div className="flex-1">
-                                <DrillRow item={cty} />
+                                <FunnelRow metrics={toMetrics(cty)} showQuality />
                               </div>
                             </button>
 
@@ -477,7 +524,7 @@ export default function CockpitFunnelPage() {
                                             </span>
                                           </div>
                                           <div className="flex-1">
-                                            <DrillRow item={camp} />
+                                            <FunnelRow metrics={toMetrics(camp)} showQuality />
                                           </div>
                                         </button>
 
@@ -503,12 +550,26 @@ export default function CockpitFunnelPage() {
                                                         <span className="text-text-muted text-[10px]">
                                                           {isAgExpanded ? '▼' : '▶'}
                                                         </span>
-                                                        <span className="text-[10px] text-text-muted truncate max-w-[90px]" title={ag.label}>
-                                                          {ag.label}
-                                                        </span>
+                                                        <div className="flex flex-col min-w-0">
+                                                          <span className="text-[10px] text-text-muted truncate max-w-[90px]" title={ag.label}>
+                                                            {ag.label}
+                                                          </span>
+                                                          {ag.final_url && (
+                                                            <a
+                                                              href={ag.final_url}
+                                                              target="_blank"
+                                                              rel="noopener noreferrer"
+                                                              className="text-[9px] text-accent-blue truncate max-w-[90px] hover:underline"
+                                                              title={ag.final_url}
+                                                              onClick={(e) => e.stopPropagation()}
+                                                            >
+                                                              {ag.final_url.replace(/^https?:\/\//, '')}
+                                                            </a>
+                                                          )}
+                                                        </div>
                                                       </div>
                                                       <div className="flex-1">
-                                                        <DrillRow item={ag} compact />
+                                                        <FunnelRow metrics={toMetrics(ag)} showQuality={false} />
                                                       </div>
                                                     </button>
                                                     {isAgExpanded && creative && (
@@ -565,9 +626,9 @@ export default function CockpitFunnelPage() {
                 </span>
               </span>
               <span>
-                Total hard signups:{' '}
+                Total signups:{' '}
                 <span className="text-text-primary font-semibold">
-                  {fmt(visibleChannels.reduce((s, c) => s + (c.hard_signups ?? 0), 0))}
+                  {fmt(visibleChannels.reduce((s, c) => s + (c.signups ?? 0), 0))}
                 </span>
               </span>
             </div>
@@ -640,49 +701,3 @@ function AdCreativePanel({ creative }: { creative: AdCreative }) {
   );
 }
 
-// ── Drill-down row (no quality badges, compact metrics) ─────────────────────
-
-function DrillRow({ item, compact }: { item: DrilldownItem; compact?: boolean }) {
-  const { impressions, clicks, ctr, cost, hard_signups, engaged_2nd_day, paying } = item;
-
-  return (
-    <div className={`flex items-center gap-2 px-3 ${compact ? 'py-1' : 'py-2'} flex-nowrap overflow-x-auto`}>
-      <span className={`${compact ? 'text-xs' : 'text-sm'} font-medium text-text-secondary tabular-nums min-w-[56px]`}>
-        {fmt(impressions)}
-      </span>
-      <span className="text-text-muted text-xs">→</span>
-      <span className="text-xs text-text-muted tabular-nums min-w-[48px]">
-        {ctr.toFixed(2)}%
-      </span>
-      <span className="text-text-muted text-xs">→</span>
-      <span className={`${compact ? 'text-xs' : 'text-sm'} font-medium text-text-secondary tabular-nums min-w-[56px]`}>
-        {fmt(clicks)}
-      </span>
-      <span className="text-[10px] text-text-muted whitespace-nowrap">({fmtCost(cost)})</span>
-      {hard_signups !== null && (
-        <>
-          <span className="text-text-muted text-xs">→</span>
-          <span className="text-xs text-text-muted tabular-nums">
-            {fmt(hard_signups)} h.signups
-          </span>
-        </>
-      )}
-      {engaged_2nd_day !== null && (
-        <>
-          <span className="text-text-muted text-xs">→</span>
-          <span className="text-xs text-text-muted tabular-nums">
-            {fmt(engaged_2nd_day)} 2nd day
-          </span>
-        </>
-      )}
-      {paying !== null && (
-        <>
-          <span className="text-text-muted text-xs">→</span>
-          <span className="text-xs text-text-muted tabular-nums">
-            {fmt(paying)} paying
-          </span>
-        </>
-      )}
-    </div>
-  );
-}

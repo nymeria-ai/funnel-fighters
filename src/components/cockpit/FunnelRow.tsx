@@ -5,7 +5,7 @@ export interface FunnelMetrics {
   clicks: number;
   ctr: number;
   cost: number;
-  hard_signups: number | null;
+  signups: number | null;
   engaged_2nd_day: number | null;
   paying: number | null;
   ad_quality: number | null;
@@ -64,14 +64,14 @@ interface FunnelRowProps {
 export default function FunnelRow({ metrics, showQuality = true, indent = 0 }: FunnelRowProps) {
   const {
     impressions, clicks, ctr, cost,
-    hard_signups, engaged_2nd_day, paying,
+    signups, engaged_2nd_day, paying,
     ad_quality, lp_quality, product_score,
   } = metrics;
 
-  // CVR: clicks → hard signups (LP conversion rate)
-  const cvrClicksToSignups = pct(hard_signups, clicks);
-  // CVR: hard signups → 2nd day engaged
-  const cvrSignupsToEngagement = pct(engaged_2nd_day, hard_signups);
+  // CVR: clicks → signups (LP conversion rate)
+  const cvrClicksToSignups = pct(signups, clicks);
+  // CVR: signups → 2nd day engaged
+  const cvrSignupsToEngagement = pct(engaged_2nd_day, signups);
   // CVR: engaged → paying
   const cvrEngagementToPaying = pct(paying, engaged_2nd_day);
 
@@ -103,16 +103,16 @@ export default function FunnelRow({ metrics, showQuality = true, indent = 0 }: F
         </>
       )}
 
-      {/* CVR clicks → hard signups */}
+      {/* CVR clicks → signups */}
       <Arrow />
       <RateCell rate={cvrClicksToSignups} />
       <Arrow />
 
-      {/* Hard Signups */}
+      {/* Signups */}
       <MetricCell
-        value={hard_signups !== null ? fmt(hard_signups) : '—'}
-        label="H.Signups"
-        dim={hard_signups === null}
+        value={signups !== null ? fmt(signups) : '—'}
+        label="Signups"
+        dim={signups === null}
       />
 
       {/* LP Quality badge */}
@@ -124,7 +124,7 @@ export default function FunnelRow({ metrics, showQuality = true, indent = 0 }: F
         </>
       )}
 
-      {/* CVR hard signups → 2nd day engaged */}
+      {/* CVR signups → 2nd day engaged */}
       <Arrow />
       <RateCell rate={cvrSignupsToEngagement} />
       <Arrow />

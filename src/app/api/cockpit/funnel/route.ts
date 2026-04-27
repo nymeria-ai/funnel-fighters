@@ -22,6 +22,7 @@ type DrillRow = {
   hard_signups: string | null;
   engaged_2nd_day: string | null;
   paying: string | null;
+  final_url?: string | null;
 };
 
 export interface ChannelData {
@@ -31,7 +32,7 @@ export interface ChannelData {
   clicks: number;
   ctr: number;
   cost: number;
-  hard_signups: number | null;
+  signups: number | null;
   engaged_2nd_day: number | null;
   paying: number | null;
   ad_quality: number | null;
@@ -46,9 +47,13 @@ export interface DrilldownItem {
   clicks: number;
   ctr: number;
   cost: number;
-  hard_signups: number | null;
+  signups: number | null;
   engaged_2nd_day: number | null;
   paying: number | null;
+  ad_quality: number | null;
+  lp_quality: number | null;
+  product_score: number | null;
+  final_url?: string | null;
 }
 
 export interface AdCreative {
@@ -201,7 +206,7 @@ export async function GET(req: NextRequest) {
     }))
   );
 
-  // LP Quality = hard_signups / clicks (CVR to hard signup) percentile rank
+  // LP Quality = signups / clicks (CVR to signup) percentile rank
   const lpCvrs = channelRows.map((r) => {
     const hs = n(r.hard_signups);
     const clk = Number(r.clicks);
@@ -210,7 +215,7 @@ export async function GET(req: NextRequest) {
   });
   const lpPercentiles = computePercentiles(lpCvrs);
 
-  // Product Score = engaged_2nd_day / hard_signups (engagement rate) percentile rank
+  // Product Score = engaged_2nd_day / signups (engagement rate) percentile rank
   const productCvrs = channelRows.map((r) => {
     const e2d = n(r.engaged_2nd_day);
     const hs = n(r.hard_signups);
@@ -229,7 +234,7 @@ export async function GET(req: NextRequest) {
       clicks: clk,
       ctr: imp > 0 ? (clk / imp) * 100 : 0,
       cost: Number(r.cost),
-      hard_signups: n(r.hard_signups),
+      signups: n(r.hard_signups),
       engaged_2nd_day: n(r.engaged_2nd_day),
       paying: n(r.paying),
       ad_quality: adQualities[i] !== null ? Math.round(adQualities[i]!) : null,
@@ -367,6 +372,16 @@ export async function GET(req: NextRequest) {
         WHERE bb.campaign_name = (SELECT name FROM campaigns WHERE id = $1)
           AND bb.period_start <= $3::date AND bb.period_end >= $2::date
         GROUP BY bb.ad_group_name
+      ),
+      url_lookup AS (
+        SELECT DISTINCT ON (a.ad_group_id)
+          a.ad_group_id,
+          a.final_url
+        FROM ads a
+        WHERE a.campaign_id = $1
+          AND a.final_url IS NOT NULL
+          AND a.status != 'REMOVED'
+        ORDER BY a.ad_group_id, a.synced_at DESC
       )
       SELECT
         aa.label,
@@ -376,9 +391,11 @@ export async function GET(req: NextRequest) {
         aa.cost,
         ba.hard_signups,
         ba.engaged_2nd_day,
-        ba.paying
+        ba.paying,
+        ul.final_url
       FROM ad_agg aa
       LEFT JOIN bb_agg ba ON ba.ad_group_name = aa.ag_name
+      LEFT JOIN url_lookup ul ON ul.ad_group_id = aa.ad_group_id
       ORDER BY aa.impressions DESC
       `,
       [campaignId, startDateStr, endDateStr]
@@ -395,9 +412,13 @@ export async function GET(req: NextRequest) {
       clicks: clk,
       ctr: imp > 0 ? (clk / imp) * 100 : 0,
       cost: Number(r.cost),
-      hard_signups: n(r.hard_signups),
+      signups: n(r.hard_signups),
       engaged_2nd_day: n(r.engaged_2nd_day),
       paying: n(r.paying),
+      ad_quality: null,
+      lp_quality: null,
+      product_score: null,
+      final_url: r.final_url ?? null,
     };
   });
 
