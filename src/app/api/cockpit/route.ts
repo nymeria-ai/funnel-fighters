@@ -8,6 +8,7 @@ import {
 import { extractAdSellingPoint, extractLPSellingPoint, fetchLPContent } from '@/lib/selling-points/extractor';
 import { scoreRelevance } from '@/lib/selling-points/relevance';
 import { flushCaches, getCacheStats, getSellingPointAsync, getRelevanceScoreAsync } from '@/lib/selling-points/cache';
+import { hasAdsInDb, getCockpitRowsFromDb } from '@/lib/google-ads/db-fallback';
 import type { CockpitRow } from '@/types';
 
 export const dynamic = 'force-dynamic';
@@ -18,6 +19,8 @@ const TARGET_ACCOUNTS = (process.env.GOOGLE_ADS_TARGET_ACCOUNTS || 'Main,Vertica
   .map(s => s.trim())
   .filter(Boolean);
 
+const HAS_GOOGLE_ADS_API = !!(process.env.GOOGLE_ADS_CLIENT_ID && process.env.GOOGLE_ADS_REFRESH_TOKEN);
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -25,6 +28,31 @@ export async function GET(request: Request) {
     const page = parseInt(searchParams.get('page') || '1');
     const pageSize = parseInt(searchParams.get('pageSize') || '50');
 
+    // DB FALLBACK: If no Google Ads API credentials, try reading from database
+    if (!HAS_GOOGLE_ADS_API) {
+      const dbHasAds = await hasAdsInDb();
+      if (dbHasAds) {
+        const allRows = await getCockpitRowsFromDb(TARGET_ACCOUNTS);
+        allRows.sort((a, b) => b.spend - a.spend);
+        const totalRows = allRows.length;
+        const paginatedRows = allRows.slice((page - 1) * pageSize, page * pageSize);
+        return NextResponse.json({
+          rows: paginatedRows,
+          pagination: { page, pageSize, totalRows, totalPages: Math.ceil(totalRows / pageSize) },
+          cache: { sellingPoints: 0, relevanceScores: 0 },
+          source: 'database',
+        });
+      }
+      // No API and no DB data — return empty
+      return NextResponse.json({
+        rows: [],
+        pagination: { page, pageSize, totalRows: 0, totalPages: 0 },
+        cache: { sellingPoints: 0, relevanceScores: 0 },
+        source: 'none',
+      });
+    }
+
+    // LIVE API PATH: Google Ads credentials available
     // 1. Get all accounts
     const accounts = await getAccounts();
     const targetAccounts = accounts.filter(
