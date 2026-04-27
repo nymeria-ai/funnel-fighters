@@ -8,7 +8,7 @@ type ChannelRow = {
   impressions: string;
   clicks: string;
   cost: string;
-  hard_signups: string | null;
+  total_signups: string | null;
   engaged_2nd_day: string | null;
   paying: string | null;
 };
@@ -19,7 +19,7 @@ type DrillRow = {
   impressions: string;
   clicks: string;
   cost: string;
-  hard_signups: string | null;
+  total_signups: string | null;
   engaged_2nd_day: string | null;
   paying: string | null;
   final_url?: string | null;
@@ -170,7 +170,7 @@ export async function GET(req: NextRequest) {
     bb_agg AS (
       SELECT
         c.channel_type,
-        SUM(bb.hard_signups)::bigint    AS hard_signups,
+        SUM(bb.total_signups)::bigint    AS total_signups,
         SUM(bb.engaged_2nd_day)::bigint AS engaged_2nd_day,
         SUM(bb.paying)::bigint          AS paying
       FROM bigbrain_funnel bb
@@ -183,7 +183,7 @@ export async function GET(req: NextRequest) {
       aa.impressions,
       aa.clicks,
       aa.cost,
-      ba.hard_signups,
+      ba.total_signups,
       ba.engaged_2nd_day,
       ba.paying
     FROM ad_agg aa
@@ -208,7 +208,7 @@ export async function GET(req: NextRequest) {
 
   // LP Quality = signups / clicks (CVR to signup) percentile rank
   const lpCvrs = channelRows.map((r) => {
-    const hs = n(r.hard_signups);
+    const hs = n(r.total_signups);
     const clk = Number(r.clicks);
     if (hs === null || clk === 0) return null;
     return hs / clk;
@@ -218,7 +218,7 @@ export async function GET(req: NextRequest) {
   // Product Score = engaged_2nd_day / signups (engagement rate) percentile rank
   const productCvrs = channelRows.map((r) => {
     const e2d = n(r.engaged_2nd_day);
-    const hs = n(r.hard_signups);
+    const hs = n(r.total_signups);
     if (e2d === null || hs === null || hs === 0) return null;
     return e2d / hs;
   });
@@ -234,7 +234,7 @@ export async function GET(req: NextRequest) {
       clicks: clk,
       ctr: imp > 0 ? (clk / imp) * 100 : 0,
       cost: Number(r.cost),
-      signups: n(r.hard_signups),
+      signups: n(r.total_signups),
       engaged_2nd_day: n(r.engaged_2nd_day),
       paying: n(r.paying),
       ad_quality: adQualities[i] !== null ? Math.round(adQualities[i]!) : null,
@@ -275,7 +275,7 @@ export async function GET(req: NextRequest) {
       bb_agg AS (
         SELECT
           SPLIT_PART(bb.campaign_name, '-', 1) AS country,
-          SUM(bb.hard_signups)::bigint          AS hard_signups,
+          SUM(bb.total_signups)::bigint          AS total_signups,
           SUM(bb.engaged_2nd_day)::bigint       AS engaged_2nd_day,
           SUM(bb.paying)::bigint                AS paying
         FROM bigbrain_funnel bb
@@ -290,7 +290,7 @@ export async function GET(req: NextRequest) {
         aa.impressions,
         aa.clicks,
         aa.cost,
-        ba.hard_signups,
+        ba.total_signups,
         ba.engaged_2nd_day,
         ba.paying
       FROM ad_agg aa
@@ -321,7 +321,7 @@ export async function GET(req: NextRequest) {
       bb_agg AS (
         SELECT
           bb.campaign_name,
-          SUM(bb.hard_signups)::bigint    AS hard_signups,
+          SUM(bb.total_signups)::bigint    AS total_signups,
           SUM(bb.engaged_2nd_day)::bigint AS engaged_2nd_day,
           SUM(bb.paying)::bigint          AS paying
         FROM bigbrain_funnel bb
@@ -334,7 +334,7 @@ export async function GET(req: NextRequest) {
         aa.impressions,
         aa.clicks,
         aa.cost,
-        ba.hard_signups,
+        ba.total_signups,
         ba.engaged_2nd_day,
         ba.paying
       FROM ad_agg aa
@@ -365,7 +365,7 @@ export async function GET(req: NextRequest) {
       bb_agg AS (
         SELECT
           bb.ad_group_name,
-          SUM(bb.hard_signups)::bigint    AS hard_signups,
+          SUM(bb.total_signups)::bigint    AS total_signups,
           SUM(bb.engaged_2nd_day)::bigint AS engaged_2nd_day,
           SUM(bb.paying)::bigint          AS paying
         FROM bigbrain_funnel bb
@@ -389,7 +389,7 @@ export async function GET(req: NextRequest) {
         aa.impressions,
         aa.clicks,
         aa.cost,
-        ba.hard_signups,
+        ba.total_signups,
         ba.engaged_2nd_day,
         ba.paying,
         ul.final_url
@@ -412,7 +412,7 @@ export async function GET(req: NextRequest) {
       clicks: clk,
       ctr: imp > 0 ? (clk / imp) * 100 : 0,
       cost: Number(r.cost),
-      signups: n(r.hard_signups),
+      signups: n(r.total_signups),
       engaged_2nd_day: n(r.engaged_2nd_day),
       paying: n(r.paying),
       ad_quality: null,
