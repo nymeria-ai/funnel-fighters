@@ -52,6 +52,13 @@ export interface DrilldownItem {
   paying_est: number | null;
 }
 
+export interface AdCreative {
+  ad_group_id: string;
+  final_url: string | null;
+  headlines: string[] | null;
+  descriptions: string[] | null;
+}
+
 const CHANNEL_TYPE_TO_SOURCE: Record<string, string> = {
   SEARCH: 'adwordssearch',
   DEMAND_GEN: 'adwordsyoutube',
@@ -127,8 +134,9 @@ export async function GET(req: NextRequest) {
         SUM(amd.cost_micros) / 1e6   AS cost,
         SUM(amd.conversions)          AS conversions
       FROM ad_metrics_daily amd
-      JOIN campaigns c ON amd.campaign_id = c.campaign_id
-      WHERE amd.date >= $1::date
+      JOIN ads a ON amd.ad_id = a.id
+      JOIN campaigns c ON a.campaign_id = c.campaign_id
+      WHERE (amd.date IS NULL OR amd.date >= $1::date)
       GROUP BY c.channel_type
     ),
     lp_agg AS (
@@ -235,9 +243,10 @@ export async function GET(req: NextRequest) {
         SUM(amd.cost_micros) / 1e6    AS cost,
         SUM(amd.conversions)           AS conversions
       FROM ad_metrics_daily amd
-      JOIN campaigns c ON amd.campaign_id = c.campaign_id
+      JOIN ads a ON amd.ad_id = a.id
+      JOIN campaigns c ON a.campaign_id = c.campaign_id
       WHERE c.channel_type = $1
-        AND amd.date >= $2::date
+        AND (amd.date IS NULL OR amd.date >= $2::date)
       GROUP BY SPLIT_PART(c.name, '-', 1)
       ORDER BY SUM(amd.impressions) DESC
       `,
@@ -255,10 +264,11 @@ export async function GET(req: NextRequest) {
         SUM(amd.cost_micros) / 1e6    AS cost,
         SUM(amd.conversions)           AS conversions
       FROM ad_metrics_daily amd
-      JOIN campaigns c ON amd.campaign_id = c.campaign_id
+      JOIN ads a ON amd.ad_id = a.id
+      JOIN campaigns c ON a.campaign_id = c.campaign_id
       WHERE c.channel_type = $1
         AND SPLIT_PART(c.name, '-', 1) = $2
-        AND amd.date >= $3::date
+        AND (amd.date IS NULL OR amd.date >= $3::date)
       GROUP BY c.campaign_id, c.name
       ORDER BY SUM(amd.impressions) DESC
       `,
@@ -269,17 +279,18 @@ export async function GET(req: NextRequest) {
     drillRows = await query<DrillRow>(
       `
       SELECT
-        COALESCE(ag.name, amd.ad_group_id) AS label,
-        amd.ad_group_id                    AS key,
-        SUM(amd.impressions)::bigint        AS impressions,
-        SUM(amd.clicks)::bigint             AS clicks,
-        SUM(amd.cost_micros) / 1e6         AS cost,
-        SUM(amd.conversions)                AS conversions
+        COALESCE(ag.name, a.ad_group_id) AS label,
+        a.ad_group_id                    AS key,
+        SUM(amd.impressions)::bigint     AS impressions,
+        SUM(amd.clicks)::bigint          AS clicks,
+        SUM(amd.cost_micros) / 1e6      AS cost,
+        SUM(amd.conversions)             AS conversions
       FROM ad_metrics_daily amd
-      LEFT JOIN ad_groups ag ON amd.ad_group_id = ag.ad_group_id
-      WHERE amd.campaign_id = $1
-        AND amd.date >= $2::date
-      GROUP BY amd.ad_group_id, ag.name
+      JOIN ads a ON amd.ad_id = a.id
+      LEFT JOIN ad_groups ag ON a.ad_group_id = ag.ad_group_id
+      WHERE a.campaign_id = $1
+        AND (amd.date IS NULL OR amd.date >= $2::date)
+      GROUP BY a.ad_group_id, ag.name
       ORDER BY SUM(amd.impressions) DESC
       `,
       [campaignId, startDateStr]
@@ -303,5 +314,59 @@ export async function GET(req: NextRequest) {
     };
   });
 
-  return NextResponse.json({ channels, drilldown });
+  // ── Ad creatives (level 3 only) ───────────────────────────────────────────
+  let adCreatives: AdCreative[] | null = null;
+  if (campaignId) {
+    type CreativeRow = {
+      ad_group_id: string;
+      final_url: string | null;
+      headlines: string | null;
+      descriptions: string | null;
+    };
+    const creativeRows = await query<CreativeRow>(
+      `
+      SELECT
+        a.ad_group_id,
+        a.final_url,
+        a.headlines::text    AS headlines,
+        a.descriptions::text AS descriptions
+      FROM ads a
+      WHERE a.campaign_id = $1
+        AND a.status != 'REMOVED'
+      ORDER BY a.synced_at DESC
+      `,
+      [campaignId]
+    );
+    if (creativeRows) {
+      // Group by ad_group_id, take first (most-recently-synced) per group
+      const seen = new Set<string>();
+      adCreatives = [];
+      for (const r of creativeRows) {
+        if (seen.has(r.ad_group_id)) continue;
+        seen.add(r.ad_group_id);
+        let headlines: string[] | null = null;
+        let descriptions: string[] | null = null;
+        try {
+          const h = r.headlines ? JSON.parse(r.headlines) : null;
+          headlines = Array.isArray(h)
+            ? h.map((x: { text?: string } | string) => (typeof x === 'string' ? x : x?.text ?? '')).filter(Boolean)
+            : null;
+        } catch { /* ignore */ }
+        try {
+          const d = r.descriptions ? JSON.parse(r.descriptions) : null;
+          descriptions = Array.isArray(d)
+            ? d.map((x: { text?: string } | string) => (typeof x === 'string' ? x : x?.text ?? '')).filter(Boolean)
+            : null;
+        } catch { /* ignore */ }
+        adCreatives.push({
+          ad_group_id: r.ad_group_id,
+          final_url: r.final_url,
+          headlines,
+          descriptions,
+        });
+      }
+    }
+  }
+
+  return NextResponse.json({ channels, drilldown, adCreatives });
 }

@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import ChannelFilter from '@/components/cockpit/ChannelFilter';
 import FunnelRow, { fmt, fmtCost } from '@/components/cockpit/FunnelRow';
-import type { ChannelData, DrilldownItem } from '@/app/api/cockpit/funnel/route';
+import type { ChannelData, DrilldownItem, AdCreative } from '@/app/api/cockpit/funnel/route';
 
 const CHANNEL_ICONS: Record<string, string> = {
   adwordssearch: '🔍',
@@ -35,6 +35,8 @@ interface DrilldownState {
   campaigns: Record<string, DrilldownItem[]>;
   /** key: campaign_id → ad-group-level rows */
   adGroups: Record<string, DrilldownItem[]>;
+  /** key: campaign_id → ad creatives keyed by ad_group_id */
+  adCreatives: Record<string, AdCreative[]>;
 }
 
 export default function CockpitFunnelPage() {
@@ -49,12 +51,14 @@ export default function CockpitFunnelPage() {
   const [expandedChannels, setExpandedChannels] = useState<Set<string>>(new Set());
   const [expandedCountries, setExpandedCountries] = useState<Set<string>>(new Set()); // key: `${source}::${country}`
   const [expandedCampaigns, setExpandedCampaigns] = useState<Set<string>>(new Set()); // key: campaign_id
+  const [expandedAdGroups, setExpandedAdGroups] = useState<Set<string>>(new Set()); // key: ad_group_id
 
   // Drill-down data cache
   const [drilldown, setDrilldown] = useState<DrilldownState>({
     countries: {},
     campaigns: {},
     adGroups: {},
+    adCreatives: {},
   });
   const [drillLoading, setDrillLoading] = useState<Set<string>>(new Set());
 
@@ -70,7 +74,8 @@ export default function CockpitFunnelPage() {
     setExpandedChannels(new Set());
     setExpandedCountries(new Set());
     setExpandedCampaigns(new Set());
-    setDrilldown({ countries: {}, campaigns: {}, adGroups: {} });
+    setExpandedAdGroups(new Set());
+    setDrilldown({ countries: {}, campaigns: {}, adGroups: {}, adCreatives: {} });
 
     try {
       const res = await fetch(`/api/cockpit/funnel?days=${d}`, { signal: ctrl.signal });
@@ -141,11 +146,13 @@ export default function CockpitFunnelPage() {
       setDrilldown((prev) => ({
         ...prev,
         adGroups: { ...prev.adGroups, [campaignId]: data.drilldown ?? [] },
+        adCreatives: { ...prev.adCreatives, [campaignId]: data.adCreatives ?? [] },
       }));
     } catch {
       setDrilldown((prev) => ({
         ...prev,
         adGroups: { ...prev.adGroups, [campaignId]: [] },
+        adCreatives: { ...prev.adCreatives, [campaignId]: [] },
       }));
     } finally {
       setDrillLoading((s) => { const n = new Set(s); n.delete(campaignId); return n; });
@@ -181,6 +188,14 @@ export default function CockpitFunnelPage() {
     setExpandedCampaigns((prev) => {
       const next = new Set(prev);
       if (next.has(campaignId)) next.delete(campaignId); else next.add(campaignId);
+      return next;
+    });
+  }
+
+  function toggleAdGroup(adGroupId: string) {
+    setExpandedAdGroups((prev) => {
+      const next = new Set(prev);
+      if (next.has(adGroupId)) next.delete(adGroupId); else next.add(adGroupId);
       return next;
     });
   }
@@ -409,21 +424,39 @@ export default function CockpitFunnelPage() {
                                             ) : adGroups.length === 0 ? (
                                               <div className="px-16 py-2 text-xs text-text-muted">No ad groups found.</div>
                                             ) : (
-                                              adGroups.map((ag) => (
-                                                <div
-                                                  key={ag.key}
-                                                  className="flex items-center border-b border-bg-border/20 last:border-0 hover:bg-bg-hover/10"
-                                                >
-                                                  <div className="flex items-center gap-2 px-4 py-1.5 min-w-[160px] shrink-0 pl-[84px]">
-                                                    <span className="text-[10px] text-text-muted truncate max-w-[100px]" title={ag.label}>
-                                                      {ag.label}
-                                                    </span>
+                                              adGroups.map((ag) => {
+                                                const isAgExpanded = expandedAdGroups.has(ag.key);
+                                                const campCreatives = drilldown.adCreatives[camp.key] ?? [];
+                                                const creative = campCreatives.find((c) => c.ad_group_id === ag.key) ?? null;
+                                                return (
+                                                  <div key={ag.key} className="border-b border-bg-border/20 last:border-0">
+                                                    <button
+                                                      onClick={() => toggleAdGroup(ag.key)}
+                                                      className="w-full flex items-center hover:bg-bg-hover/10 transition-colors text-left"
+                                                    >
+                                                      <div className="flex items-center gap-2 px-4 py-1.5 min-w-[160px] shrink-0 pl-[84px]">
+                                                        <span className="text-text-muted text-[10px]">
+                                                          {isAgExpanded ? '▼' : '▶'}
+                                                        </span>
+                                                        <span className="text-[10px] text-text-muted truncate max-w-[90px]" title={ag.label}>
+                                                          {ag.label}
+                                                        </span>
+                                                      </div>
+                                                      <div className="flex-1">
+                                                        <DrillRow item={ag} compact />
+                                                      </div>
+                                                    </button>
+                                                    {isAgExpanded && creative && (
+                                                      <AdCreativePanel creative={creative} />
+                                                    )}
+                                                    {isAgExpanded && !creative && (
+                                                      <div className="pl-[100px] pr-4 py-2 text-[10px] text-text-muted italic">
+                                                        No ad creative available for this ad group.
+                                                      </div>
+                                                    )}
                                                   </div>
-                                                  <div className="flex-1">
-                                                    <DrillRow item={ag} compact />
-                                                  </div>
-                                                </div>
-                                              ))
+                                                );
+                                              })
                                             )}
                                           </div>
                                         )}
@@ -493,6 +526,51 @@ export default function CockpitFunnelPage() {
         ))}
         <span className="text-text-muted">· Scores are percentile-based within channel set</span>
       </div>
+    </div>
+  );
+}
+
+// ── Ad creative panel ─────────────────────────────────────────────────────
+
+function AdCreativePanel({ creative }: { creative: AdCreative }) {
+  const { headlines, descriptions, final_url } = creative;
+  return (
+    <div className="pl-[100px] pr-4 py-3 space-y-2 bg-bg-secondary/40 border-t border-bg-border/20">
+      {final_url && (
+        <div className="flex items-start gap-2">
+          <span className="text-[10px] text-text-muted uppercase tracking-wide w-16 shrink-0 pt-0.5">LP URL</span>
+          <a
+            href={final_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-accent-blue hover:underline break-all"
+          >
+            {final_url}
+          </a>
+        </div>
+      )}
+      {headlines && headlines.length > 0 && (
+        <div className="flex items-start gap-2">
+          <span className="text-[10px] text-text-muted uppercase tracking-wide w-16 shrink-0 pt-0.5">Headlines</span>
+          <div className="flex flex-wrap gap-1">
+            {headlines.map((h, i) => (
+              <span key={i} className="text-[11px] text-text-primary bg-bg-card border border-bg-border rounded px-1.5 py-0.5">
+                {h}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+      {descriptions && descriptions.length > 0 && (
+        <div className="flex items-start gap-2">
+          <span className="text-[10px] text-text-muted uppercase tracking-wide w-16 shrink-0 pt-0.5">Desc</span>
+          <div className="space-y-1">
+            {descriptions.map((d, i) => (
+              <p key={i} className="text-[11px] text-text-secondary">{d}</p>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
