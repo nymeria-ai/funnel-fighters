@@ -60,12 +60,21 @@ export interface AdCreative {
 }
 
 const CHANNEL_TYPE_TO_SOURCE: Record<string, string> = {
+  // String labels
   SEARCH: 'adwordssearch',
   DEMAND_GEN: 'adwordsyoutube',
   DISPLAY: 'adwordsdisplay',
   VIDEO: 'adwordsvideo',
   PERFORMANCE_MAX: 'pmax',
   SHOPPING: 'adwordsshopping',
+  // Numeric enum values from Google Ads API
+  '2': 'adwordssearch',
+  '3': 'adwordsdisplay',
+  '6': 'adwordsshopping',
+  '7': 'adwordsvideo',
+  '8': 'pmax',
+  '13': 'adwordsyoutube',
+  DEMAND_GEN_MULTI: 'adwordsyoutube',
 };
 
 const SOURCE_TO_CHANNEL_TYPE: Record<string, string> = Object.fromEntries(
