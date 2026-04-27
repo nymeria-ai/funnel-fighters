@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import ChannelFilter from '@/components/cockpit/ChannelFilter';
 import FunnelRow, { fmt, fmtCost } from '@/components/cockpit/FunnelRow';
 import type { ChannelData, DrilldownItem, AdCreative } from '@/app/api/cockpit/funnel/route';
