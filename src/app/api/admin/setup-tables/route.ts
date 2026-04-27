@@ -73,6 +73,22 @@ const TABLES = [
     sub_scores JSONB DEFAULT '{}',
     PRIMARY KEY (measured_at, duck_type)
   )`,
+  `CREATE TABLE IF NOT EXISTS bigbrain_funnel (
+    source TEXT NOT NULL,
+    campaign_name TEXT NOT NULL,
+    ad_group_name TEXT NOT NULL DEFAULT '',
+    period_start DATE NOT NULL,
+    period_end DATE NOT NULL,
+    total_signups INTEGER DEFAULT 0,
+    hard_signups INTEGER DEFAULT 0,
+    engaged_2nd_day INTEGER DEFAULT 0,
+    paying INTEGER DEFAULT 0,
+    hard_signup_rate NUMERIC(6,2) DEFAULT 0,
+    engagement_rate NUMERIC(6,2) DEFAULT 0,
+    paying_rate NUMERIC(6,2) DEFAULT 0,
+    synced_at TIMESTAMPTZ DEFAULT NOW(),
+    PRIMARY KEY (source, campaign_name, ad_group_name, period_start)
+  )`,
 ];
 
 export async function POST(req: NextRequest) {

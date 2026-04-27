@@ -340,14 +340,14 @@ export default function CockpitFunnelPage() {
             <span className="w-4 text-center">→</span>
             <span className="min-w-[48px] text-center">CVR%</span>
             <span className="w-4 text-center">→</span>
-            <span className="min-w-[56px] text-center">Signups</span>
+            <span className="min-w-[56px] text-center">H.Signups</span>
             <span className="min-w-[8px]" />
             <span className="min-w-[52px] text-center">LP Quality</span>
             <span className="min-w-[8px]" />
             <span className="w-4 text-center">→</span>
             <span className="min-w-[48px] text-center">CVR%</span>
             <span className="w-4 text-center">→</span>
-            <span className="min-w-[56px] text-center">Engaged</span>
+            <span className="min-w-[56px] text-center">2nd Day</span>
             <span className="w-4 text-center">→</span>
             <span className="min-w-[48px] text-center">CVR%</span>
             <span className="w-4 text-center">→</span>
@@ -404,10 +404,9 @@ export default function CockpitFunnelPage() {
                         clicks: ch.clicks,
                         ctr: ch.ctr,
                         cost: ch.cost,
-                        conversions: ch.conversions,
-                        signups_est: ch.signups_est,
-                        engagement_est: ch.engagement_est,
-                        paying_est: ch.paying_est,
+                        hard_signups: ch.hard_signups,
+                        engaged_2nd_day: ch.engaged_2nd_day,
+                        paying: ch.paying,
                         ad_quality: ch.ad_quality,
                         lp_quality: ch.lp_quality,
                         product_score: ch.product_score,
@@ -566,9 +565,9 @@ export default function CockpitFunnelPage() {
                 </span>
               </span>
               <span>
-                Total conversions:{' '}
+                Total hard signups:{' '}
                 <span className="text-text-primary font-semibold">
-                  {fmt(visibleChannels.reduce((s, c) => s + c.conversions, 0))}
+                  {fmt(visibleChannels.reduce((s, c) => s + (c.hard_signups ?? 0), 0))}
                 </span>
               </span>
             </div>
@@ -644,7 +643,7 @@ function AdCreativePanel({ creative }: { creative: AdCreative }) {
 // ── Drill-down row (no quality badges, compact metrics) ─────────────────────
 
 function DrillRow({ item, compact }: { item: DrilldownItem; compact?: boolean }) {
-  const { impressions, clicks, ctr, cost, conversions } = item;
+  const { impressions, clicks, ctr, cost, hard_signups, engaged_2nd_day, paying } = item;
 
   return (
     <div className={`flex items-center gap-2 px-3 ${compact ? 'py-1' : 'py-2'} flex-nowrap overflow-x-auto`}>
@@ -660,11 +659,27 @@ function DrillRow({ item, compact }: { item: DrilldownItem; compact?: boolean })
         {fmt(clicks)}
       </span>
       <span className="text-[10px] text-text-muted whitespace-nowrap">({fmtCost(cost)})</span>
-      {conversions > 0 && (
+      {hard_signups !== null && (
         <>
           <span className="text-text-muted text-xs">→</span>
           <span className="text-xs text-text-muted tabular-nums">
-            {fmt(conversions)} conv
+            {fmt(hard_signups)} h.signups
+          </span>
+        </>
+      )}
+      {engaged_2nd_day !== null && (
+        <>
+          <span className="text-text-muted text-xs">→</span>
+          <span className="text-xs text-text-muted tabular-nums">
+            {fmt(engaged_2nd_day)} 2nd day
+          </span>
+        </>
+      )}
+      {paying !== null && (
+        <>
+          <span className="text-text-muted text-xs">→</span>
+          <span className="text-xs text-text-muted tabular-nums">
+            {fmt(paying)} paying
           </span>
         </>
       )}

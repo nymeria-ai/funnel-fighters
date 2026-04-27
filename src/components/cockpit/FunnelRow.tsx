@@ -5,10 +5,9 @@ export interface FunnelMetrics {
   clicks: number;
   ctr: number;
   cost: number;
-  conversions: number;
-  signups_est: number | null;
-  engagement_est: number | null;
-  paying_est: number | null;
+  hard_signups: number | null;
+  engaged_2nd_day: number | null;
+  paying: number | null;
   ad_quality: number | null;
   lp_quality: number | null;
   product_score: number | null;
@@ -65,16 +64,16 @@ interface FunnelRowProps {
 export default function FunnelRow({ metrics, showQuality = true, indent = 0 }: FunnelRowProps) {
   const {
     impressions, clicks, ctr, cost,
-    signups_est, engagement_est, paying_est,
+    hard_signups, engaged_2nd_day, paying,
     ad_quality, lp_quality, product_score,
   } = metrics;
 
-  // CVR: clicks → signups
-  const cvrClicksToSignups = pct(signups_est, clicks);
-  // CVR: signups → engagement
-  const cvrSignupsToEngagement = pct(engagement_est, signups_est);
-  // CVR: engagement → paying
-  const cvrEngagementToPaying = pct(paying_est, engagement_est);
+  // CVR: clicks → hard signups (LP conversion rate)
+  const cvrClicksToSignups = pct(hard_signups, clicks);
+  // CVR: hard signups → 2nd day engaged
+  const cvrSignupsToEngagement = pct(engaged_2nd_day, hard_signups);
+  // CVR: engaged → paying
+  const cvrEngagementToPaying = pct(paying, engaged_2nd_day);
 
   return (
     <div
@@ -104,16 +103,16 @@ export default function FunnelRow({ metrics, showQuality = true, indent = 0 }: F
         </>
       )}
 
-      {/* CVR clicks → signups */}
+      {/* CVR clicks → hard signups */}
       <Arrow />
       <RateCell rate={cvrClicksToSignups} />
       <Arrow />
 
-      {/* Signups */}
+      {/* Hard Signups */}
       <MetricCell
-        value={signups_est !== null ? fmt(signups_est) : '—'}
-        label="Signups"
-        dim={signups_est === null}
+        value={hard_signups !== null ? fmt(hard_signups) : '—'}
+        label="H.Signups"
+        dim={hard_signups === null}
       />
 
       {/* LP Quality badge */}
@@ -125,28 +124,28 @@ export default function FunnelRow({ metrics, showQuality = true, indent = 0 }: F
         </>
       )}
 
-      {/* CVR signups → engagement */}
+      {/* CVR hard signups → 2nd day engaged */}
       <Arrow />
       <RateCell rate={cvrSignupsToEngagement} />
       <Arrow />
 
-      {/* Engagement */}
+      {/* 2nd Day DAU */}
       <MetricCell
-        value={engagement_est !== null ? fmt(engagement_est) : '—'}
-        label="Engaged"
-        dim={engagement_est === null}
+        value={engaged_2nd_day !== null ? fmt(engaged_2nd_day) : '—'}
+        label="2nd Day"
+        dim={engaged_2nd_day === null}
       />
 
-      {/* CVR engagement → paying */}
+      {/* CVR engaged → paying */}
       <Arrow />
       <RateCell rate={cvrEngagementToPaying} />
       <Arrow />
 
       {/* Paying */}
       <MetricCell
-        value={paying_est !== null ? fmt(paying_est) : '—'}
+        value={paying !== null ? fmt(paying) : '—'}
         label="Paying"
-        dim={paying_est === null}
+        dim={paying === null}
       />
 
       {/* Product Score badge */}

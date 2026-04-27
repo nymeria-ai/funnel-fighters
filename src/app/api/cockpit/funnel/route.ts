@@ -8,10 +8,9 @@ type ChannelRow = {
   impressions: string;
   clicks: string;
   cost: string;
-  conversions: string;
-  signups_est: string | null;
-  engagement_est: string | null;
-  paying_est: string | null;
+  hard_signups: string | null;
+  engaged_2nd_day: string | null;
+  paying: string | null;
 };
 
 type DrillRow = {
@@ -20,7 +19,9 @@ type DrillRow = {
   impressions: string;
   clicks: string;
   cost: string;
-  conversions: string;
+  hard_signups: string | null;
+  engaged_2nd_day: string | null;
+  paying: string | null;
 };
 
 export interface ChannelData {
@@ -30,10 +31,9 @@ export interface ChannelData {
   clicks: number;
   ctr: number;
   cost: number;
-  conversions: number;
-  signups_est: number | null;
-  engagement_est: number | null;
-  paying_est: number | null;
+  hard_signups: number | null;
+  engaged_2nd_day: number | null;
+  paying: number | null;
   ad_quality: number | null;
   lp_quality: number | null;
   product_score: number | null;
@@ -46,10 +46,9 @@ export interface DrilldownItem {
   clicks: number;
   ctr: number;
   cost: number;
-  conversions: number;
-  signups_est: number | null;
-  engagement_est: number | null;
-  paying_est: number | null;
+  hard_signups: number | null;
+  engaged_2nd_day: number | null;
+  paying: number | null;
 }
 
 export interface AdCreative {
@@ -79,7 +78,7 @@ const CHANNEL_TYPE_TO_SOURCE: Record<string, string> = {
 
 /**
  * All channel_type values (numeric + string label) stored per source.
- * Used for drill-down WHERE c.channel_type = ANY($n) queries so both
+ * Used for drill-down WHERE c.channel_type = $1 OR c.channel_type = $2 queries so both
  * numeric ('2') and string ('SEARCH') representations match.
  */
 const SOURCE_TO_CHANNEL_TYPES: Record<string, string[]> = {
@@ -111,17 +110,10 @@ function computePercentiles(values: (number | null)[]): (number | null)[] {
   });
 }
 
-function computeAdQualities(channels: { impressions: number; clicks: number; conversions: number }[]): (number | null)[] {
+/** Ad Quality = CTR percentile rank across channels */
+function computeAdQualities(channels: { impressions: number; clicks: number }[]): (number | null)[] {
   const ctrs = channels.map((c) => (c.impressions > 0 ? c.clicks / c.impressions : 0));
-  const cvrs = channels.map((c) => (c.clicks > 0 ? c.conversions / c.clicks : 0));
-  const ctrPcts = computePercentiles(ctrs);
-  const cvrPcts = computePercentiles(cvrs);
-  return channels.map((_, i) => {
-    const ctr = ctrPcts[i];
-    const cvr = cvrPcts[i];
-    if (ctr === null || cvr === null) return null;
-    return ctr * 0.6 + cvr * 0.4;
-  });
+  return computePercentiles(ctrs);
 }
 
 function n(v: string | null): number | null {
@@ -163,29 +155,22 @@ export async function GET(req: NextRequest) {
         c.channel_type,
         SUM(amd.impressions)::bigint  AS impressions,
         SUM(amd.clicks)::bigint       AS clicks,
-        SUM(amd.cost_micros) / 1e6   AS cost,
-        SUM(amd.conversions)          AS conversions
+        SUM(amd.cost_micros) / 1e6   AS cost
       FROM ad_metrics_daily amd
       JOIN ads a ON amd.ad_id = a.id
       JOIN campaigns c ON a.campaign_id = c.id
       WHERE (amd.date IS NULL OR (amd.date >= $1::date AND amd.date <= $2::date))
       GROUP BY c.channel_type
     ),
-    lp_agg AS (
+    bb_agg AS (
       SELECT
         c.channel_type,
-        SUM(lp.get_started)::bigint AS signups_est
-      FROM lp_funnel_metrics lp
-      JOIN campaigns c ON c.name = lp.campaign_name
-      GROUP BY c.channel_type
-    ),
-    product_agg AS (
-      SELECT
-        c.channel_type,
-        SUM(pf.hard_signups)::bigint AS engagement_est,
-        SUM(pf.payers_28d)::bigint   AS paying_est
-      FROM product_funnel_metrics pf
-      JOIN campaigns c ON c.name = pf.campaign_name
+        SUM(bb.hard_signups)::bigint    AS hard_signups,
+        SUM(bb.engaged_2nd_day)::bigint AS engaged_2nd_day,
+        SUM(bb.paying)::bigint          AS paying
+      FROM bigbrain_funnel bb
+      JOIN campaigns c ON c.name = bb.campaign_name
+      WHERE bb.period_start <= $2::date AND bb.period_end >= $1::date
       GROUP BY c.channel_type
     )
     SELECT
@@ -193,13 +178,11 @@ export async function GET(req: NextRequest) {
       aa.impressions,
       aa.clicks,
       aa.cost,
-      aa.conversions,
-      la.signups_est,
-      pa.engagement_est,
-      pa.paying_est
+      ba.hard_signups,
+      ba.engaged_2nd_day,
+      ba.paying
     FROM ad_agg aa
-    LEFT JOIN lp_agg     la ON la.channel_type = aa.channel_type
-    LEFT JOIN product_agg pa ON pa.channel_type = aa.channel_type
+    LEFT JOIN bb_agg ba ON ba.channel_type = aa.channel_type
     ORDER BY aa.impressions DESC
     `,
     [startDateStr, endDateStr]
@@ -210,27 +193,29 @@ export async function GET(req: NextRequest) {
   }
 
   // Compute quality scores
+  // Ad Quality = CTR percentile rank
   const adQualities = computeAdQualities(
     channelRows.map((r) => ({
       impressions: Number(r.impressions),
       clicks: Number(r.clicks),
-      conversions: Number(r.conversions),
     }))
   );
 
+  // LP Quality = hard_signups / clicks (CVR to hard signup) percentile rank
   const lpCvrs = channelRows.map((r) => {
-    const sig = n(r.signups_est);
-    const eng = n(r.engagement_est);
-    if (sig === null || eng === null || sig === 0) return null;
-    return eng / sig;
+    const hs = n(r.hard_signups);
+    const clk = Number(r.clicks);
+    if (hs === null || clk === 0) return null;
+    return hs / clk;
   });
   const lpPercentiles = computePercentiles(lpCvrs);
 
+  // Product Score = engaged_2nd_day / hard_signups (engagement rate) percentile rank
   const productCvrs = channelRows.map((r) => {
-    const eng = n(r.engagement_est);
-    const pay = n(r.paying_est);
-    if (eng === null || pay === null || eng === 0) return null;
-    return pay / eng;
+    const e2d = n(r.engaged_2nd_day);
+    const hs = n(r.hard_signups);
+    if (e2d === null || hs === null || hs === 0) return null;
+    return e2d / hs;
   });
   const productPercentiles = computePercentiles(productCvrs);
 
@@ -244,10 +229,9 @@ export async function GET(req: NextRequest) {
       clicks: clk,
       ctr: imp > 0 ? (clk / imp) * 100 : 0,
       cost: Number(r.cost),
-      conversions: Number(r.conversions),
-      signups_est: n(r.signups_est),
-      engagement_est: n(r.engagement_est),
-      paying_est: n(r.paying_est),
+      hard_signups: n(r.hard_signups),
+      engaged_2nd_day: n(r.engaged_2nd_day),
+      paying: n(r.paying),
       ad_quality: adQualities[i] !== null ? Math.round(adQualities[i]!) : null,
       lp_quality: lpPercentiles[i] !== null ? Math.round(lpPercentiles[i]!) : null,
       product_score: productPercentiles[i] !== null ? Math.round(productPercentiles[i]!) : null,
@@ -261,7 +245,6 @@ export async function GET(req: NextRequest) {
 
   // Match both numeric ('2') and string ('SEARCH') channel_type values
   const targetChannelTypes = SOURCE_TO_CHANNEL_TYPES[source] ?? [source.toUpperCase(), source];
-  // Use first and second values for OR clause (most have exactly 2)
   const ct1 = targetChannelTypes[0] || source;
   const ct2 = targetChannelTypes[1] || targetChannelTypes[0] || source;
 
@@ -271,20 +254,43 @@ export async function GET(req: NextRequest) {
     // Level 1: by country (first segment of campaign name)
     drillRows = await query<DrillRow>(
       `
+      WITH ad_agg AS (
+        SELECT
+          SPLIT_PART(c.name, '-', 1)     AS country,
+          SUM(amd.impressions)::bigint   AS impressions,
+          SUM(amd.clicks)::bigint        AS clicks,
+          SUM(amd.cost_micros) / 1e6    AS cost
+        FROM ad_metrics_daily amd
+        JOIN ads a ON amd.ad_id = a.id
+        JOIN campaigns c ON a.campaign_id = c.id
+        WHERE (c.channel_type = $1 OR c.channel_type = $2)
+          AND (amd.date IS NULL OR (amd.date >= $3::date AND amd.date <= $4::date))
+        GROUP BY SPLIT_PART(c.name, '-', 1)
+      ),
+      bb_agg AS (
+        SELECT
+          SPLIT_PART(bb.campaign_name, '-', 1) AS country,
+          SUM(bb.hard_signups)::bigint          AS hard_signups,
+          SUM(bb.engaged_2nd_day)::bigint       AS engaged_2nd_day,
+          SUM(bb.paying)::bigint                AS paying
+        FROM bigbrain_funnel bb
+        JOIN campaigns c ON c.name = bb.campaign_name
+        WHERE (c.channel_type = $1 OR c.channel_type = $2)
+          AND bb.period_start <= $4::date AND bb.period_end >= $3::date
+        GROUP BY SPLIT_PART(bb.campaign_name, '-', 1)
+      )
       SELECT
-        SPLIT_PART(c.name, '-', 1)     AS label,
-        SPLIT_PART(c.name, '-', 1)     AS key,
-        SUM(amd.impressions)::bigint   AS impressions,
-        SUM(amd.clicks)::bigint        AS clicks,
-        SUM(amd.cost_micros) / 1e6    AS cost,
-        SUM(amd.conversions)           AS conversions
-      FROM ad_metrics_daily amd
-      JOIN ads a ON amd.ad_id = a.id
-      JOIN campaigns c ON a.campaign_id = c.id
-      WHERE (c.channel_type = $1 OR c.channel_type = $2)
-        AND (amd.date IS NULL OR (amd.date >= $3::date AND amd.date <= $4::date))
-      GROUP BY SPLIT_PART(c.name, '-', 1)
-      ORDER BY SUM(amd.impressions) DESC
+        aa.country AS label,
+        aa.country AS key,
+        aa.impressions,
+        aa.clicks,
+        aa.cost,
+        ba.hard_signups,
+        ba.engaged_2nd_day,
+        ba.paying
+      FROM ad_agg aa
+      LEFT JOIN bb_agg ba ON ba.country = aa.country
+      ORDER BY aa.impressions DESC
       `,
       [ct1, ct2, startDateStr, endDateStr]
     );
@@ -292,21 +298,43 @@ export async function GET(req: NextRequest) {
     // Level 2: by campaign
     drillRows = await query<DrillRow>(
       `
+      WITH ad_agg AS (
+        SELECT
+          c.name                         AS campaign_name,
+          c.id                           AS campaign_id,
+          SUM(amd.impressions)::bigint   AS impressions,
+          SUM(amd.clicks)::bigint        AS clicks,
+          SUM(amd.cost_micros) / 1e6    AS cost
+        FROM ad_metrics_daily amd
+        JOIN ads a ON amd.ad_id = a.id
+        JOIN campaigns c ON a.campaign_id = c.id
+        WHERE (c.channel_type = $1 OR c.channel_type = $2)
+          AND SPLIT_PART(c.name, '-', 1) = $3
+          AND (amd.date IS NULL OR (amd.date >= $4::date AND amd.date <= $5::date))
+        GROUP BY c.id, c.name
+      ),
+      bb_agg AS (
+        SELECT
+          bb.campaign_name,
+          SUM(bb.hard_signups)::bigint    AS hard_signups,
+          SUM(bb.engaged_2nd_day)::bigint AS engaged_2nd_day,
+          SUM(bb.paying)::bigint          AS paying
+        FROM bigbrain_funnel bb
+        WHERE bb.period_start <= $5::date AND bb.period_end >= $4::date
+        GROUP BY bb.campaign_name
+      )
       SELECT
-        c.name                         AS label,
-        c.id                           AS key,
-        SUM(amd.impressions)::bigint   AS impressions,
-        SUM(amd.clicks)::bigint        AS clicks,
-        SUM(amd.cost_micros) / 1e6    AS cost,
-        SUM(amd.conversions)           AS conversions
-      FROM ad_metrics_daily amd
-      JOIN ads a ON amd.ad_id = a.id
-      JOIN campaigns c ON a.campaign_id = c.id
-      WHERE (c.channel_type = $1 OR c.channel_type = $2)
-        AND SPLIT_PART(c.name, '-', 1) = $3
-        AND (amd.date IS NULL OR (amd.date >= $4::date AND amd.date <= $5::date))
-      GROUP BY c.id, c.name
-      ORDER BY SUM(amd.impressions) DESC
+        aa.campaign_name AS label,
+        aa.campaign_id   AS key,
+        aa.impressions,
+        aa.clicks,
+        aa.cost,
+        ba.hard_signups,
+        ba.engaged_2nd_day,
+        ba.paying
+      FROM ad_agg aa
+      LEFT JOIN bb_agg ba ON ba.campaign_name = aa.campaign_name
+      ORDER BY aa.impressions DESC
       `,
       [ct1, ct2, country, startDateStr, endDateStr]
     );
@@ -314,20 +342,44 @@ export async function GET(req: NextRequest) {
     // Level 3: by ad group
     drillRows = await query<DrillRow>(
       `
+      WITH ad_agg AS (
+        SELECT
+          COALESCE(ag.name, a.ad_group_id) AS label,
+          a.ad_group_id,
+          ag.name                          AS ag_name,
+          SUM(amd.impressions)::bigint     AS impressions,
+          SUM(amd.clicks)::bigint          AS clicks,
+          SUM(amd.cost_micros) / 1e6      AS cost
+        FROM ad_metrics_daily amd
+        JOIN ads a ON amd.ad_id = a.id
+        LEFT JOIN ad_groups ag ON a.ad_group_id = ag.id
+        WHERE a.campaign_id = $1
+          AND (amd.date IS NULL OR (amd.date >= $2::date AND amd.date <= $3::date))
+        GROUP BY a.ad_group_id, ag.name
+      ),
+      bb_agg AS (
+        SELECT
+          bb.ad_group_name,
+          SUM(bb.hard_signups)::bigint    AS hard_signups,
+          SUM(bb.engaged_2nd_day)::bigint AS engaged_2nd_day,
+          SUM(bb.paying)::bigint          AS paying
+        FROM bigbrain_funnel bb
+        WHERE bb.campaign_name = (SELECT name FROM campaigns WHERE id = $1)
+          AND bb.period_start <= $3::date AND bb.period_end >= $2::date
+        GROUP BY bb.ad_group_name
+      )
       SELECT
-        COALESCE(ag.name, a.ad_group_id) AS label,
-        a.ad_group_id                    AS key,
-        SUM(amd.impressions)::bigint     AS impressions,
-        SUM(amd.clicks)::bigint          AS clicks,
-        SUM(amd.cost_micros) / 1e6      AS cost,
-        SUM(amd.conversions)             AS conversions
-      FROM ad_metrics_daily amd
-      JOIN ads a ON amd.ad_id = a.id
-      LEFT JOIN ad_groups ag ON a.ad_group_id = ag.id
-      WHERE a.campaign_id = $1
-        AND (amd.date IS NULL OR (amd.date >= $2::date AND amd.date <= $3::date))
-      GROUP BY a.ad_group_id, ag.name
-      ORDER BY SUM(amd.impressions) DESC
+        aa.label,
+        aa.ad_group_id AS key,
+        aa.impressions,
+        aa.clicks,
+        aa.cost,
+        ba.hard_signups,
+        ba.engaged_2nd_day,
+        ba.paying
+      FROM ad_agg aa
+      LEFT JOIN bb_agg ba ON ba.ad_group_name = aa.ag_name
+      ORDER BY aa.impressions DESC
       `,
       [campaignId, startDateStr, endDateStr]
     );
@@ -343,10 +395,9 @@ export async function GET(req: NextRequest) {
       clicks: clk,
       ctr: imp > 0 ? (clk / imp) * 100 : 0,
       cost: Number(r.cost),
-      conversions: Number(r.conversions),
-      signups_est: null,
-      engagement_est: null,
-      paying_est: null,
+      hard_signups: n(r.hard_signups),
+      engaged_2nd_day: n(r.engaged_2nd_day),
+      paying: n(r.paying),
     };
   });
 
@@ -374,7 +425,6 @@ export async function GET(req: NextRequest) {
       [campaignId]
     );
     if (creativeRows) {
-      // Group by ad_group_id, take first (most-recently-synced) per group
       const seen = new Set<string>();
       adCreatives = [];
       for (const r of creativeRows) {
