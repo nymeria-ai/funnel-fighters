@@ -15,6 +15,7 @@ interface DbAccount {
 }
 
 interface DbAd {
+  [key: string]: unknown;
   id: string;
   ad_group_id: string;
   campaign_id: string;
