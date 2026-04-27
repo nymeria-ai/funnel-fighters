@@ -260,7 +260,10 @@ export async function GET(req: NextRequest) {
   }
 
   // Match both numeric ('2') and string ('SEARCH') channel_type values
-  const targetChannelTypes = SOURCE_TO_CHANNEL_TYPES[source] ?? [source.toUpperCase()];
+  const targetChannelTypes = SOURCE_TO_CHANNEL_TYPES[source] ?? [source.toUpperCase(), source];
+  // Use first and second values for OR clause (most have exactly 2)
+  const ct1 = targetChannelTypes[0] || source;
+  const ct2 = targetChannelTypes[1] || targetChannelTypes[0] || source;
 
   let drillRows: DrillRow[] | null = null;
 
@@ -278,12 +281,12 @@ export async function GET(req: NextRequest) {
       FROM ad_metrics_daily amd
       JOIN ads a ON amd.ad_id = a.id
       JOIN campaigns c ON a.campaign_id = c.id
-      WHERE c.channel_type = ANY($1)
-        AND (amd.date IS NULL OR (amd.date >= $2::date AND amd.date <= $3::date))
+      WHERE (c.channel_type = $1 OR c.channel_type = $2)
+        AND (amd.date IS NULL OR (amd.date >= $3::date AND amd.date <= $4::date))
       GROUP BY SPLIT_PART(c.name, '-', 1)
       ORDER BY SUM(amd.impressions) DESC
       `,
-      [targetChannelTypes, startDateStr, endDateStr]
+      [ct1, ct2, startDateStr, endDateStr]
     );
   } else if (country && !campaignId) {
     // Level 2: by campaign
@@ -299,13 +302,13 @@ export async function GET(req: NextRequest) {
       FROM ad_metrics_daily amd
       JOIN ads a ON amd.ad_id = a.id
       JOIN campaigns c ON a.campaign_id = c.id
-      WHERE c.channel_type = ANY($1)
-        AND SPLIT_PART(c.name, '-', 1) = $2
-        AND (amd.date IS NULL OR (amd.date >= $3::date AND amd.date <= $4::date))
+      WHERE (c.channel_type = $1 OR c.channel_type = $2)
+        AND SPLIT_PART(c.name, '-', 1) = $3
+        AND (amd.date IS NULL OR (amd.date >= $4::date AND amd.date <= $5::date))
       GROUP BY c.id, c.name
       ORDER BY SUM(amd.impressions) DESC
       `,
-      [targetChannelTypes, country, startDateStr, endDateStr]
+      [ct1, ct2, country, startDateStr, endDateStr]
     );
   } else if (campaignId) {
     // Level 3: by ad group
