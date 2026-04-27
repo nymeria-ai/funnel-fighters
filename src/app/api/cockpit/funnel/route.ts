@@ -135,7 +135,7 @@ export async function GET(req: NextRequest) {
         SUM(amd.conversions)          AS conversions
       FROM ad_metrics_daily amd
       JOIN ads a ON amd.ad_id = a.id
-      JOIN campaigns c ON a.campaign_id = c.campaign_id
+      JOIN campaigns c ON a.campaign_id = c.id
       WHERE (amd.date IS NULL OR amd.date >= $1::date)
       GROUP BY c.channel_type
     ),
@@ -244,7 +244,7 @@ export async function GET(req: NextRequest) {
         SUM(amd.conversions)           AS conversions
       FROM ad_metrics_daily amd
       JOIN ads a ON amd.ad_id = a.id
-      JOIN campaigns c ON a.campaign_id = c.campaign_id
+      JOIN campaigns c ON a.campaign_id = c.id
       WHERE c.channel_type = $1
         AND (amd.date IS NULL OR amd.date >= $2::date)
       GROUP BY SPLIT_PART(c.name, '-', 1)
@@ -258,18 +258,18 @@ export async function GET(req: NextRequest) {
       `
       SELECT
         c.name                         AS label,
-        c.campaign_id                  AS key,
+        c.id                           AS key,
         SUM(amd.impressions)::bigint   AS impressions,
         SUM(amd.clicks)::bigint        AS clicks,
         SUM(amd.cost_micros) / 1e6    AS cost,
         SUM(amd.conversions)           AS conversions
       FROM ad_metrics_daily amd
       JOIN ads a ON amd.ad_id = a.id
-      JOIN campaigns c ON a.campaign_id = c.campaign_id
+      JOIN campaigns c ON a.campaign_id = c.id
       WHERE c.channel_type = $1
         AND SPLIT_PART(c.name, '-', 1) = $2
         AND (amd.date IS NULL OR amd.date >= $3::date)
-      GROUP BY c.campaign_id, c.name
+      GROUP BY c.id, c.name
       ORDER BY SUM(amd.impressions) DESC
       `,
       [targetChannelType, country, startDateStr]
@@ -287,7 +287,7 @@ export async function GET(req: NextRequest) {
         SUM(amd.conversions)             AS conversions
       FROM ad_metrics_daily amd
       JOIN ads a ON amd.ad_id = a.id
-      LEFT JOIN ad_groups ag ON a.ad_group_id = ag.ad_group_id
+      LEFT JOIN ad_groups ag ON a.ad_group_id = ag.id
       WHERE a.campaign_id = $1
         AND (amd.date IS NULL OR amd.date >= $2::date)
       GROUP BY a.ad_group_id, ag.name
