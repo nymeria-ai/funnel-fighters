@@ -57,6 +57,9 @@ export default function CockpitFunnelPage() {
   // The active date query string passed to all API calls
   const dateQueryStr = customDateQuery ?? `days=${presetDays}`;
 
+  // Map source display name to raw channel_type for API calls
+  const sourceToChannelType = useRef<Record<string, string>>({});
+
   // Expansion state
   const [expandedChannels, setExpandedChannels] = useState<Set<string>>(new Set());
   const [expandedCountries, setExpandedCountries] = useState<Set<string>>(new Set()); // key: `${source}::${country}`
@@ -86,7 +89,12 @@ export default function CockpitFunnelPage() {
       const res = await fetch(`/api/cockpit/funnel?${dqs}`);
       if (!res.ok) throw new Error('Failed to load');
       const data = await res.json();
-      setChannels(data.channels ?? []);
+      const chs = data.channels ?? [];
+      setChannels(chs);
+      // Build source → channel_type mapping
+      for (const ch of chs) {
+        sourceToChannelType.current[ch.source] = ch.channel_type;
+      }
     } catch (e) {
       if ((e as Error).name !== 'AbortError') setError('Failed to load funnel data.');
     } finally {
@@ -101,12 +109,12 @@ export default function CockpitFunnelPage() {
 
   // ── Drill-down fetchers ──────────────────────────────────────────────────
 
-  async function fetchCountries(source: string) {
+  async function fetchCountries(source: string, apiSource?: string) {
     if (drilldown.countries[source] !== undefined) return; // cached
     const key = source;
     setDrillLoading((s) => new Set(s).add(key));
     try {
-      const res = await fetch(`/api/cockpit/funnel?source=${source}&${dateQueryStr}`);
+      const res = await fetch(`/api/cockpit/funnel?source=${encodeURIComponent(apiSource || source)}&${dateQueryStr}`);
       const data = await res.json();
       setDrilldown((prev) => ({
         ...prev,
@@ -127,7 +135,7 @@ export default function CockpitFunnelPage() {
     if (drilldown.campaigns[stateKey] !== undefined) return;
     setDrillLoading((s) => new Set(s).add(stateKey));
     try {
-      const res = await fetch(`/api/cockpit/funnel?source=${source}&country=${encodeURIComponent(country)}&${dateQueryStr}`);
+      const res = await fetch(`/api/cockpit/funnel?source=${encodeURIComponent(sourceToChannelType.current[source] || source)}&country=${encodeURIComponent(country)}&${dateQueryStr}`);
       const data = await res.json();
       setDrilldown((prev) => ({
         ...prev,
@@ -147,7 +155,7 @@ export default function CockpitFunnelPage() {
     if (drilldown.adGroups[campaignId] !== undefined) return;
     setDrillLoading((s) => new Set(s).add(campaignId));
     try {
-      const res = await fetch(`/api/cockpit/funnel?source=${source}&country=${encodeURIComponent(country)}&campaign_id=${encodeURIComponent(campaignId)}&${dateQueryStr}`);
+      const res = await fetch(`/api/cockpit/funnel?source=${encodeURIComponent(sourceToChannelType.current[source] || source)}&country=${encodeURIComponent(country)}&campaign_id=${encodeURIComponent(campaignId)}&${dateQueryStr}`);
       const data = await res.json();
       setDrilldown((prev) => ({
         ...prev,
@@ -167,9 +175,9 @@ export default function CockpitFunnelPage() {
 
   // ── Toggle handlers ──────────────────────────────────────────────────────
 
-  function toggleChannel(source: string) {
+  function toggleChannel(source: string, channelType?: string) {
     const expanding = !expandedChannels.has(source);
-    if (expanding) fetchCountries(source);
+    if (expanding) fetchCountries(source, channelType || source);
     setExpandedChannels((prev) => {
       const next = new Set(prev);
       if (next.has(source)) next.delete(source); else next.add(source);
@@ -371,7 +379,7 @@ export default function CockpitFunnelPage() {
               <div key={ch.source} className="border-b border-bg-border last:border-0">
                 {/* Channel row */}
                 <button
-                  onClick={() => toggleChannel(ch.source)}
+                  onClick={() => toggleChannel(ch.source, ch.channel_type)}
                   className="w-full flex items-center hover:bg-bg-hover/40 transition-colors text-left group"
                 >
                   {/* Channel label */}
