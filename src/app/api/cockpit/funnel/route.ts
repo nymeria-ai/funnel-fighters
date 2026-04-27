@@ -77,9 +77,19 @@ const CHANNEL_TYPE_TO_SOURCE: Record<string, string> = {
   DEMAND_GEN_MULTI: 'adwordsyoutube',
 };
 
-const SOURCE_TO_CHANNEL_TYPE: Record<string, string> = Object.fromEntries(
-  Object.entries(CHANNEL_TYPE_TO_SOURCE).map(([k, v]) => [v, k])
-);
+/**
+ * All channel_type values (numeric + string label) stored per source.
+ * Used for drill-down WHERE c.channel_type = ANY($n) queries so both
+ * numeric ('2') and string ('SEARCH') representations match.
+ */
+const SOURCE_TO_CHANNEL_TYPES: Record<string, string[]> = {
+  adwordssearch: ['2', 'SEARCH'],
+  adwordsyoutube: ['13', 'DEMAND_GEN', 'DEMAND_GEN_MULTI'],
+  adwordsdisplay: ['3', 'DISPLAY'],
+  adwordsvideo: ['7', 'VIDEO'],
+  pmax: ['8', 'PERFORMANCE_MAX'],
+  adwordsshopping: ['6', 'SHOPPING'],
+};
 
 function channelTypeToSource(channelType: string): string {
   return CHANNEL_TYPE_TO_SOURCE[channelType] ?? channelType.toLowerCase().replace(/_/g, '');
@@ -125,12 +135,25 @@ export async function GET(req: NextRequest) {
   const source = searchParams.get('source');
   const country = searchParams.get('country');
   const campaignId = searchParams.get('campaign_id');
-  const daysParam = parseInt(searchParams.get('days') || '30');
-  const days = [7, 30, 90].includes(daysParam) ? daysParam : 30;
 
-  const startDate = new Date();
-  startDate.setDate(startDate.getDate() - days);
-  const startDateStr = startDate.toISOString().split('T')[0];
+  // Date range: prefer explicit start_date/end_date, else compute from days param
+  const startDateParam = searchParams.get('start_date');
+  const endDateParam = searchParams.get('end_date');
+
+  let startDateStr: string;
+  let endDateStr: string;
+
+  if (startDateParam && endDateParam) {
+    startDateStr = startDateParam;
+    endDateStr = endDateParam;
+  } else {
+    const daysParam = parseInt(searchParams.get('days') || '30');
+    const days = [1, 7, 14, 30, 90].includes(daysParam) ? daysParam : 30;
+    const start = new Date();
+    start.setDate(start.getDate() - days);
+    startDateStr = start.toISOString().split('T')[0];
+    endDateStr = new Date().toISOString().split('T')[0];
+  }
 
   // ── Main channel aggregation ──────────────────────────────────────────────
   const channelRows = await query<ChannelRow>(
@@ -145,7 +168,7 @@ export async function GET(req: NextRequest) {
       FROM ad_metrics_daily amd
       JOIN ads a ON amd.ad_id = a.id
       JOIN campaigns c ON a.campaign_id = c.id
-      WHERE (amd.date IS NULL OR amd.date >= $1::date)
+      WHERE (amd.date IS NULL OR (amd.date >= $1::date AND amd.date <= $2::date))
       GROUP BY c.channel_type
     ),
     lp_agg AS (
@@ -179,7 +202,7 @@ export async function GET(req: NextRequest) {
     LEFT JOIN product_agg pa ON pa.channel_type = aa.channel_type
     ORDER BY aa.impressions DESC
     `,
-    [startDateStr]
+    [startDateStr, endDateStr]
   );
 
   if (!channelRows) {
@@ -236,7 +259,8 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ channels, drilldown: null });
   }
 
-  const targetChannelType = SOURCE_TO_CHANNEL_TYPE[source] ?? source.toUpperCase();
+  // Match both numeric ('2') and string ('SEARCH') channel_type values
+  const targetChannelTypes = SOURCE_TO_CHANNEL_TYPES[source] ?? [source.toUpperCase()];
 
   let drillRows: DrillRow[] | null = null;
 
@@ -254,12 +278,12 @@ export async function GET(req: NextRequest) {
       FROM ad_metrics_daily amd
       JOIN ads a ON amd.ad_id = a.id
       JOIN campaigns c ON a.campaign_id = c.id
-      WHERE c.channel_type = $1
-        AND (amd.date IS NULL OR amd.date >= $2::date)
+      WHERE c.channel_type = ANY($1)
+        AND (amd.date IS NULL OR (amd.date >= $2::date AND amd.date <= $3::date))
       GROUP BY SPLIT_PART(c.name, '-', 1)
       ORDER BY SUM(amd.impressions) DESC
       `,
-      [targetChannelType, startDateStr]
+      [targetChannelTypes, startDateStr, endDateStr]
     );
   } else if (country && !campaignId) {
     // Level 2: by campaign
@@ -275,13 +299,13 @@ export async function GET(req: NextRequest) {
       FROM ad_metrics_daily amd
       JOIN ads a ON amd.ad_id = a.id
       JOIN campaigns c ON a.campaign_id = c.id
-      WHERE c.channel_type = $1
+      WHERE c.channel_type = ANY($1)
         AND SPLIT_PART(c.name, '-', 1) = $2
-        AND (amd.date IS NULL OR amd.date >= $3::date)
+        AND (amd.date IS NULL OR (amd.date >= $3::date AND amd.date <= $4::date))
       GROUP BY c.id, c.name
       ORDER BY SUM(amd.impressions) DESC
       `,
-      [targetChannelType, country, startDateStr]
+      [targetChannelTypes, country, startDateStr, endDateStr]
     );
   } else if (campaignId) {
     // Level 3: by ad group
@@ -298,11 +322,11 @@ export async function GET(req: NextRequest) {
       JOIN ads a ON amd.ad_id = a.id
       LEFT JOIN ad_groups ag ON a.ad_group_id = ag.id
       WHERE a.campaign_id = $1
-        AND (amd.date IS NULL OR amd.date >= $2::date)
+        AND (amd.date IS NULL OR (amd.date >= $2::date AND amd.date <= $3::date))
       GROUP BY a.ad_group_id, ag.name
       ORDER BY SUM(amd.impressions) DESC
       `,
-      [campaignId, startDateStr]
+      [campaignId, startDateStr, endDateStr]
     );
   }
 

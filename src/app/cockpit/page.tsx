@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import ChannelFilter from '@/components/cockpit/ChannelFilter';
 import FunnelRow, { fmt, fmtCost } from '@/components/cockpit/FunnelRow';
 import type { ChannelData, DrilldownItem, AdCreative } from '@/app/api/cockpit/funnel/route';
@@ -26,7 +26,7 @@ function sourceLabel(source: string): string {
   return CHANNEL_LABELS[source] ?? source;
 }
 
-type Days = 7 | 30 | 90;
+type PresetDays = 1 | 7 | 14 | 30 | 90;
 
 interface DrilldownState {
   /** key: channel source → country-level rows */
@@ -45,7 +45,17 @@ export default function CockpitFunnelPage() {
   const [error, setError] = useState('');
 
   const [channelFilter, setChannelFilter] = useState('');
-  const [days, setDays] = useState<Days>(30);
+
+  // Date selection state
+  const [presetDays, setPresetDays] = useState<PresetDays>(30);
+  const [showCustomPicker, setShowCustomPicker] = useState(false);
+  const [customStart, setCustomStart] = useState('');
+  const [customEnd, setCustomEnd] = useState('');
+  // When non-null, this query string is used instead of the preset
+  const [customDateQuery, setCustomDateQuery] = useState<string | null>(null);
+
+  // The active date query string passed to all API calls
+  const dateQueryStr = customDateQuery ?? `days=${presetDays}`;
 
   // Expansion state
   const [expandedChannels, setExpandedChannels] = useState<Set<string>>(new Set());
@@ -62,12 +72,7 @@ export default function CockpitFunnelPage() {
   });
   const [drillLoading, setDrillLoading] = useState<Set<string>>(new Set());
 
-  const abortRef = useRef<AbortController | null>(null);
-
-  const fetchChannels = useCallback(async (d: Days) => {
-    abortRef.current?.abort();
-    const ctrl = new AbortController();
-    abortRef.current = ctrl;
+  const fetchChannels = useCallback(async (dqs: string) => {
     setLoading(true);
     setError('');
     // Reset drill state on reload
@@ -78,7 +83,7 @@ export default function CockpitFunnelPage() {
     setDrilldown({ countries: {}, campaigns: {}, adGroups: {}, adCreatives: {} });
 
     try {
-      const res = await fetch(`/api/cockpit/funnel?days=${d}`, { signal: ctrl.signal });
+      const res = await fetch(`/api/cockpit/funnel?${dqs}`);
       if (!res.ok) throw new Error('Failed to load');
       const data = await res.json();
       setChannels(data.channels ?? []);
@@ -90,8 +95,9 @@ export default function CockpitFunnelPage() {
   }, []);
 
   useEffect(() => {
-    fetchChannels(days);
-  }, [days, fetchChannels]);
+    fetchChannels(dateQueryStr);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dateQueryStr, fetchChannels]);
 
   // ── Drill-down fetchers ──────────────────────────────────────────────────
 
@@ -100,7 +106,7 @@ export default function CockpitFunnelPage() {
     const key = source;
     setDrillLoading((s) => new Set(s).add(key));
     try {
-      const res = await fetch(`/api/cockpit/funnel?source=${source}&days=${days}`);
+      const res = await fetch(`/api/cockpit/funnel?source=${source}&${dateQueryStr}`);
       const data = await res.json();
       setDrilldown((prev) => ({
         ...prev,
@@ -121,7 +127,7 @@ export default function CockpitFunnelPage() {
     if (drilldown.campaigns[stateKey] !== undefined) return;
     setDrillLoading((s) => new Set(s).add(stateKey));
     try {
-      const res = await fetch(`/api/cockpit/funnel?source=${source}&country=${encodeURIComponent(country)}&days=${days}`);
+      const res = await fetch(`/api/cockpit/funnel?source=${source}&country=${encodeURIComponent(country)}&${dateQueryStr}`);
       const data = await res.json();
       setDrilldown((prev) => ({
         ...prev,
@@ -141,7 +147,7 @@ export default function CockpitFunnelPage() {
     if (drilldown.adGroups[campaignId] !== undefined) return;
     setDrillLoading((s) => new Set(s).add(campaignId));
     try {
-      const res = await fetch(`/api/cockpit/funnel?source=${source}&country=${encodeURIComponent(country)}&campaign_id=${encodeURIComponent(campaignId)}&days=${days}`);
+      const res = await fetch(`/api/cockpit/funnel?source=${source}&country=${encodeURIComponent(country)}&campaign_id=${encodeURIComponent(campaignId)}&${dateQueryStr}`);
       const data = await res.json();
       setDrilldown((prev) => ({
         ...prev,
@@ -200,6 +206,20 @@ export default function CockpitFunnelPage() {
     });
   }
 
+  // ── Date selection helpers ────────────────────────────────────────────────
+
+  function selectPreset(d: PresetDays) {
+    setPresetDays(d);
+    setCustomDateQuery(null);
+    setShowCustomPicker(false);
+  }
+
+  function applyCustomRange() {
+    if (customStart && customEnd) {
+      setCustomDateQuery(`start_date=${customStart}&end_date=${customEnd}`);
+    }
+  }
+
   // ── Filtered channels ────────────────────────────────────────────────────
 
   const visibleChannels = channelFilter
@@ -224,20 +244,58 @@ export default function CockpitFunnelPage() {
           <ChannelFilter value={channelFilter} onChange={setChannelFilter} />
 
           {/* Date range */}
-          <div className="flex rounded-lg border border-bg-border overflow-hidden">
-            {([7, 30, 90] as Days[]).map((d) => (
+          <div className="flex flex-col gap-1.5">
+            <div className="flex rounded-lg border border-bg-border overflow-hidden">
+              {([1, 7, 14, 30, 90] as PresetDays[]).map((d) => (
+                <button
+                  key={d}
+                  onClick={() => selectPreset(d)}
+                  className={`px-3 py-1.5 text-xs transition-colors ${
+                    !customDateQuery && presetDays === d
+                      ? 'bg-accent-blue text-white'
+                      : 'bg-bg-card text-text-secondary hover:text-text-primary hover:bg-bg-hover'
+                  }`}
+                >
+                  {d}d
+                </button>
+              ))}
               <button
-                key={d}
-                onClick={() => setDays(d)}
-                className={`px-3 py-1.5 text-xs transition-colors ${
-                  days === d
+                onClick={() => setShowCustomPicker((v) => !v)}
+                className={`px-3 py-1.5 text-xs transition-colors border-l border-bg-border ${
+                  showCustomPicker || !!customDateQuery
                     ? 'bg-accent-blue text-white'
                     : 'bg-bg-card text-text-secondary hover:text-text-primary hover:bg-bg-hover'
                 }`}
               >
-                {d}d
+                Custom
               </button>
-            ))}
+            </div>
+
+            {/* Custom date picker */}
+            {showCustomPicker && (
+              <div className="flex items-center gap-2 flex-wrap">
+                <input
+                  type="date"
+                  value={customStart}
+                  onChange={(e) => setCustomStart(e.target.value)}
+                  className="bg-bg-card border border-bg-border rounded px-2 py-1 text-xs text-text-primary outline-none focus:border-accent-blue"
+                />
+                <span className="text-xs text-text-muted">to</span>
+                <input
+                  type="date"
+                  value={customEnd}
+                  onChange={(e) => setCustomEnd(e.target.value)}
+                  className="bg-bg-card border border-bg-border rounded px-2 py-1 text-xs text-text-primary outline-none focus:border-accent-blue"
+                />
+                <button
+                  onClick={applyCustomRange}
+                  disabled={!customStart || !customEnd}
+                  className="px-3 py-1 text-xs bg-accent-blue text-white rounded disabled:opacity-40 hover:opacity-90 transition-opacity"
+                >
+                  Apply
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Link to old ads view */}
