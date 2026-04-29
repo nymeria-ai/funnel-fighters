@@ -20,17 +20,23 @@ export interface CockpitRow {
   adGroupName: string;
   adId: string;
   adType: string;
+  channel: string;
   finalUrl: string;
   finalUrlDomain: string;
   // Ad info
   headlines: string[];
   descriptions: string[];
   adSellingPoint: string;
+  sellingPoint: string;
   // Audience
   audience: AudienceInfo[];
   // Landing page
   lpSellingPoint: string;
   lpError: boolean;
+  // Scores (from ad_extension)
+  channelAdScore: number | null;
+  internalScore: number | null;
+  lpRelevanceScore: number | null;
   // Relevance
   relevanceScore: number;
   relevanceReason: string;
@@ -39,6 +45,12 @@ export interface CockpitRow {
   clicks: number;
   spend: number;
   conversions: number;
+}
+
+export interface SyncStatus {
+  table: string;
+  rows: number;
+  lastSynced: string | null;
 }
 
 export interface Recommendation {
