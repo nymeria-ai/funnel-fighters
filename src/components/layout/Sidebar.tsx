@@ -12,8 +12,10 @@ const navItems = [
   { href: '/landing-pages', label: 'Landing Pages', type: 'duck', color: '#22C55E' },
   { href: '/product', label: 'Product', type: 'duck', color: '#F97316' },
   { href: '/gaps', label: 'Gaps & Actions', type: 'icon', icon: '⚡' },
-  { href: '/insights', label: 'Insights', type: 'icon', icon: '🎯' },
-  { href: '/recommendations', label: 'Recommendations', type: 'icon', icon: '💡' },
+  { href: '/insights', label: 'Insights', type: 'icon', icon: '💡' },
+  { href: '/recommendations', label: 'Recommendations', type: 'icon', icon: '🗂️' },
+  { href: '/queries', label: 'Queries', type: 'icon', icon: '🔬' },
+  { href: '/settings', label: 'Settings', type: 'icon', icon: '⚙️' },
 ];
 
 export default function Sidebar() {
