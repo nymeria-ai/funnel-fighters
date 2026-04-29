@@ -1,7 +1,7 @@
 'use client';
 import DuckIcon from '@/components/ui/DuckIcon';
 
-interface GapItem {
+interface GapItem extends Record<string, unknown> {
   duck: string;
   title: string;
   description: string;

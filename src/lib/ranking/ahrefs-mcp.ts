@@ -3,7 +3,7 @@
  * The Ahrefs API key we have is MCP-only, not REST API.
  */
 
-interface AhrefsBatchResult {
+interface AhrefsBatchResult extends Record<string, unknown> {
   url_rating: number | null;
 }
 

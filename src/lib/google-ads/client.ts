@@ -6,7 +6,7 @@
 const TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const ADS_BASE = 'https://googleads.googleapis.com/v23';
 
-interface TokenCache {
+interface TokenCache extends Record<string, unknown> {
   accessToken: string;
   expiresAt: number;
 }

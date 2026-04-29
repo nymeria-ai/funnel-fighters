@@ -37,7 +37,7 @@ export function geometricMean(scores: (number | null)[]): number | null {
 
 export type DuckType = 'audience' | 'ads' | 'landing_pages' | 'product';
 
-export interface DuckData {
+export interface DuckData extends Record<string, unknown> {
   type: DuckType;
   label: string;
   emoji: string;

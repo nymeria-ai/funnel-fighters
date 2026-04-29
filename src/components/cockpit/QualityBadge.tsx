@@ -1,4 +1,4 @@
-interface QualityBadgeProps {
+interface QualityBadgeProps extends Record<string, unknown> {
   score: number | null;
   label: string;
 }

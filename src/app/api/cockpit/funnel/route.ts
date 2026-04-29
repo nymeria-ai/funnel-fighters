@@ -24,7 +24,7 @@ type DrillRow = {
   final_url?: string | null;
 };
 
-export interface ChannelData {
+export interface ChannelData extends Record<string, unknown> {
   source: string;
   channel: string;
   channel_type: string;
@@ -43,7 +43,7 @@ export interface ChannelData {
   avg_lp_relevance_score: number | null;
 }
 
-export interface DrilldownItem {
+export interface DrilldownItem extends Record<string, unknown> {
   label: string;
   key: string;
   channel: string;
@@ -54,13 +54,13 @@ export interface DrilldownItem {
   signups: null;
   engaged_2nd_day: null;
   paying: null;
-  ad_quality: null;
-  lp_quality: null;
-  product_score: null;
+  ad_quality: number | null;
+  lp_quality: number | null;
+  product_score: number | null;
   final_url?: string | null;
 }
 
-export interface AdCreative {
+export interface AdCreative extends Record<string, unknown> {
   ad_group_id: string;
   final_url: string | null;
   headlines: string[] | null;

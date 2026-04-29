@@ -15,7 +15,7 @@ export const maxDuration = 60;
 
 const GSC_SITE_URL = process.env.GSC_SITE_URL || 'sc-domain:monday.com';
 
-interface GSCRow {
+interface GSCRow extends Record<string, unknown> {
   keys?: string[];
   clicks?: number;
   impressions?: number;

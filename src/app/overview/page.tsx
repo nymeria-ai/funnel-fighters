@@ -5,7 +5,7 @@ import DuckIcon from '@/components/ui/DuckIcon';
 import RightPanel from '@/components/layout/RightPanel';
 import { getScoreColorHex, geometricMean } from '@/lib/scoring';
 
-interface AccountSummary {
+interface AccountSummary extends Record<string, unknown> {
   name: string;
   spend: number;
   clicks: number;
@@ -13,14 +13,14 @@ interface AccountSummary {
   conversions: number;
 }
 
-interface DuckScore {
+interface DuckScore extends Record<string, unknown> {
   duckType: string;
   score: number;
   subScores: Record<string, unknown>;
   trend: number[];
 }
 
-interface WeeklyCohort {
+interface WeeklyCohort extends Record<string, unknown> {
   week_start: string;
   visits: number;
   get_started: number;
@@ -42,7 +42,7 @@ function formatNumber(n: number): string {
   return n.toLocaleString();
 }
 
-interface DuckInfo {
+interface DuckInfo extends Record<string, unknown> {
   label: string;
   duckType: string;
   baseStatus: 'live' | 'partial' | 'no_data';

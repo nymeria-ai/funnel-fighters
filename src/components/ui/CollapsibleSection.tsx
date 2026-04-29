@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 
-interface CollapsibleSectionProps {
+interface CollapsibleSectionProps extends Record<string, unknown> {
   title: string;
   badge?: string;
   badgeColor?: string;

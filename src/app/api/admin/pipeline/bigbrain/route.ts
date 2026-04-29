@@ -35,11 +35,11 @@ function verifyAuth(req: NextRequest): boolean {
   return timingSafeEqual(Buffer.from(token), Buffer.from(SYNC_SECRET));
 }
 
-interface GetQueriesBody {
+interface GetQueriesBody extends Record<string, unknown> {
   action: 'get-queries';
 }
 
-interface SubmitResultsBody {
+interface SubmitResultsBody extends Record<string, unknown> {
   action: 'submit-results';
   queryId: number;
   rows: Record<string, unknown>[];
@@ -47,7 +47,7 @@ interface SubmitResultsBody {
 
 type BigBrainBody = GetQueriesBody | SubmitResultsBody;
 
-interface QueryRow {
+interface QueryRow extends Record<string, unknown> {
   id: number;
   name: string;
   content: string;

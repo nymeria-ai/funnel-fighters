@@ -12,17 +12,17 @@ const SP_FILE = join(CACHE_DIR, 'selling-points.json');
 const REL_FILE = join(CACHE_DIR, 'relevance-scores.json');
 const TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
-interface CacheEntry {
+interface CacheEntry extends Record<string, unknown> {
   value: string;
   ts: number;
 }
 
-export interface RelevanceResult {
+export interface RelevanceResult extends Record<string, unknown> {
   score: number;
   reason: string;
 }
 
-interface RelCacheEntry {
+interface RelCacheEntry extends Record<string, unknown> {
   value: RelevanceResult;
   ts: number;
 }

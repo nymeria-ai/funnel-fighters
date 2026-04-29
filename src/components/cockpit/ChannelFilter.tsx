@@ -10,7 +10,7 @@ export const CHANNEL_OPTIONS = [
   { value: 'adwordsshopping', label: 'Shopping' },
 ];
 
-interface ChannelFilterProps {
+interface ChannelFilterProps extends Record<string, unknown> {
   value: string;
   onChange: (value: string) => void;
 }

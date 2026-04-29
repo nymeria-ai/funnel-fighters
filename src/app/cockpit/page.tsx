@@ -76,7 +76,7 @@ function toMetrics(item: DrilldownItem): FunnelMetrics {
 
 type PresetDays = 1 | 7 | 14 | 30 | 90;
 
-interface DrilldownState {
+interface DrilldownState extends Record<string, unknown> {
   /** key: channel source → country-level rows */
   countries: Record<string, DrilldownItem[]>;
   /** key: `${source}::${country}` → campaign-level rows */

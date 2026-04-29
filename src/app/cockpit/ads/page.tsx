@@ -7,7 +7,7 @@ import DuckIcon from '@/components/ui/DuckIcon';
 import { getRelevanceColor } from '@/lib/selling-points/colors';
 import type { CockpitRow, PageRankResult } from '@/types';
 
-interface LPFunnelData {
+interface LPFunnelData extends Record<string, unknown> {
   campaign_name: string;
   landing_page: string;
   device: string;
@@ -16,7 +16,7 @@ interface LPFunnelData {
   gs_rate: number;
 }
 
-interface ProductFunnelData {
+interface ProductFunnelData extends Record<string, unknown> {
   campaign_name: string;
   landing_page: string;
   device: string;
@@ -29,7 +29,7 @@ interface ProductFunnelData {
   acv_28d: number;
 }
 
-interface Pagination {
+interface Pagination extends Record<string, unknown> {
   page: number;
   pageSize: number;
   totalRows: number;

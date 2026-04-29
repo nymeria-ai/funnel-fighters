@@ -28,7 +28,7 @@ function PriorityBadge({ priority }: { priority: InsightPriority }) {
   );
 }
 
-interface InsightCardProps {
+interface InsightCardProps extends Record<string, unknown> {
   insight: Insight;
   onDismiss: (id: string) => void;
   onApply: (id: string) => void;

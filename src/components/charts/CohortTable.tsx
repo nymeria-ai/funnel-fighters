@@ -1,7 +1,7 @@
 'use client';
 import { CohortRow } from '@/data/mock';
 
-interface CohortTableProps {
+interface CohortTableProps extends Record<string, unknown> {
   data: CohortRow[];
 }
 

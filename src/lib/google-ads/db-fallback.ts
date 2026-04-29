@@ -8,7 +8,7 @@
 import { query, isConfigured } from '@/lib/db/client';
 import type { CockpitRow } from '@/types';
 
-interface DbAd {
+interface DbAd extends Record<string, unknown> {
   [key: string]: unknown;
   id: string;
   ad_group_id: string;

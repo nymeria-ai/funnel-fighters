@@ -1,7 +1,7 @@
 'use client';
 import { geometricMean, getScoreColorHex, getScoreLabel } from '@/lib/scoring';
 
-interface FunnelScoreProps {
+interface FunnelScoreProps extends Record<string, unknown> {
   scores: (number | null)[];
 }
 

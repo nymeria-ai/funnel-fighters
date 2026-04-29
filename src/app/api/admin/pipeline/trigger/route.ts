@@ -28,12 +28,12 @@ function verifyAuth(req: NextRequest): boolean {
   return timingSafeEqual(Buffer.from(token), Buffer.from(SYNC_SECRET));
 }
 
-interface TriggerBody {
+interface TriggerBody extends Record<string, unknown> {
   channel: 'google' | 'meta' | 'all';
   date?: string;
 }
 
-interface StepResult {
+interface StepResult extends Record<string, unknown> {
   step: string;
   status: 'ok' | 'skipped' | 'pending' | 'error';
   result?: unknown;

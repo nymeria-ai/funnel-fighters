@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import DuckIcon from '@/components/ui/DuckIcon';
 
-interface AccountData {
+interface AccountData extends Record<string, unknown> {
   name: string;
   spend: number;
   clicks: number;
@@ -11,7 +11,7 @@ interface AccountData {
   campaignCount?: number;
 }
 
-interface CampaignData {
+interface CampaignData extends Record<string, unknown> {
   id: string;
   name: string;
   status: string;

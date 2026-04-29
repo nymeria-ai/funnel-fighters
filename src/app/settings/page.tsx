@@ -67,7 +67,7 @@ function parseValue(raw: string): unknown {
   }
 }
 
-interface SettingCardProps {
+interface SettingCardProps extends Record<string, unknown> {
   settingKey: string;
   value: unknown;
   onSave: (key: string, value: unknown) => Promise<void>;

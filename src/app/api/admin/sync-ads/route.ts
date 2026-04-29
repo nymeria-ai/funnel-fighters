@@ -18,7 +18,7 @@ function verifyAuth(req: NextRequest): boolean {
 
 type SyncType = 'accounts' | 'campaigns' | 'ad_groups' | 'ads' | 'ad_metrics' | 'ad_extension' | 'lp_extension';
 
-interface SyncPayload {
+interface SyncPayload extends Record<string, unknown> {
   type: SyncType;
   rows: Record<string, unknown>[];
 }

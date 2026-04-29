@@ -35,7 +35,7 @@ export const mockDucks: DuckData[] = [
   },
 ];
 
-export interface ChannelData {
+export interface ChannelData extends Record<string, unknown> {
   id: string;
   name: string;
   icon: string;
@@ -50,7 +50,7 @@ export interface ChannelData {
   campaigns: CampaignData[];
 }
 
-export interface CampaignData {
+export interface CampaignData extends Record<string, unknown> {
   id: string;
   name: string;
   score: number | null;
@@ -64,7 +64,7 @@ export interface CampaignData {
   adGroups: AdGroupData[];
 }
 
-export interface AdGroupData {
+export interface AdGroupData extends Record<string, unknown> {
   id: string;
   name: string;
   score: number | null;
@@ -75,7 +75,7 @@ export interface AdGroupData {
   ads: AdData[];
 }
 
-export interface AdData {
+export interface AdData extends Record<string, unknown> {
   id: string;
   name: string;
   score: number | null;
@@ -266,7 +266,7 @@ export const mockChannels: ChannelData[] = [
   },
 ];
 
-export interface LandingPageData {
+export interface LandingPageData extends Record<string, unknown> {
   id: string;
   url: string;
   title: string;
@@ -290,7 +290,7 @@ export const mockLandingPages: LandingPageData[] = [
   { id: 'lp-7', url: 'https://monday.com/lp/ai-workflow', title: 'AI Workflow Automation', googleRank: 2, rankUpdatedAt: '2026-04-10T10:00:00Z', pageSpeedScore: 58, conversionRate: 3.8, visits: 9800, signups: 372, score: 31, sourceAds: ['AI Workflow RSA'] },
 ];
 
-export interface CohortRow {
+export interface CohortRow extends Record<string, unknown> {
   weekStart: string;
   spend: number;
   visits: number;
@@ -313,7 +313,7 @@ export const mockCohorts: CohortRow[] = [
   { weekStart: '2026-04-06', spend: 55000, visits: 38000, costPerVisit: 1.45, signups: 4180, signupRate: 11.0, active: 752, activeRate: 18.0, paying: 32, payingRate: 4.3 },
 ];
 
-export interface GapItem {
+export interface GapItem extends Record<string, unknown> {
   id: string;
   duck: string;
   title: string;

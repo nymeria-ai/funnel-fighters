@@ -1,6 +1,6 @@
 'use client';
 
-interface DuckIconProps {
+interface DuckIconProps extends Record<string, unknown> {
   color: string;
   size?: number;
   className?: string;

@@ -12,7 +12,7 @@
 //   Page rank:              20% (existing GSC + Ahrefs)
 //   Page speed:             20% (placeholder — not yet integrated)
 
-interface LPScoreInputs {
+interface LPScoreInputs extends Record<string, unknown> {
   gsRate: number | null;           // visit-to-get-started rate (0-100%)
   relevanceScore: number | null;   // 0-100 from LLM
   rankScore: number | null;        // 0-10 composite from GSC + Ahrefs
@@ -81,7 +81,7 @@ export function computeLPScore(inputs: LPScoreInputs): { score: number; breakdow
 //   Product alignment rate:                  20%
 //   Week-over-week stability:                15%
 
-interface ProductScoreInputs {
+interface ProductScoreInputs extends Record<string, unknown> {
   gsToHardSignupRate: number | null;    // % of get_started that become hard signups
   hardSignupToPayerRate: number | null; // % of hard signups that become payers within 28d
   productAlignmentRate: number | null;  // % of signups where signup_product matches lp_product

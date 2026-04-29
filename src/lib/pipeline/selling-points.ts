@@ -6,7 +6,7 @@
 import { createHash } from 'crypto';
 import { query } from '@/lib/db/client';
 
-interface AdRow {
+interface AdRow extends Record<string, unknown> {
   id: string;
   channel: string;
   headlines: unknown;

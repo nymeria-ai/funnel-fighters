@@ -4,7 +4,7 @@ import { useState, useCallback } from 'react';
 type QueryStatus = 'unverified' | 'verified' | 'disabled';
 type QueryType = 'query' | 'prompt';
 
-interface Query {
+interface Query extends Record<string, unknown> {
   id: number;
   type: QueryType;
   name: string;
@@ -37,7 +37,7 @@ function Badge({ children, className }: { children: React.ReactNode; className: 
   );
 }
 
-interface QueryRowProps {
+interface QueryRowProps extends Record<string, unknown> {
   q: Query;
   secret: string;
   onUpdate: (updated: Query) => void;

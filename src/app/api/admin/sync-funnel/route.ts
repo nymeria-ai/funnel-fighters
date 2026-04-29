@@ -21,7 +21,7 @@ function verifyAuth(req: NextRequest): boolean {
 
 type SyncType = 'lp_funnel' | 'product_funnel' | 'weekly' | 'duck_scores';
 
-interface SyncPayload {
+interface SyncPayload extends Record<string, unknown> {
   type: SyncType;
   rows: Record<string, unknown>[];
 }

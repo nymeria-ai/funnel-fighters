@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 
-interface TableStatus {
+interface TableStatus extends Record<string, unknown> {
   [table: string]: string | null;
 }
 

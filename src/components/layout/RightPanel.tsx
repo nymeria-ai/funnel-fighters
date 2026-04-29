@@ -1,13 +1,13 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 
-export interface TabDef {
+export interface TabDef extends Record<string, unknown> {
   id: string;
   label: string;
   content: React.ReactNode;
 }
 
-interface RightPanelProps {
+interface RightPanelProps extends Record<string, unknown> {
   isOpen: boolean;
   onClose: () => void;
   title: string;
@@ -16,7 +16,7 @@ interface RightPanelProps {
   context?: Record<string, unknown>;
 }
 
-interface ChatMessage {
+interface ChatMessage extends Record<string, unknown> {
   role: 'user' | 'ai';
   text: string;
 }

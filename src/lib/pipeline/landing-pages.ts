@@ -5,11 +5,11 @@
 
 import { query } from '@/lib/db/client';
 
-interface NewLpRow {
+interface NewLpRow extends Record<string, unknown> {
   final_url: string;
 }
 
-interface AdForLp {
+interface AdForLp extends Record<string, unknown> {
   ad_id: string;
   selling_point: string | null;
 }

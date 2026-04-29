@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 export type InsightPriority = 'P0' | 'P1' | 'P2' | 'P3';
 export type InsightStatus = 'active' | 'dismissed' | 'applied';
 
-export interface Insight {
+export interface Insight extends Record<string, unknown> {
   id: string;
   priority: InsightPriority;
   headline: string;

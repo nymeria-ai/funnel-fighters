@@ -2,7 +2,7 @@
  * Shared types used across client and server.
  */
 
-export interface AudienceInfo {
+export interface AudienceInfo extends Record<string, unknown> {
   campaignId: string;
   campaignName: string;
   criterionId: string;
@@ -11,7 +11,7 @@ export interface AudienceInfo {
   bidModifier: number;
 }
 
-export interface CockpitRow {
+export interface CockpitRow extends Record<string, unknown> {
   accountId: string;
   accountName: string;
   campaignId: string;
@@ -47,13 +47,13 @@ export interface CockpitRow {
   conversions: number;
 }
 
-export interface SyncStatus {
+export interface SyncStatus extends Record<string, unknown> {
   table: string;
   rows: number;
   lastSynced: string | null;
 }
 
-export interface Recommendation {
+export interface Recommendation extends Record<string, unknown> {
   id: string;
   priority: 'P0' | 'P1' | 'P2' | 'P3';
   type: 'Ad Copy' | 'Landing Page' | 'Budget' | 'Audience' | 'SEO' | 'Alignment';
@@ -67,7 +67,7 @@ export interface Recommendation {
   relatedUrl?: string;
 }
 
-export interface PageRankResult {
+export interface PageRankResult extends Record<string, unknown> {
   url: string;
   gscPosition: number | null;
   gscImpressions: number | null;

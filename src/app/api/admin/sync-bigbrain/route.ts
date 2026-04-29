@@ -15,7 +15,7 @@ function verifyAuth(req: NextRequest): boolean {
   return timingSafeEqual(Buffer.from(token), Buffer.from(SYNC_SECRET));
 }
 
-interface BigBrainRow {
+interface BigBrainRow extends Record<string, unknown> {
   source: string;
   campaign_name: string;
   ad_group_name?: string;
@@ -27,7 +27,7 @@ interface BigBrainRow {
   paying?: number;
 }
 
-interface Payload {
+interface Payload extends Record<string, unknown> {
   rows: BigBrainRow[];
 }
 

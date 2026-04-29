@@ -34,7 +34,7 @@ export async function GET(request: Request) {
       // Aggregate by account
       const accountData = topAccounts.map(a => {
         const camps = allCampaigns.filter(c => c.accountId === a.id);
-        const totalSpend = camps.reduce((s, c) => s + c.costMicros, 0);
+        const totalSpend = camps.reduce((s, c) => s + c.cost, 0);
         const totalClicks = camps.reduce((s, c) => s + c.clicks, 0);
         const totalImpressions = camps.reduce((s, c) => s + c.impressions, 0);
         const totalConversions = camps.reduce((s, c) => s + c.conversions, 0);
@@ -62,8 +62,8 @@ export async function GET(request: Request) {
       return NextResponse.json({
         campaigns: campaigns.map(c => ({
           ...c,
-          spend: c.costMicros / 1_000_000,
-          cpa: c.conversions > 0 ? (c.costMicros / 1_000_000) / c.conversions : 0,
+          spend: c.cost,
+          cpa: c.conversions > 0 ? c.cost / c.conversions : 0,
         }))
       });
     }
@@ -74,7 +74,7 @@ export async function GET(request: Request) {
       return NextResponse.json({
         ads: ads.map(a => ({
           ...a,
-          spend: a.costMicros / 1_000_000,
+          spend: a.cost,
         }))
       });
     }

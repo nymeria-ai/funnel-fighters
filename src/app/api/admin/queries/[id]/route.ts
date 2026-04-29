@@ -15,15 +15,14 @@ function verifyAuth(req: NextRequest): boolean {
   return timingSafeEqual(Buffer.from(token), Buffer.from(SYNC_SECRET));
 }
 
-type RouteContext = { params: { id: string } };
-
 // GET /api/admin/queries/[id] — get single query
-export async function GET(req: NextRequest, { params }: RouteContext) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   if (!verifyAuth(req)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const id = parseInt(params.id, 10);
+  const { id: idStr } = await params;
+  const id = parseInt(idStr, 10);
   if (isNaN(id)) {
     return NextResponse.json({ error: 'Invalid id' }, { status: 400 });
   }
@@ -49,12 +48,13 @@ export async function GET(req: NextRequest, { params }: RouteContext) {
 // Body can include: content, description, status, approved_by
 // If content changes → bump version
 // If status changes to verified → set approved_at=NOW()
-export async function PUT(req: NextRequest, { params }: RouteContext) {
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   if (!verifyAuth(req)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const id = parseInt(params.id, 10);
+  const { id: idStr } = await params;
+  const id = parseInt(idStr, 10);
   if (isNaN(id)) {
     return NextResponse.json({ error: 'Invalid id' }, { status: 400 });
   }
@@ -130,12 +130,13 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
 }
 
 // DELETE /api/admin/queries/[id] — soft delete (set status=disabled)
-export async function DELETE(req: NextRequest, { params }: RouteContext) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   if (!verifyAuth(req)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const id = parseInt(params.id, 10);
+  const { id: idStr } = await params;
+  const id = parseInt(idStr, 10);
   if (isNaN(id)) {
     return NextResponse.json({ error: 'Invalid id' }, { status: 400 });
   }

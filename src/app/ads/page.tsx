@@ -4,7 +4,7 @@ import RightPanel from '@/components/layout/RightPanel';
 import { getScoreColorHex, getScoreLabel } from '@/lib/scoring';
 import DuckIcon from '@/components/ui/DuckIcon';
 
-interface AccountData {
+interface AccountData extends Record<string, unknown> {
   id: string;
   name: string;
   campaignCount: number;
@@ -16,7 +16,7 @@ interface AccountData {
   cpa: number;
 }
 
-interface CampaignData {
+interface CampaignData extends Record<string, unknown> {
   accountId: string;
   campaignId: string;
   campaignName: string;
@@ -24,14 +24,14 @@ interface CampaignData {
   channelType: string;
   impressions: number;
   clicks: number;
-  costMicros: number;
+  cost: number;
   spend: number;
   conversions: number;
   ctr: number;
   cpa: number;
 }
 
-interface AdData {
+interface AdData extends Record<string, unknown> {
   campaignId: string;
   campaignName: string;
   adGroupId: string;
@@ -47,7 +47,7 @@ interface AdData {
   conversions: number;
 }
 
-interface KeywordData {
+interface KeywordData extends Record<string, unknown> {
   keyword: string;
   matchType: string;
   status: string;
@@ -57,7 +57,7 @@ interface KeywordData {
   conversions: number;
 }
 
-interface AdCopyData {
+interface AdCopyData extends Record<string, unknown> {
   adId: string;
   adType: string;
   headlines: string[];
@@ -66,13 +66,13 @@ interface AdCopyData {
   status: string;
 }
 
-interface AudienceData {
+interface AudienceData extends Record<string, unknown> {
   criterionType: string;
   criterionName: string;
   bidModifier: number;
 }
 
-interface SearchTermData {
+interface SearchTermData extends Record<string, unknown> {
   searchTerm: string;
   impressions: number;
   clicks: number;

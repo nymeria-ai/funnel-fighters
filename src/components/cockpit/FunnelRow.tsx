@@ -1,6 +1,6 @@
 import QualityBadge from './QualityBadge';
 
-export interface FunnelMetrics {
+export interface FunnelMetrics extends Record<string, unknown> {
   impressions: number;
   clicks: number;
   ctr: number;
@@ -53,7 +53,7 @@ function RateCell({ rate }: { rate: string }) {
   );
 }
 
-interface FunnelRowProps {
+interface FunnelRowProps extends Record<string, unknown> {
   metrics: FunnelMetrics;
   /** If true, show quality badges (channel level). Drill-down rows skip them. */
   showQuality?: boolean;

@@ -26,13 +26,13 @@ export async function GET(request: Request) {
     return NextResponse.json({
       keywords: keywords.map(k => ({
         ...k,
-        spend: k.costMicros / 1_000_000,
+        spend: k.cost,
       })),
       adCopy,
       audience,
       searchTerms: searchTerms.map(s => ({
         ...s,
-        spend: s.costMicros / 1_000_000,
+        spend: s.cost,
       })),
     });
   } catch (error) {

@@ -31,7 +31,7 @@ const PIPELINE_STEPS = [
   'pipeline:step5:insights',
 ];
 
-interface SyncRunRow {
+interface SyncRunRow extends Record<string, unknown> {
   id: number;
   sync_type: string;
   status: string;

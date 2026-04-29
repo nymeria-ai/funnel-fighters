@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import DuckIcon from '@/components/ui/DuckIcon';
 import { getScoreColorHex } from '@/lib/scoring';
 
-interface ProductSummary {
+interface ProductSummary extends Record<string, unknown> {
   signup_product: string;
   soft_signups: number;
   hard_signups: number;
@@ -11,7 +11,7 @@ interface ProductSummary {
   acv_28d: number;
 }
 
-interface WeeklyCohort {
+interface WeeklyCohort extends Record<string, unknown> {
   week_start: string;
   visits: number;
   get_started: number;

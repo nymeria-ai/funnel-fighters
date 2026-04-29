@@ -4,7 +4,7 @@ import RightPanel from '@/components/layout/RightPanel';
 import { getScoreColorHex } from '@/lib/scoring';
 import DuckIcon from '@/components/ui/DuckIcon';
 
-interface LandingPage {
+interface LandingPage extends Record<string, unknown> {
   url: string;
   adCount: number;
   totalClicks: number;
@@ -13,7 +13,7 @@ interface LandingPage {
   sourceAds: string[];
 }
 
-interface PageRankResult {
+interface PageRankResult extends Record<string, unknown> {
   url: string;
   gscPosition: number | null;
   gscImpressions: number | null;

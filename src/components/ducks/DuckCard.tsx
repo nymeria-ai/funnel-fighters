@@ -2,7 +2,7 @@
 import { DuckData, getScoreColor, getScoreColorHex, getScoreLabel } from '@/lib/scoring';
 import DuckIcon from '@/components/ui/DuckIcon';
 
-interface DuckCardProps {
+interface DuckCardProps extends Record<string, unknown> {
   duck: DuckData;
   onClick: () => void;
 }

@@ -1,12 +1,12 @@
 import { queryGoogleAds, MCC_ID } from './client';
 
-export interface AccountInfo {
+export interface AccountInfo extends Record<string, unknown> {
   id: string;
   name: string;
   isManager: boolean;
 }
 
-export interface CampaignRow {
+export interface CampaignRow extends Record<string, unknown> {
   accountId: string;
   accountName: string;
   campaignId: string;
@@ -20,7 +20,7 @@ export interface CampaignRow {
   ctr: number;
 }
 
-export interface AdRow {
+export interface AdRow extends Record<string, unknown> {
   campaignId: string;
   campaignName: string;
   adGroupId: string;
@@ -120,7 +120,7 @@ export async function getAdsWithUrls(accountId: string): Promise<AdRow[]> {
   });
 }
 
-export interface KeywordRow {
+export interface KeywordRow extends Record<string, unknown> {
   adGroupId: string;
   adGroupName: string;
   criterionId: string;
@@ -129,11 +129,11 @@ export interface KeywordRow {
   status: string;
   impressions: number;
   clicks: number;
-  costMicros: number;
+  cost: number;
   conversions: number;
 }
 
-export interface AdCopyRow {
+export interface AdCopyRow extends Record<string, unknown> {
   adGroupId: string;
   adGroupName: string;
   adId: string;
@@ -144,7 +144,7 @@ export interface AdCopyRow {
   status: string;
 }
 
-export interface AudienceRow {
+export interface AudienceRow extends Record<string, unknown> {
   campaignId: string;
   campaignName: string;
   criterionId: string;
@@ -153,7 +153,7 @@ export interface AudienceRow {
   bidModifier: number;
 }
 
-export interface SearchTermRow {
+export interface SearchTermRow extends Record<string, unknown> {
   searchTerm: string;
   adGroupId: string;
   adGroupName: string;
@@ -161,7 +161,7 @@ export interface SearchTermRow {
   campaignName: string;
   impressions: number;
   clicks: number;
-  costMicros: number;
+  cost: number;
   conversions: number;
 }
 
@@ -192,7 +192,7 @@ export async function getKeywords(accountId: string, adGroupId?: string): Promis
     status: r.adGroupCriterion.status,
     impressions: parseInt(r.metrics.impressions) || 0,
     clicks: parseInt(r.metrics.clicks) || 0,
-    costMicros: parseInt(r.metrics.costMicros) || 0,
+    cost: (parseInt(r.metrics.costMicros) || 0) / 1_000_000,
     conversions: r.metrics.conversions || 0,
   }));
 }
@@ -290,7 +290,7 @@ export async function getSearchTerms(accountId: string, adGroupId?: string): Pro
     campaignName: r.campaign.name,
     impressions: parseInt(r.metrics.impressions) || 0,
     clicks: parseInt(r.metrics.clicks) || 0,
-    costMicros: parseInt(r.metrics.costMicros) || 0,
+    cost: (parseInt(r.metrics.costMicros) || 0) / 1_000_000,
     conversions: r.metrics.conversions || 0,
   }));
 }
@@ -307,7 +307,7 @@ export function extractLandingPages(ads: AdRow[]): { url: string; adCount: numbe
       const lp = lpMap.get(clean)!;
       lp.adCount++;
       lp.totalClicks += ad.clicks;
-      lp.totalSpend += ad.costMicros;
+      lp.totalSpend += ad.cost;
       lp.totalConversions += ad.conversions;
       lp.sourceAds.add(ad.campaignName);
     }

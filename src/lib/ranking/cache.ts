@@ -7,7 +7,7 @@
 import type { PageRankResult } from '@/types';
 import { query } from '@/lib/db/client';
 
-interface CacheEntry {
+interface CacheEntry extends Record<string, unknown> {
   data: PageRankResult;
   fetchedAt: number; // epoch ms
 }
