@@ -13,10 +13,25 @@ interface AdRow {
   descriptions: unknown;
 }
 
+/**
+ * Compute MD5 hash matching the Postgres expression:
+ *   MD5(headlines::TEXT || descriptions::TEXT)
+ * Postgres casts JSONB to TEXT with no spaces after colons/commas.
+ * JSON.stringify also produces no-space output, so they match for simple arrays.
+ * We normalize by parsing (if string) to ensure consistent JSONB→text representation.
+ */
 function computeHash(headlines: unknown, descriptions: unknown): string {
-  const h = JSON.stringify(headlines ?? []);
-  const d = JSON.stringify(descriptions ?? []);
+  const h = normalizeJsonb(headlines);
+  const d = normalizeJsonb(descriptions);
   return createHash('md5').update(h + d).digest('hex');
+}
+
+/** Normalize a JSONB value to match Postgres ::TEXT cast (compact JSON, sorted keys) */
+function normalizeJsonb(val: unknown): string {
+  if (typeof val === 'string') {
+    try { return JSON.stringify(JSON.parse(val)); } catch { return val; }
+  }
+  return JSON.stringify(val ?? []);
 }
 
 function extractSellingPoint(headlines: unknown, descriptions: unknown): string {
@@ -50,6 +65,8 @@ export async function computeSellingPointsForNewAds(channel?: string): Promise<n
        ae.ad_id IS NULL
        OR ae.selling_point_hash IS DISTINCT FROM MD5(a.headlines::TEXT || a.descriptions::TEXT)
      )
+     -- NOTE: JS computeHash() must produce the same string as Postgres
+     -- headlines::TEXT || descriptions::TEXT. Both use compact JSON (no spaces).
      ${channelFilter}`,
     params
   );

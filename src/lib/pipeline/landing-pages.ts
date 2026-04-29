@@ -77,23 +77,6 @@ export async function discoverAndProcessNewLandingPages(channel?: string): Promi
     // Compute LP selling point (placeholder)
     const lpSellingPoint = computeLpSellingPoint(final_url);
 
-    // Lookup the ad's selling point for this URL to compute relevance
-    const adRows = await query<AdForLp>(
-      `SELECT a.id AS ad_id, ae.selling_point
-       FROM ads a
-       LEFT JOIN ad_extension ae ON ae.ad_id = a.id
-       WHERE a.final_url = $1
-       LIMIT 1`,
-      [final_url]
-    );
-    const adSellingPoint = adRows?.[0]?.selling_point ?? null;
-
-    const { score: relevanceScore, reason: relevanceReason } = computeRelevanceScore(
-      adSellingPoint,
-      lpSellingPoint,
-      final_url
-    );
-
     // Upsert into landing_page_extension
     await query(
       `INSERT INTO landing_page_extension (url, selling_point, computed_at)
@@ -104,14 +87,30 @@ export async function discoverAndProcessNewLandingPages(channel?: string): Promi
       [final_url, lpSellingPoint || null]
     );
 
-    // Update ad_extension with LP relevance score for all ads pointing to this URL
-    await query(
-      `UPDATE ad_extension ae
-       SET lp_relevance_score = $1, relevance_reason = $2, computed_at = NOW()
+    // Score ALL ads pointing to this LP individually (not just the first one)
+    // Each ad may have a different selling point → different relevance to the same LP
+    const adRows = await query<AdForLp>(
+      `SELECT a.id AS ad_id, ae.selling_point
        FROM ads a
-       WHERE ae.ad_id = a.id AND a.final_url = $3`,
-      [relevanceScore, relevanceReason, final_url]
+       LEFT JOIN ad_extension ae ON ae.ad_id = a.id
+       WHERE a.final_url = $1`,
+      [final_url]
     );
+
+    for (const ad of adRows ?? []) {
+      const { score: relevanceScore, reason: relevanceReason } = computeRelevanceScore(
+        ad.selling_point,
+        lpSellingPoint,
+        final_url
+      );
+
+      await query(
+        `UPDATE ad_extension
+         SET lp_relevance_score = $1, relevance_reason = $2, computed_at = NOW()
+         WHERE ad_id = $3`,
+        [relevanceScore, relevanceReason, ad.ad_id]
+      );
+    }
 
     processed++;
   }
