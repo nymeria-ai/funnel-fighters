@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import ChannelFilter from '@/components/cockpit/ChannelFilter';
 import FunnelRow, { FunnelMetrics, fmt, fmtCost } from '@/components/cockpit/FunnelRow';
+import SyncStatusBadge from '@/components/SyncStatusBadge';
 import type { ChannelData, DrilldownItem, AdCreative } from '@/app/api/cockpit/funnel/route';
 
 const CHANNEL_ICONS: Record<string, string> = {
@@ -288,7 +289,10 @@ export default function CockpitFunnelPage() {
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary">Cockpit</h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-bold text-text-primary">Cockpit</h1>
+            <SyncStatusBadge />
+          </div>
           <p className="text-sm text-text-muted mt-1">
             Full-funnel performance by marketing channel
           </p>
