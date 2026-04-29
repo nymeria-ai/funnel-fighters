@@ -15,7 +15,7 @@ export interface CampaignRow {
   channelType: string;
   impressions: number;
   clicks: number;
-  costMicros: number;
+  cost: number;  // in dollars
   conversions: number;
   ctr: number;
 }
@@ -34,7 +34,7 @@ export interface AdRow {
   descriptions: string[];
   impressions: number;
   clicks: number;
-  costMicros: number;
+  cost: number;  // in dollars
   conversions: number;
 }
 
@@ -75,7 +75,7 @@ export async function getCampaigns(accountId: string, accountName: string): Prom
     channelType: r.campaign.advertisingChannelType || 'SEARCH',
     impressions: parseInt(r.metrics.impressions) || 0,
     clicks: parseInt(r.metrics.clicks) || 0,
-    costMicros: parseInt(r.metrics.costMicros) || 0,
+    cost: (parseInt(r.metrics.costMicros) || 0) / 1_000_000,
     conversions: r.metrics.conversions || 0,
     ctr: r.metrics.ctr || 0,
   }));
@@ -114,7 +114,7 @@ export async function getAdsWithUrls(accountId: string): Promise<AdRow[]> {
       descriptions: rsa?.descriptions?.map((d: any) => d.text).filter(Boolean) || [],
       impressions: parseInt(r.metrics.impressions) || 0,
       clicks: parseInt(r.metrics.clicks) || 0,
-      costMicros: parseInt(r.metrics.costMicros) || 0,
+      cost: (parseInt(r.metrics.costMicros) || 0) / 1_000_000,
       conversions: r.metrics.conversions || 0,
     };
   });

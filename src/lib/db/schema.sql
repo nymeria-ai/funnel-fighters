@@ -1,10 +1,16 @@
 -- ============================================================
--- ACCOUNTS & CAMPAIGNS (synced from Google Ads)
+-- ACCOUNTS & CAMPAIGNS (synced from Google Ads and other channels)
 -- ============================================================
+
+-- Data retention policy (enforced by scheduled cleanup cron):
+--   Raw daily metrics (ad_metrics_daily): kept 180 days
+--   Monthly rollups (future): kept forever
+-- Cleanup query: DELETE FROM ad_metrics_daily WHERE date < CURRENT_DATE - INTERVAL '180 days'
 
 CREATE TABLE IF NOT EXISTS accounts (
   id               TEXT PRIMARY KEY,
   name             TEXT NOT NULL,
+  channel          TEXT NOT NULL DEFAULT 'google',  -- 'google', 'meta', 'linkedin', etc.
   is_manager       BOOLEAN DEFAULT FALSE,
   mcc_id           TEXT NOT NULL,
   is_target        BOOLEAN DEFAULT TRUE,
@@ -17,6 +23,7 @@ CREATE TABLE IF NOT EXISTS campaigns (
   account_id       TEXT NOT NULL REFERENCES accounts(id),
   name             TEXT NOT NULL,
   status           TEXT NOT NULL,
+  channel          TEXT NOT NULL DEFAULT 'google',
   channel_type     TEXT,
   synced_at        TIMESTAMPTZ,
   created_at       TIMESTAMPTZ DEFAULT NOW()
@@ -27,12 +34,13 @@ CREATE TABLE IF NOT EXISTS ad_groups (
   campaign_id      TEXT NOT NULL REFERENCES campaigns(id),
   account_id       TEXT NOT NULL REFERENCES accounts(id),
   name             TEXT NOT NULL,
+  channel          TEXT NOT NULL DEFAULT 'google',
   synced_at        TIMESTAMPTZ,
   created_at       TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- ============================================================
--- ADS (synced from Google Ads)
+-- ADS (synced from all channels)
 -- ============================================================
 
 CREATE TABLE IF NOT EXISTS ads (
@@ -40,6 +48,7 @@ CREATE TABLE IF NOT EXISTS ads (
   ad_group_id      TEXT NOT NULL REFERENCES ad_groups(id),
   campaign_id      TEXT NOT NULL REFERENCES campaigns(id),
   account_id       TEXT NOT NULL REFERENCES accounts(id),
+  channel          TEXT NOT NULL DEFAULT 'google',
   ad_type          TEXT NOT NULL,
   status           TEXT NOT NULL,
   final_url        TEXT,
@@ -56,6 +65,8 @@ CREATE INDEX IF NOT EXISTS idx_ads_final_url ON ads(final_url);
 
 -- ============================================================
 -- METRICS (daily snapshots)
+-- cost stored in dollars DECIMAL(15,6) — normalize from any channel before insert.
+-- Data retention: raw daily kept 180 days (cleanup via scheduled cron).
 -- ============================================================
 
 CREATE TABLE IF NOT EXISTS ad_metrics_daily (
@@ -63,7 +74,7 @@ CREATE TABLE IF NOT EXISTS ad_metrics_daily (
   date             DATE NOT NULL,
   impressions      BIGINT DEFAULT 0,
   clicks           BIGINT DEFAULT 0,
-  cost_micros      BIGINT DEFAULT 0,
+  cost             DECIMAL(15,6) DEFAULT 0,  -- in dollars, normalized from any channel
   conversions      REAL DEFAULT 0,
   PRIMARY KEY (ad_id, date)
 );
@@ -76,7 +87,7 @@ SELECT
   ad_id,
   SUM(impressions) AS impressions,
   SUM(clicks) AS clicks,
-  SUM(cost_micros) AS cost_micros,
+  SUM(cost) AS cost,
   SUM(conversions) AS conversions,
   CASE WHEN SUM(impressions) > 0
     THEN ROUND(SUM(clicks)::NUMERIC / SUM(impressions) * 100, 2)
@@ -109,39 +120,43 @@ CREATE TABLE IF NOT EXISTS landing_pages (
 );
 
 -- ============================================================
--- SELLING POINTS (LLM-computed, cached in DB)
+-- AD EXTENSION (replaces selling_points + relevance_scores)
+-- LLM-computed per ad. Hash-based recomputation:
+--   Hash(headlines + descriptions) → only recompute when hash changes.
 -- ============================================================
 
-CREATE TABLE IF NOT EXISTS selling_points (
-  id               SERIAL PRIMARY KEY,
-  entity_type      TEXT NOT NULL,
-  entity_key       TEXT NOT NULL UNIQUE,
-  selling_point    TEXT NOT NULL,
-  model_version    TEXT,
-  computed_at      TIMESTAMPTZ DEFAULT NOW(),
-  expires_at       TIMESTAMPTZ DEFAULT NOW() + INTERVAL '30 days'
+CREATE TABLE IF NOT EXISTS ad_extension (
+  id                   SERIAL PRIMARY KEY,
+  ad_id                TEXT NOT NULL REFERENCES ads(id),
+  channel_ad_score     INTEGER,                           -- platform quality score (0-100)
+  internal_score       INTEGER,                           -- our computed score (0-100)
+  selling_point        TEXT,                              -- LLM-extracted selling point
+  selling_point_hash   TEXT,                              -- MD5 of headlines+descriptions; recompute when changed
+  lp_relevance_score   INTEGER CHECK (lp_relevance_score >= 0 AND lp_relevance_score <= 100),
+  relevance_reason     TEXT,
+  computed_at          TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(ad_id)
 );
 
-CREATE INDEX IF NOT EXISTS idx_sp_entity ON selling_points(entity_type, entity_key);
-CREATE INDEX IF NOT EXISTS idx_sp_expires ON selling_points(expires_at);
+CREATE INDEX IF NOT EXISTS idx_ad_extension_ad ON ad_extension(ad_id);
+CREATE INDEX IF NOT EXISTS idx_ad_extension_hash ON ad_extension(selling_point_hash);
 
 -- ============================================================
--- RELEVANCE SCORES (LLM-computed, cached in DB)
+-- LANDING PAGE EXTENSION (LLM-computed per LP)
 -- ============================================================
 
-CREATE TABLE IF NOT EXISTS relevance_scores (
+CREATE TABLE IF NOT EXISTS landing_page_extension (
   id               SERIAL PRIMARY KEY,
-  ad_selling_point TEXT NOT NULL,
-  lp_selling_point TEXT NOT NULL,
-  score            INTEGER NOT NULL CHECK (score >= 0 AND score <= 100),
-  reason           TEXT,
-  model_version    TEXT,
+  url              TEXT NOT NULL REFERENCES landing_pages(url),
+  selling_point    TEXT,
+  google_lp_score  INTEGER,
+  performance_score INTEGER,
+  content_summary  TEXT,
   computed_at      TIMESTAMPTZ DEFAULT NOW(),
-  expires_at       TIMESTAMPTZ DEFAULT NOW() + INTERVAL '30 days',
-  UNIQUE(ad_selling_point, lp_selling_point)
+  UNIQUE(url)
 );
 
-CREATE INDEX IF NOT EXISTS idx_rel_pair ON relevance_scores(ad_selling_point, lp_selling_point);
+CREATE INDEX IF NOT EXISTS idx_lp_extension_url ON landing_page_extension(url);
 
 -- ============================================================
 -- AUDIENCE TARGETING (synced from Google Ads)
@@ -174,6 +189,7 @@ CREATE TABLE IF NOT EXISTS sync_runs (
 
 -- ============================================================
 -- APP SETTINGS
+-- Configurable: LLM model, cron time, retention period, alert channels.
 -- ============================================================
 
 CREATE TABLE IF NOT EXISTS settings (
@@ -181,6 +197,29 @@ CREATE TABLE IF NOT EXISTS settings (
   value            JSONB NOT NULL,
   updated_at       TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- ============================================================
+-- QUERIES & PROMPTS
+-- Stores both BigBrain SQL queries AND LLM prompts.
+-- Runtime pulls from this table — never hardcoded.
+-- New queries start as 'unverified'; approved → 'verified'; 'disabled' = soft-deleted.
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS queries (
+  id               SERIAL PRIMARY KEY,
+  type             TEXT NOT NULL CHECK (type IN ('query', 'prompt')),
+  name             TEXT NOT NULL,
+  content          TEXT NOT NULL,
+  description      TEXT,
+  version          INT DEFAULT 1,
+  status           TEXT NOT NULL DEFAULT 'unverified' CHECK (status IN ('unverified', 'verified', 'disabled')),
+  created_by       TEXT,
+  approved_by      TEXT,
+  approved_at      TIMESTAMPTZ,
+  created_at       TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_queries_type_status ON queries(type, status);
 
 -- ============================================================
 -- FUNNEL DATA (seeded from BigBrain via admin sync)
@@ -245,5 +284,9 @@ INSERT INTO settings (key, value) VALUES
   ('gsc_site_url', '"sc-domain:monday.com"'),
   ('rank_weights', '{"gsc": 0.5, "ahrefs": 0.5}'),
   ('sp_ttl_days', '30'),
-  ('rank_ttl_days', '7')
+  ('rank_ttl_days', '7'),
+  ('llm_model', '"claude-opus-4-6"'),
+  ('cron_time_utc', '"03:30"'),
+  ('retention_days_raw', '180'),
+  ('alert_channels', '["whatsapp_marketing_x1000"]')
 ON CONFLICT (key) DO NOTHING;

@@ -1,12 +1,11 @@
 /**
- * Persistent selling point & relevance score cache.
- * Primary: Vercel Postgres (survives deploys).
- * Fallback: in-memory + /tmp file cache (same as before).
+ * Selling point & relevance score cache.
+ * Uses in-memory + /tmp file cache.
+ * DB persistence has moved to the ad_extension table (written by the pipeline, not here).
  */
 
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
-import { query } from '@/lib/db/client';
 
 const CACHE_DIR = '/tmp/ff-sp-cache';
 const SP_FILE = join(CACHE_DIR, 'selling-points.json');
@@ -115,58 +114,6 @@ function debouncedPersistRel(): void {
   relPersistTimer = setTimeout(persistRelCache, 1000);
 }
 
-// --- DB helpers ---
-
-async function dbGetSellingPoint(key: string): Promise<string | null> {
-  try {
-    const rows = await query<{ selling_point: string }>(
-      `SELECT selling_point FROM selling_points WHERE entity_key = $1 AND expires_at > NOW()`,
-      [key],
-    );
-    return rows && rows.length > 0 ? rows[0].selling_point : null;
-  } catch {
-    return null;
-  }
-}
-
-async function dbSetSellingPoint(key: string, value: string, entityType: string): Promise<void> {
-  try {
-    await query(
-      `INSERT INTO selling_points (entity_type, entity_key, selling_point, model_version, computed_at, expires_at)
-       VALUES ($1, $2, $3, $4, NOW(), NOW() + INTERVAL '30 days')
-       ON CONFLICT (entity_key) DO UPDATE SET selling_point = $3, model_version = $4, computed_at = NOW(), expires_at = NOW() + INTERVAL '30 days'`,
-      [entityType, key, value, 'claude-sonnet-4-20250514'],
-    );
-  } catch (e) {
-    console.error('[Cache/DB] Failed to write selling point:', e);
-  }
-}
-
-async function dbGetRelevanceScore(adSp: string, lpSp: string): Promise<RelevanceResult | null> {
-  try {
-    const rows = await query<{ score: number; reason: string }>(
-      `SELECT score, reason FROM relevance_scores WHERE ad_selling_point = $1 AND lp_selling_point = $2 AND expires_at > NOW()`,
-      [adSp, lpSp],
-    );
-    return rows && rows.length > 0 ? { score: rows[0].score, reason: rows[0].reason || '' } : null;
-  } catch {
-    return null;
-  }
-}
-
-async function dbSetRelevanceScore(adSp: string, lpSp: string, result: RelevanceResult): Promise<void> {
-  try {
-    await query(
-      `INSERT INTO relevance_scores (ad_selling_point, lp_selling_point, score, reason, model_version, computed_at, expires_at)
-       VALUES ($1, $2, $3, $4, $5, NOW(), NOW() + INTERVAL '30 days')
-       ON CONFLICT (ad_selling_point, lp_selling_point) DO UPDATE SET score = $3, reason = $4, model_version = $5, computed_at = NOW(), expires_at = NOW() + INTERVAL '30 days'`,
-      [adSp, lpSp, result.score, result.reason, 'claude-sonnet-4-20250514'],
-    );
-  } catch (e) {
-    console.error('[Cache/DB] Failed to write relevance score:', e);
-  }
-}
-
 // --- Public API ---
 
 export function getSellingPoint(key: string): string | null {
@@ -181,31 +128,13 @@ export function getSellingPoint(key: string): string | null {
 }
 
 export async function getSellingPointAsync(key: string): Promise<string | null> {
-  // Check memory/file first (fast)
-  const local = getSellingPoint(key);
-  if (local) return local;
-
-  // Check DB (slower but survives cold starts)
-  const dbResult = await dbGetSellingPoint(key);
-  if (dbResult) {
-    // Warm local cache
-    const cache = loadSpCache();
-    cache.set(key, { value: dbResult, ts: Date.now() });
-    debouncedPersistSp();
-    return dbResult;
-  }
-
-  return null;
+  return getSellingPoint(key);
 }
 
 export function setSellingPoint(key: string, value: string): void {
   const cache = loadSpCache();
   cache.set(key, { value, ts: Date.now() });
   debouncedPersistSp();
-
-  // Write to DB in background (fire-and-forget)
-  const entityType = key.startsWith('lp:') ? 'lp' : 'ad';
-  dbSetSellingPoint(key, value, entityType).catch(() => {});
 }
 
 export function getRelevanceScore(adSp: string, lpSp: string): RelevanceResult | null {
@@ -221,19 +150,7 @@ export function getRelevanceScore(adSp: string, lpSp: string): RelevanceResult |
 }
 
 export async function getRelevanceScoreAsync(adSp: string, lpSp: string): Promise<RelevanceResult | null> {
-  const local = getRelevanceScore(adSp, lpSp);
-  if (local) return local;
-
-  const dbResult = await dbGetRelevanceScore(adSp, lpSp);
-  if (dbResult) {
-    const cache = loadRelCache();
-    const key = `${adSp}::${lpSp}`;
-    cache.set(key, { value: dbResult, ts: Date.now() });
-    debouncedPersistRel();
-    return dbResult;
-  }
-
-  return null;
+  return getRelevanceScore(adSp, lpSp);
 }
 
 export function setRelevanceScore(adSp: string, lpSp: string, result: RelevanceResult): void {
@@ -241,9 +158,6 @@ export function setRelevanceScore(adSp: string, lpSp: string, result: RelevanceR
   const key = `${adSp}::${lpSp}`;
   cache.set(key, { value: result, ts: Date.now() });
   debouncedPersistRel();
-
-  // Write to DB in background
-  dbSetRelevanceScore(adSp, lpSp, result).catch(() => {});
 }
 
 export function clearAllCaches(): void {
