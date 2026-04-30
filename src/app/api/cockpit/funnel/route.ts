@@ -205,7 +205,8 @@ export async function GET(req: NextRequest) {
     const avgCas = r.avg_channel_ad_score !== null ? parseFloat(r.avg_channel_ad_score) : null;
     const avgIs  = r.avg_internal_score    !== null ? parseFloat(r.avg_internal_score)    : null;
     const avgLpr = r.avg_lp_relevance_score !== null ? parseFloat(r.avg_lp_relevance_score) : null;
-    const bb = bbBySource[r.channel] || null;
+    const src = channelTypeToSource(r.channel_type);
+    const bb = bbBySource[src] || null;
     return {
       source: channelTypeToSource(r.channel_type),
       channel: r.channel,
