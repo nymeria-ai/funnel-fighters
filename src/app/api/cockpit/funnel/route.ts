@@ -92,7 +92,8 @@ const SOURCE_TO_CHANNEL_TYPES: Record<string, string[]> = {
   adwordsshopping: ['6', 'SHOPPING'],
 };
 
-function channelTypeToSource(channelType: string): string {
+function channelTypeToSource(channelType: string | null): string {
+  if (!channelType) return 'unknown';
   return CHANNEL_TYPE_TO_SOURCE[channelType] ?? channelType.toLowerCase().replace(/_/g, '');
 }
 
