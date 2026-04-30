@@ -108,6 +108,7 @@ function computePercentiles(values: (number | null)[]): (number | null)[] {
 }
 
 export async function GET(req: NextRequest) {
+ try {
   const { searchParams } = new URL(req.url);
   const source = searchParams.get('source');
   const country = searchParams.get('country');
@@ -376,4 +377,8 @@ export async function GET(req: NextRequest) {
   }
 
   return NextResponse.json({ channels, drilldown, adCreatives, lastSynced });
+ } catch (error) {
+  console.error('[Cockpit Funnel] Unhandled error:', error);
+  return NextResponse.json({ error: String(error), channels: [], drilldown: null, lastSynced: null }, { status: 500 });
+ }
 }
