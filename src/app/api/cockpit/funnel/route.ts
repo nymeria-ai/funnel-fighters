@@ -32,9 +32,9 @@ export interface ChannelData extends Record<string, unknown> {
   clicks: number;
   ctr: number;
   cost: number;
-  signups: null;
-  engaged_2nd_day: null;
-  paying: null;
+  signups: number | null;
+  engaged_2nd_day: number | null;
+  paying: number | null;
   ad_quality: number | null;
   lp_quality: number | null;
   product_score: null;
@@ -51,9 +51,9 @@ export interface DrilldownItem extends Record<string, unknown> {
   clicks: number;
   ctr: number;
   cost: number;
-  signups: null;
-  engaged_2nd_day: null;
-  paying: null;
+  signups: number | null;
+  engaged_2nd_day: number | null;
+  paying: number | null;
   ad_quality: number | null;
   lp_quality: number | null;
   product_score: number | null;
@@ -178,12 +178,34 @@ export async function GET(req: NextRequest) {
   });
   const adQualities = computePercentiles(ctrs);
 
+  // ── BigBrain funnel data (signups → engaged → paying) ──────────────────
+  const bbRows = await query<{ source: string; total_signups: string; hard_signups: string; engaged_2nd_day: string; paying: string }>(
+    `SELECT source,
+            SUM(total_signups)::bigint AS total_signups,
+            SUM(hard_signups)::bigint AS hard_signups,
+            SUM(engaged_2nd_day)::bigint AS engaged_2nd_day,
+            SUM(paying)::bigint AS paying
+     FROM bigbrain_funnel
+     GROUP BY source`
+  );
+  const bbBySource: Record<string, { signups: number; engaged: number; paying: number }> = {};
+  if (bbRows) {
+    for (const b of bbRows) {
+      bbBySource[b.source] = {
+        signups: Number(b.total_signups),
+        engaged: Number(b.engaged_2nd_day),
+        paying: Number(b.paying),
+      };
+    }
+  }
+
   const channels: ChannelData[] = channelRows.map((r, i) => {
     const imp = Number(r.impressions);
     const clk = Number(r.clicks);
     const avgCas = r.avg_channel_ad_score !== null ? parseFloat(r.avg_channel_ad_score) : null;
     const avgIs  = r.avg_internal_score    !== null ? parseFloat(r.avg_internal_score)    : null;
     const avgLpr = r.avg_lp_relevance_score !== null ? parseFloat(r.avg_lp_relevance_score) : null;
+    const bb = bbBySource[r.channel] || null;
     return {
       source: channelTypeToSource(r.channel_type),
       channel: r.channel,
@@ -192,9 +214,9 @@ export async function GET(req: NextRequest) {
       clicks: clk,
       ctr: imp > 0 ? (clk / imp) * 100 : 0,
       cost: Number(r.cost),
-      signups: null,
-      engaged_2nd_day: null,
-      paying: null,
+      signups: bb?.signups ?? null,
+      engaged_2nd_day: bb?.engaged ?? null,
+      paying: bb?.paying ?? null,
       ad_quality: adQualities[i] !== null ? Math.round(adQualities[i]!) : null,
       lp_quality: null,
       product_score: null,
