@@ -154,8 +154,10 @@ export async function GET(req: NextRequest) {
     FROM ad_metrics_daily amd
     JOIN ads a          ON amd.ad_id    = a.id
     JOIN campaigns c    ON a.campaign_id = c.id
+    JOIN accounts acc   ON a.account_id  = acc.id AND acc.is_target = true
     LEFT JOIN ad_extension ae ON a.id   = ae.ad_id
-    WHERE (amd.date IS NULL OR (amd.date >= $1::date AND amd.date <= $2::date))
+    WHERE amd.date >= $1::date AND amd.date <= $2::date
+      AND amd.cost > 0
     GROUP BY c.channel, c.channel_type
     ORDER BY SUM(amd.impressions) DESC
     `,
@@ -226,9 +228,10 @@ export async function GET(req: NextRequest) {
       JOIN ads a       ON amd.ad_id    = a.id
       JOIN campaigns c ON a.campaign_id = c.id
       WHERE (c.channel_type = $1 OR c.channel_type = $2)
-        AND (amd.date IS NULL OR (amd.date >= $3::date AND amd.date <= $4::date))
+        AND amd.date >= $3::date AND amd.date <= $4::date
       GROUP BY SPLIT_PART(c.name, '-', 1), c.channel
       ORDER BY SUM(amd.impressions) DESC
+      LIMIT 200
       `,
       [ct1, ct2, startDateStr, endDateStr]
     );
@@ -248,9 +251,10 @@ export async function GET(req: NextRequest) {
       JOIN campaigns c ON a.campaign_id = c.id
       WHERE (c.channel_type = $1 OR c.channel_type = $2)
         AND SPLIT_PART(c.name, '-', 1) = $3
-        AND (amd.date IS NULL OR (amd.date >= $4::date AND amd.date <= $5::date))
+        AND amd.date >= $4::date AND amd.date <= $5::date
       GROUP BY c.id, c.name, c.channel
       ORDER BY SUM(amd.impressions) DESC
+      LIMIT 500
       `,
       [ct1, ct2, country, startDateStr, endDateStr]
     );
@@ -272,7 +276,7 @@ export async function GET(req: NextRequest) {
         JOIN campaigns c    ON a.campaign_id = c.id
         LEFT JOIN ad_groups ag ON a.ad_group_id = ag.id
         WHERE a.campaign_id = $1
-          AND (amd.date IS NULL OR (amd.date >= $2::date AND amd.date <= $3::date))
+          AND amd.date >= $2::date AND amd.date <= $3::date
         GROUP BY a.ad_group_id, ag.name, c.channel
       ),
       url_lookup AS (
