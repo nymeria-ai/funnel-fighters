@@ -30,6 +30,7 @@ const APPROVED_ACCOUNTS = new Set([
   '6629846296',  // Verticals (Search)
   '9194503735',  // Verticals2 (Search)
   '6073520942',  // monday.com brand (Search)
+  '9318044395',  // monday service - search (Search) — added 2026-04-30
 ]);
 
 // Tuning knobs
