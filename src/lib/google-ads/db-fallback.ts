@@ -47,6 +47,7 @@ export async function hasAdsInDb(): Promise<boolean> {
 export async function getCockpitRowsFromDb(): Promise<CockpitRow[]> {
   if (!isConfigured()) return [];
 
+  // Only return ads with actual spend — avoids 248K row full-table scan
   const rows = await query<DbAd>(`
     SELECT
       a.id, a.ad_group_id, a.campaign_id, a.account_id,
@@ -66,14 +67,15 @@ export async function getCockpitRowsFromDb(): Promise<CockpitRow[]> {
       ae.relevance_reason,
       lpe.selling_point                  AS lp_selling_point
     FROM ads a
+    INNER JOIN ad_metrics_30d m ON a.id = m.ad_id AND m.cost > 0
     LEFT JOIN campaigns c       ON a.campaign_id  = c.id
     LEFT JOIN ad_groups ag      ON a.ad_group_id  = ag.id
     LEFT JOIN accounts acc      ON a.account_id   = acc.id
-    LEFT JOIN ad_metrics_30d m  ON a.id           = m.ad_id
     LEFT JOIN ad_extension ae   ON a.id           = ae.ad_id
     LEFT JOIN landing_page_extension lpe ON a.final_url = lpe.url
     WHERE acc.is_target = true
-    ORDER BY COALESCE(m.cost, 0) DESC
+    ORDER BY m.cost DESC
+    LIMIT 5000
   `);
 
   if (!rows) return [];
