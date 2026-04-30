@@ -101,8 +101,12 @@ export default function SyncStatusBadge() {
       {/* Expandable panel */}
       {open && (
         <div
-          className="absolute right-0 top-full mt-2 w-64 bg-bg-card border border-bg-border rounded-xl shadow-xl z-50 p-3"
-          style={{ boxShadow: `0 0 0 1px ${ring}, 0 8px 32px rgba(0,0,0,0.5)` }}
+          className="absolute right-0 top-full mt-2 w-64 border rounded-xl shadow-xl z-50 p-3"
+          style={{
+            backgroundColor: '#1A1A1F',
+            borderColor: '#2A2A32',
+            boxShadow: `0 0 0 1px ${ring}, 0 8px 32px rgba(0,0,0,0.5)`,
+          }}
         >
           <div className="text-[10px] text-text-muted uppercase tracking-wider mb-2 font-semibold">
             Sync Status — Per Table
