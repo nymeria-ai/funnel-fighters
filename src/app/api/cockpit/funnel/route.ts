@@ -68,6 +68,7 @@ export interface AdCreative extends Record<string, unknown> {
 }
 
 const CHANNEL_TYPE_TO_SOURCE: Record<string, string> = {
+  // Google Ads channel types
   SEARCH: 'adwordssearch',
   DEMAND_GEN: 'adwordsyoutube',
   DISPLAY: 'adwordsdisplay',
@@ -81,6 +82,22 @@ const CHANNEL_TYPE_TO_SOURCE: Record<string, string> = {
   '8': 'pmax',
   '13': 'adwordsyoutube',
   DEMAND_GEN_MULTI: 'adwordsyoutube',
+  // Meta Ads objectives → unified "meta" source
+  OUTCOME_SALES: 'meta',
+  OUTCOME_AWARENESS: 'meta',
+  OUTCOME_ENGAGEMENT: 'meta',
+  OUTCOME_LEADS: 'meta',
+  OUTCOME_TRAFFIC: 'meta',
+  OUTCOME_APP_PROMOTION: 'meta',
+  CONVERSIONS: 'meta',
+  LINK_CLICKS: 'meta',
+  REACH: 'meta',
+  BRAND_AWARENESS: 'meta',
+  POST_ENGAGEMENT: 'meta',
+  VIDEO_VIEWS: 'meta',
+  LEAD_GENERATION: 'meta',
+  MESSAGES: 'meta',
+  APP_INSTALLS: 'meta',
 };
 
 const SOURCE_TO_CHANNEL_TYPES: Record<string, string[]> = {
@@ -90,11 +107,15 @@ const SOURCE_TO_CHANNEL_TYPES: Record<string, string[]> = {
   adwordsvideo: ['7', 'VIDEO'],
   pmax: ['8', 'PERFORMANCE_MAX'],
   adwordsshopping: ['6', 'SHOPPING'],
+  meta: ['OUTCOME_SALES', 'OUTCOME_AWARENESS', 'OUTCOME_ENGAGEMENT', 'OUTCOME_LEADS', 'OUTCOME_TRAFFIC', 'OUTCOME_APP_PROMOTION', 'CONVERSIONS', 'LINK_CLICKS', 'REACH', 'BRAND_AWARENESS', 'POST_ENGAGEMENT', 'VIDEO_VIEWS', 'LEAD_GENERATION', 'MESSAGES', 'APP_INSTALLS'],
 };
 
-function channelTypeToSource(channelType: string | null): string {
-  if (!channelType) return 'unknown';
-  return CHANNEL_TYPE_TO_SOURCE[channelType] ?? channelType.toLowerCase().replace(/_/g, '');
+function channelTypeToSource(channelType: string | null, channel?: string): string {
+  if (!channelType) return channel === 'meta' ? 'meta' : 'unknown';
+  if (CHANNEL_TYPE_TO_SOURCE[channelType]) return CHANNEL_TYPE_TO_SOURCE[channelType];
+  // If channel is 'meta', map any unknown objective to 'meta'
+  if (channel === 'meta') return 'meta';
+  return channelType.toLowerCase().replace(/_/g, '');
 }
 
 function computePercentiles(values: (number | null)[]): (number | null)[] {
@@ -170,14 +191,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ channels: [], drilldown: null, lastSynced });
   }
 
-  // Ad Quality = CTR percentile rank across channels
-  const ctrs = channelRows.map((r) => {
-    const imp = Number(r.impressions);
-    const clk = Number(r.clicks);
-    return imp > 0 ? clk / imp : 0;
-  });
-  const adQualities = computePercentiles(ctrs);
-
   // ── BigBrain funnel data (signups → engaged → paying) ──────────────────
   const bbRows = await query<{ source: string; total_signups: string; hard_signups: string; engaged_2nd_day: string; paying: string }>(
     `SELECT source,
@@ -199,31 +212,81 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  const channels: ChannelData[] = channelRows.map((r, i) => {
+  // Merge rows by derived source (consolidates all Meta objectives into one "meta" row)
+  const sourceMap = new Map<string, {
+    channel: string; channel_type: string;
+    impressions: number; clicks: number; cost: number;
+    avgCasSum: number; avgCasCount: number;
+    avgIsSum: number; avgIsCount: number;
+    avgLprSum: number; avgLprCount: number;
+  }>();
+  for (const r of channelRows) {
+    const src = channelTypeToSource(r.channel_type, r.channel);
+    const existing = sourceMap.get(src);
     const imp = Number(r.impressions);
     const clk = Number(r.clicks);
+    const cost = Number(r.cost);
     const avgCas = r.avg_channel_ad_score !== null ? parseFloat(r.avg_channel_ad_score) : null;
-    const avgIs  = r.avg_internal_score    !== null ? parseFloat(r.avg_internal_score)    : null;
+    const avgIs = r.avg_internal_score !== null ? parseFloat(r.avg_internal_score) : null;
     const avgLpr = r.avg_lp_relevance_score !== null ? parseFloat(r.avg_lp_relevance_score) : null;
-    const src = channelTypeToSource(r.channel_type);
-    const bb = bbBySource[src] || null;
+    if (existing) {
+      existing.impressions += imp;
+      existing.clicks += clk;
+      existing.cost += cost;
+      if (avgCas !== null && isFinite(avgCas)) { existing.avgCasSum += avgCas; existing.avgCasCount++; }
+      if (avgIs !== null && isFinite(avgIs)) { existing.avgIsSum += avgIs; existing.avgIsCount++; }
+      if (avgLpr !== null && isFinite(avgLpr)) { existing.avgLprSum += avgLpr; existing.avgLprCount++; }
+    } else {
+      sourceMap.set(src, {
+        channel: r.channel,
+        channel_type: r.channel_type,
+        impressions: imp, clicks: clk, cost,
+        avgCasSum: avgCas !== null && isFinite(avgCas) ? avgCas : 0,
+        avgCasCount: avgCas !== null && isFinite(avgCas) ? 1 : 0,
+        avgIsSum: avgIs !== null && isFinite(avgIs) ? avgIs : 0,
+        avgIsCount: avgIs !== null && isFinite(avgIs) ? 1 : 0,
+        avgLprSum: avgLpr !== null && isFinite(avgLpr) ? avgLpr : 0,
+        avgLprCount: avgLpr !== null && isFinite(avgLpr) ? 1 : 0,
+      });
+    }
+  }
+
+  const mergedRows = Array.from(sourceMap.entries()).map(([src, d]) => ({
+    source: src,
+    channel: d.channel,
+    channel_type: d.channel_type,
+    impressions: d.impressions,
+    clicks: d.clicks,
+    cost: d.cost,
+    avgCas: d.avgCasCount > 0 ? d.avgCasSum / d.avgCasCount : null,
+    avgIs: d.avgIsCount > 0 ? d.avgIsSum / d.avgIsCount : null,
+    avgLpr: d.avgLprCount > 0 ? d.avgLprSum / d.avgLprCount : null,
+  }));
+  mergedRows.sort((a, b) => b.impressions - a.impressions);
+
+  // Ad Quality = CTR percentile rank across merged channels
+  const ctrs = mergedRows.map((r) => r.impressions > 0 ? r.clicks / r.impressions : 0);
+  const adQualities = computePercentiles(ctrs);
+
+  const channels: ChannelData[] = mergedRows.map((r, i) => {
+    const bb = bbBySource[r.source] || null;
     return {
-      source: channelTypeToSource(r.channel_type),
+      source: r.source,
       channel: r.channel,
       channel_type: r.channel_type,
-      impressions: imp,
-      clicks: clk,
-      ctr: imp > 0 ? (clk / imp) * 100 : 0,
-      cost: Number(r.cost),
+      impressions: r.impressions,
+      clicks: r.clicks,
+      ctr: r.impressions > 0 ? (r.clicks / r.impressions) * 100 : 0,
+      cost: r.cost,
       signups: bb?.signups ?? null,
       engaged_2nd_day: bb?.engaged ?? null,
       paying: bb?.paying ?? null,
       ad_quality: adQualities[i] !== null ? Math.round(adQualities[i]!) : null,
       lp_quality: null,
       product_score: null,
-      avg_channel_ad_score: avgCas !== null && isFinite(avgCas) ? Math.round(avgCas) : null,
-      avg_internal_score:   avgIs  !== null && isFinite(avgIs)  ? Math.round(avgIs)  : null,
-      avg_lp_relevance_score: avgLpr !== null && isFinite(avgLpr) ? Math.round(avgLpr) : null,
+      avg_channel_ad_score: r.avgCas !== null ? Math.round(r.avgCas) : null,
+      avg_internal_score:   r.avgIs  !== null ? Math.round(r.avgIs)  : null,
+      avg_lp_relevance_score: r.avgLpr !== null ? Math.round(r.avgLpr) : null,
     };
   });
 
@@ -233,56 +296,98 @@ export async function GET(req: NextRequest) {
   }
 
   const targetChannelTypes = SOURCE_TO_CHANNEL_TYPES[source] ?? [source.toUpperCase(), source];
-  const ct1 = targetChannelTypes[0] || source;
-  const ct2 = targetChannelTypes[1] || targetChannelTypes[0] || source;
+  const isMeta = source === 'meta';
 
   let drillRows: DrillRow[] | null = null;
 
   if (!country && !campaignId) {
     // Level 1: by country (first segment of campaign name)
-    drillRows = await query<DrillRow>(
-      `
-      SELECT
-        SPLIT_PART(c.name, '-', 1)   AS label,
-        SPLIT_PART(c.name, '-', 1)   AS key,
-        c.channel,
-        SUM(amd.impressions)::bigint AS impressions,
-        SUM(amd.clicks)::bigint      AS clicks,
-        SUM(amd.cost)                AS cost
-      FROM ad_metrics_daily amd
-      JOIN ads a       ON amd.ad_id    = a.id
-      JOIN campaigns c ON a.campaign_id = c.id
-      WHERE (c.channel_type = $1 OR c.channel_type = $2)
-        AND amd.date >= $3::date AND amd.date <= $4::date
-      GROUP BY SPLIT_PART(c.name, '-', 1), c.channel
-      ORDER BY SUM(amd.impressions) DESC
-      LIMIT 200
-      `,
-      [ct1, ct2, startDateStr, endDateStr]
-    );
+    drillRows = isMeta
+      ? await query<DrillRow>(
+          `
+          SELECT
+            SPLIT_PART(c.name, '-', 1)   AS label,
+            SPLIT_PART(c.name, '-', 1)   AS key,
+            c.channel,
+            SUM(amd.impressions)::bigint AS impressions,
+            SUM(amd.clicks)::bigint      AS clicks,
+            SUM(amd.cost)                AS cost
+          FROM ad_metrics_daily amd
+          JOIN ads a       ON amd.ad_id    = a.id
+          JOIN campaigns c ON a.campaign_id = c.id
+          WHERE c.channel = 'meta'
+            AND amd.date >= $1::date AND amd.date <= $2::date
+          GROUP BY SPLIT_PART(c.name, '-', 1), c.channel
+          ORDER BY SUM(amd.impressions) DESC
+          LIMIT 200
+          `,
+          [startDateStr, endDateStr]
+        )
+      : await query<DrillRow>(
+          `
+          SELECT
+            SPLIT_PART(c.name, '-', 1)   AS label,
+            SPLIT_PART(c.name, '-', 1)   AS key,
+            c.channel,
+            SUM(amd.impressions)::bigint AS impressions,
+            SUM(amd.clicks)::bigint      AS clicks,
+            SUM(amd.cost)                AS cost
+          FROM ad_metrics_daily amd
+          JOIN ads a       ON amd.ad_id    = a.id
+          JOIN campaigns c ON a.campaign_id = c.id
+          WHERE c.channel_type = ANY($1::text[])
+            AND amd.date >= $2::date AND amd.date <= $3::date
+          GROUP BY SPLIT_PART(c.name, '-', 1), c.channel
+          ORDER BY SUM(amd.impressions) DESC
+          LIMIT 200
+          `,
+          [targetChannelTypes, startDateStr, endDateStr]
+        );
   } else if (country && !campaignId) {
     // Level 2: by campaign
-    drillRows = await query<DrillRow>(
-      `
-      SELECT
-        c.name                       AS label,
-        c.id                         AS key,
-        c.channel,
-        SUM(amd.impressions)::bigint AS impressions,
-        SUM(amd.clicks)::bigint      AS clicks,
-        SUM(amd.cost)                AS cost
-      FROM ad_metrics_daily amd
-      JOIN ads a       ON amd.ad_id    = a.id
-      JOIN campaigns c ON a.campaign_id = c.id
-      WHERE (c.channel_type = $1 OR c.channel_type = $2)
-        AND SPLIT_PART(c.name, '-', 1) = $3
-        AND amd.date >= $4::date AND amd.date <= $5::date
-      GROUP BY c.id, c.name, c.channel
-      ORDER BY SUM(amd.impressions) DESC
-      LIMIT 500
-      `,
-      [ct1, ct2, country, startDateStr, endDateStr]
-    );
+    drillRows = isMeta
+      ? await query<DrillRow>(
+          `
+          SELECT
+            c.name                       AS label,
+            c.id                         AS key,
+            c.channel,
+            SUM(amd.impressions)::bigint AS impressions,
+            SUM(amd.clicks)::bigint      AS clicks,
+            SUM(amd.cost)                AS cost
+          FROM ad_metrics_daily amd
+          JOIN ads a       ON amd.ad_id    = a.id
+          JOIN campaigns c ON a.campaign_id = c.id
+          WHERE c.channel = 'meta'
+            AND SPLIT_PART(c.name, '-', 1) = $1
+            AND amd.date >= $2::date AND amd.date <= $3::date
+          GROUP BY c.id, c.name, c.channel
+          ORDER BY SUM(amd.impressions) DESC
+          LIMIT 500
+          `,
+          [country, startDateStr, endDateStr]
+        )
+      : await query<DrillRow>(
+          `
+          SELECT
+            c.name                       AS label,
+            c.id                         AS key,
+            c.channel,
+            SUM(amd.impressions)::bigint AS impressions,
+            SUM(amd.clicks)::bigint      AS clicks,
+            SUM(amd.cost)                AS cost
+          FROM ad_metrics_daily amd
+          JOIN ads a       ON amd.ad_id    = a.id
+          JOIN campaigns c ON a.campaign_id = c.id
+          WHERE c.channel_type = ANY($1::text[])
+            AND SPLIT_PART(c.name, '-', 1) = $2
+            AND amd.date >= $3::date AND amd.date <= $4::date
+          GROUP BY c.id, c.name, c.channel
+          ORDER BY SUM(amd.impressions) DESC
+          LIMIT 500
+          `,
+          [targetChannelTypes, country, startDateStr, endDateStr]
+        );
   } else if (campaignId) {
     // Level 3: by ad group
     drillRows = await query<DrillRow>(

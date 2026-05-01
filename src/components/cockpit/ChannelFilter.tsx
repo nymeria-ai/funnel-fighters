@@ -2,6 +2,7 @@
 
 export const CHANNEL_OPTIONS = [
   { value: '', label: 'All Channels' },
+  { value: 'meta', label: 'Meta' },
   { value: 'adwordssearch', label: 'Search' },
   { value: 'adwordsyoutube', label: 'YouTube / Demand Gen' },
   { value: 'adwordsdisplay', label: 'Display' },
