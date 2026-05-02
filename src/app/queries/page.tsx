@@ -225,24 +225,26 @@ export default function QueriesPage() {
   const [creating, setCreating] = useState(false);
   const [createMsg, setCreateMsg] = useState('');
 
-  const fetchQueries = useCallback(async (s: string) => {
+  const fetchQueries = useCallback(async (s?: string) => {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('/api/admin/queries', {
-        headers: { Authorization: `Bearer ${s}` },
-      });
-      if (res.status === 401) throw new Error('Invalid secret.');
+      const headers: Record<string, string> = {};
+      if (s) headers.Authorization = `Bearer ${s}`;
+      const res = await fetch('/api/admin/queries', { headers });
       if (!res.ok) throw new Error('Failed to load.');
       const data = await res.json();
       setQueries(data.queries ?? []);
-      setSecret(s);
+      if (s) setSecret(s);
     } catch (e) {
       setError((e as Error).message);
     } finally {
       setLoading(false);
     }
   }, []);
+
+  // Auto-load queries on mount (no auth needed for read)
+  useState(() => { fetchQueries(); });
 
   function handleSubmitSecret(e: React.FormEvent) {
     e.preventDefault();
@@ -322,35 +324,32 @@ export default function QueriesPage() {
         )}
       </div>
 
-      {/* Auth gate */}
+      {/* Auth for editing — collapsed inline */}
       {!secret && (
-        <div className="bg-bg-card border border-bg-border rounded-xl p-6 max-w-md">
-          <h2 className="text-sm font-semibold text-text-primary mb-1">Authenticate</h2>
-          <p className="text-xs text-text-muted mb-4">
-            Enter your <code className="text-accent-blue">ADMIN_SYNC_SECRET</code> to manage queries.
-          </p>
-          <form onSubmit={handleSubmitSecret} className="flex gap-2">
+        <div className="bg-bg-card border border-bg-border rounded-xl p-4 mb-6 max-w-md">
+          <form onSubmit={handleSubmitSecret} className="flex gap-2 items-center">
+            <span className="text-xs text-text-muted whitespace-nowrap">🔒 Admin:</span>
             <input
               type="password"
               value={secretInput}
               onChange={(e) => setSecretInput(e.target.value)}
-              placeholder="ADMIN_SYNC_SECRET"
+              placeholder="Enter secret to edit"
               className="flex-1 bg-bg-hover border border-bg-border rounded-lg px-3 py-2 text-sm text-text-primary outline-none focus:border-accent-blue"
-              autoFocus
             />
             <button
               type="submit"
               disabled={loading || !secretInput.trim()}
-              className="px-4 py-2 bg-accent-blue text-white text-sm rounded-lg hover:bg-accent-blue/80 disabled:opacity-40 transition-colors"
+              className="px-3 py-2 bg-accent-blue text-white text-xs rounded-lg hover:bg-accent-blue/80 disabled:opacity-40 transition-colors"
             >
-              {loading ? '…' : 'Load'}
+              Unlock
             </button>
           </form>
-          {error && <p className="text-xs text-red-400 mt-2">{error}</p>}
         </div>
       )}
 
-      {secret && (
+      {error && <p className="text-xs text-red-400 mb-4">{error}</p>}
+
+      {true && (
         <>
           {/* Create form */}
           {showCreate && (
