@@ -158,30 +158,59 @@ async function upsertFunnelWeekly(rows: Record<string, unknown>[]): Promise<numb
 }
 
 async function upsertProductCampaignFunnel(rows: Record<string, unknown>[]): Promise<number> {
+  // Ensure table exists (migration may not have run)
+  await query(
+    `CREATE TABLE IF NOT EXISTS product_campaign_funnel (
+      source TEXT NOT NULL,
+      campaign TEXT NOT NULL,
+      product TEXT NOT NULL DEFAULT '(unknown)',
+      total_signups INTEGER DEFAULT 0,
+      engaged_2nd_day INTEGER DEFAULT 0,
+      paying_accounts INTEGER DEFAULT 0,
+      engagement_rate NUMERIC(5,2) DEFAULT 0,
+      payer_rate NUMERIC(5,2) DEFAULT 0,
+      updated_at TIMESTAMPTZ DEFAULT NOW(),
+      PRIMARY KEY (source, campaign, product)
+    )`
+  );
+
   let upserted = 0;
+  const errors: string[] = [];
   for (const row of rows) {
-    const result = await query(
-      `INSERT INTO product_campaign_funnel (source, campaign, product, total_signups, engaged_2nd_day, paying_accounts, engagement_rate, payer_rate, updated_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW())
-       ON CONFLICT (source, campaign, product) DO UPDATE SET
-         total_signups = EXCLUDED.total_signups,
-         engaged_2nd_day = EXCLUDED.engaged_2nd_day,
-         paying_accounts = EXCLUDED.paying_accounts,
-         engagement_rate = EXCLUDED.engagement_rate,
-         payer_rate = EXCLUDED.payer_rate,
-         updated_at = NOW()`,
-      [
-        row.source ?? '(unknown)',
-        row.campaign ?? '(unknown)',
-        row.product ?? '(unknown)',
-        row.total_signups ?? 0,
-        row.engaged_2nd_day ?? 0,
-        row.paying_accounts ?? 0,
-        row.engagement_rate ?? 0,
-        row.payer_rate ?? 0,
-      ]
-    );
-    if (result !== null) upserted++;
+    try {
+      const result = await query(
+        `INSERT INTO product_campaign_funnel (source, campaign, product, total_signups, engaged_2nd_day, paying_accounts, engagement_rate, payer_rate, updated_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW())
+         ON CONFLICT (source, campaign, product) DO UPDATE SET
+           total_signups = EXCLUDED.total_signups,
+           engaged_2nd_day = EXCLUDED.engaged_2nd_day,
+           paying_accounts = EXCLUDED.paying_accounts,
+           engagement_rate = EXCLUDED.engagement_rate,
+           payer_rate = EXCLUDED.payer_rate,
+           updated_at = NOW()
+         RETURNING source`,
+        [
+          String(row.source ?? '(unknown)'),
+          String(row.campaign ?? '(unknown)'),
+          String(row.product ?? '(unknown)'),
+          Number(row.total_signups ?? 0),
+          Number(row.engaged_2nd_day ?? 0),
+          Number(row.paying_accounts ?? 0),
+          Number(row.engagement_rate ?? 0),
+          Number(row.payer_rate ?? 0),
+        ]
+      );
+      if (result && result.length > 0) {
+        upserted++;
+      } else {
+        errors.push(`Row ${row.source}/${row.campaign}: result=${JSON.stringify(result)}`);
+      }
+    } catch (err) {
+      errors.push(`Row ${row.source}/${row.campaign}: ${err instanceof Error ? err.message : String(err)}`);
+    }
+  }
+  if (errors.length > 0) {
+    console.error('[bigbrain] product_campaign_funnel errors:', errors.slice(0, 5));
   }
   return upserted;
 }
