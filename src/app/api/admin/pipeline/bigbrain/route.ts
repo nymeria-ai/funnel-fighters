@@ -158,36 +158,11 @@ async function upsertFunnelWeekly(rows: Record<string, unknown>[]): Promise<numb
 }
 
 async function upsertProductCampaignFunnel(rows: Record<string, unknown>[]): Promise<number> {
-  // Truncate and reload — simpler than individual upserts for 1K+ rows
-  await query(`DELETE FROM product_campaign_funnel`);
-  
   let upserted = 0;
-  // Batch insert in chunks of 50 for performance
-  for (let i = 0; i < rows.length; i += 50) {
-    const batch = rows.slice(i, i + 50);
-    const values: unknown[] = [];
-    const placeholders: string[] = [];
-    
-    for (const row of batch) {
-      const offset = values.length;
-      placeholders.push(
-        `($${offset + 1}, $${offset + 2}, $${offset + 3}, $${offset + 4}, $${offset + 5}, $${offset + 6}, $${offset + 7}, $${offset + 8}, NOW())`
-      );
-      values.push(
-        row.source ?? '(unknown)',
-        row.campaign ?? '(unknown)',
-        row.product ?? '(unknown)',
-        row.total_signups ?? 0,
-        row.engaged_2nd_day ?? 0,
-        row.paying_accounts ?? 0,
-        row.engagement_rate ?? 0,
-        row.payer_rate ?? 0
-      );
-    }
-    
-    await query(
+  for (const row of rows) {
+    const result = await query(
       `INSERT INTO product_campaign_funnel (source, campaign, product, total_signups, engaged_2nd_day, paying_accounts, engagement_rate, payer_rate, updated_at)
-       VALUES ${placeholders.join(', ')}
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW())
        ON CONFLICT (source, campaign, product) DO UPDATE SET
          total_signups = EXCLUDED.total_signups,
          engaged_2nd_day = EXCLUDED.engaged_2nd_day,
@@ -195,9 +170,18 @@ async function upsertProductCampaignFunnel(rows: Record<string, unknown>[]): Pro
          engagement_rate = EXCLUDED.engagement_rate,
          payer_rate = EXCLUDED.payer_rate,
          updated_at = NOW()`,
-      values
+      [
+        row.source ?? '(unknown)',
+        row.campaign ?? '(unknown)',
+        row.product ?? '(unknown)',
+        row.total_signups ?? 0,
+        row.engaged_2nd_day ?? 0,
+        row.paying_accounts ?? 0,
+        row.engagement_rate ?? 0,
+        row.payer_rate ?? 0,
+      ]
     );
-    upserted += batch.length;
+    if (result !== null) upserted++;
   }
   return upserted;
 }
