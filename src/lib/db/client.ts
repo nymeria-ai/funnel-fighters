@@ -59,4 +59,19 @@ export async function exec(text: string): Promise<boolean> {
   }
 }
 
+/**
+ * Execute a SQL query that THROWS on error instead of returning null.
+ * Use for operations where you need to know the exact error.
+ */
+export async function queryOrThrow<T extends Record<string, unknown>>(
+  text: string,
+  params?: unknown[],
+): Promise<T[]> {
+  if (!isConfigured()) throw new Error('Database not configured');
+  const pool = getPool();
+  if (!pool) throw new Error('Could not create pool');
+  const result = await pool.query(text, params);
+  return result.rows as T[];
+}
+
 export { sql, isConfigured };

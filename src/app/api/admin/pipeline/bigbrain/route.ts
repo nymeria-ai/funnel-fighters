@@ -19,7 +19,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { timingSafeEqual } from 'crypto';
-import { query } from '@/lib/db/client';
+import { query, queryOrThrow } from '@/lib/db/client';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 120;
@@ -157,28 +157,34 @@ async function upsertFunnelWeekly(rows: Record<string, unknown>[]): Promise<numb
   return upserted;
 }
 
-async function upsertProductCampaignFunnel(rows: Record<string, unknown>[]): Promise<number> {
+async function upsertProductCampaignFunnel(rows: Record<string, unknown>[]): Promise<{ upserted: number; errors: string[] }> {
+  const errors: string[] = [];
+  
   // Ensure table exists (migration may not have run)
-  await query(
-    `CREATE TABLE IF NOT EXISTS product_campaign_funnel (
-      source TEXT NOT NULL,
-      campaign TEXT NOT NULL,
-      product TEXT NOT NULL DEFAULT '(unknown)',
-      total_signups INTEGER DEFAULT 0,
-      engaged_2nd_day INTEGER DEFAULT 0,
-      paying_accounts INTEGER DEFAULT 0,
-      engagement_rate NUMERIC(5,2) DEFAULT 0,
-      payer_rate NUMERIC(5,2) DEFAULT 0,
-      updated_at TIMESTAMPTZ DEFAULT NOW(),
-      PRIMARY KEY (source, campaign, product)
-    )`
-  );
+  try {
+    await queryOrThrow(
+      `CREATE TABLE IF NOT EXISTS product_campaign_funnel (
+        source TEXT NOT NULL,
+        campaign TEXT NOT NULL,
+        product TEXT NOT NULL DEFAULT '(unknown)',
+        total_signups INTEGER DEFAULT 0,
+        engaged_2nd_day INTEGER DEFAULT 0,
+        paying_accounts INTEGER DEFAULT 0,
+        engagement_rate NUMERIC(5,2) DEFAULT 0,
+        payer_rate NUMERIC(5,2) DEFAULT 0,
+        updated_at TIMESTAMPTZ DEFAULT NOW(),
+        PRIMARY KEY (source, campaign, product)
+      )`
+    );
+  } catch (err) {
+    errors.push(`CREATE TABLE failed: ${err instanceof Error ? err.message : String(err)}`);
+    return { upserted: 0, errors };
+  }
 
   let upserted = 0;
-  const errors: string[] = [];
   for (const row of rows) {
     try {
-      const result = await query(
+      const result = await queryOrThrow(
         `INSERT INTO product_campaign_funnel (source, campaign, product, total_signups, engaged_2nd_day, paying_accounts, engagement_rate, payer_rate, updated_at)
          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW())
          ON CONFLICT (source, campaign, product) DO UPDATE SET
@@ -200,19 +206,13 @@ async function upsertProductCampaignFunnel(rows: Record<string, unknown>[]): Pro
           Number(row.payer_rate ?? 0),
         ]
       );
-      if (result && result.length > 0) {
-        upserted++;
-      } else {
-        errors.push(`Row ${row.source}/${row.campaign}: result=${JSON.stringify(result)}`);
-      }
+      upserted++;
     } catch (err) {
-      errors.push(`Row ${row.source}/${row.campaign}: ${err instanceof Error ? err.message : String(err)}`);
+      const msg = err instanceof Error ? err.message : String(err);
+      errors.push(`Row ${row.source}/${row.campaign}: ${msg}`);
     }
   }
-  if (errors.length > 0) {
-    console.error('[bigbrain] product_campaign_funnel errors:', errors.slice(0, 5));
-  }
-  return upserted;
+  return { upserted, errors };
 }
 
 async function upsertDuckScores(rows: Record<string, unknown>[]): Promise<number> {
@@ -301,9 +301,19 @@ export async function POST(req: NextRequest) {
       case 'product_funnel_metrics':
         upserted = await upsertProductFunnelMetrics(rows);
         break;
-      case 'product_campaign_funnel':
-        upserted = await upsertProductCampaignFunnel(rows);
+      case 'product_campaign_funnel': {
+        const pcfResult = await upsertProductCampaignFunnel(rows);
+        upserted = pcfResult.upserted;
+        if (pcfResult.errors.length > 0) {
+          return NextResponse.json({
+            success: upserted > 0,
+            queryId, queryName, targetTable, upserted,
+            errors: pcfResult.errors.slice(0, 10),
+            totalErrors: pcfResult.errors.length,
+          });
+        }
         break;
+      }
       case 'funnel_weekly':
         upserted = await upsertFunnelWeekly(rows);
         break;
@@ -318,7 +328,7 @@ export async function POST(req: NextRequest) {
       [`bigbrain:query:${queryId}:${queryName}`, upserted]
     );
 
-    return NextResponse.json({ success: true, queryId, queryName, targetTable, upserted });
+    return NextResponse.json({ success: true, queryId, queryName, targetTable, upserted, errors: [] });
   } catch (err) {
     const errorMsg = err instanceof Error ? err.message : String(err);
     console.error('[bigbrain] submit-results error:', errorMsg);
