@@ -96,7 +96,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ action: 'prune-all', steps });
     }
 
-    return NextResponse.json({ error: `Unknown action: ${action}`, available: ['stats', 'prune-sync-runs', 'prune-old-metrics', 'prune-orphan-extensions', 'vacuum', 'prune-all'] }, { status: 400 });
+    if (action === 'truncate-table') {
+      const table = body.table;
+      const allowed = ['ad_extension', 'sync_runs', 'lp_funnel_metrics', 'product_funnel_metrics', 'product_campaign_funnel'];
+      if (!table || !allowed.includes(table)) {
+        return NextResponse.json({ error: `Table must be one of: ${allowed.join(', ')}` }, { status: 400 });
+      }
+      await queryOrThrow(`TRUNCATE TABLE ${table}`);
+      return NextResponse.json({ action: 'truncate-table', table, result: 'truncated' });
+    }
+
+    return NextResponse.json({ error: `Unknown action: ${action}`, available: ['stats', 'prune-sync-runs', 'prune-old-metrics', 'prune-orphan-extensions', 'vacuum', 'prune-all', 'truncate-table'] }, { status: 400 });
   } catch (err) {
     return NextResponse.json({ error: err instanceof Error ? err.message : String(err) }, { status: 500 });
   }
