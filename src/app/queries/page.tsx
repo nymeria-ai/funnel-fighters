@@ -1,5 +1,5 @@
 'use client';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 type QueryStatus = 'unverified' | 'verified' | 'disabled';
 type QueryType = 'query' | 'prompt';
@@ -225,18 +225,18 @@ export default function QueriesPage() {
   const [creating, setCreating] = useState(false);
   const [createMsg, setCreateMsg] = useState('');
 
-  const fetchQueries = useCallback(async (s: string) => {
+  const fetchQueries = useCallback(async (s?: string) => {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('/api/admin/queries', {
-        headers: { Authorization: `Bearer ${s}` },
-      });
+      const headers: Record<string, string> = {};
+      if (s) headers.Authorization = `Bearer ${s}`;
+      const res = await fetch('/api/admin/queries', { headers });
       if (res.status === 401) throw new Error('Invalid secret.');
       if (!res.ok) throw new Error('Failed to load.');
       const data = await res.json();
       setQueries(data.queries ?? []);
-      setSecret(s);
+      if (s) setSecret(s);
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -244,9 +244,17 @@ export default function QueriesPage() {
     }
   }, []);
 
+  // Load queries on mount (no auth needed for read)
+  useEffect(() => {
+    fetchQueries();
+  }, [fetchQueries]);
+
   function handleSubmitSecret(e: React.FormEvent) {
     e.preventDefault();
-    if (secretInput.trim()) fetchQueries(secretInput.trim());
+    if (secretInput.trim()) {
+      setSecret(secretInput.trim());
+      fetchQueries(secretInput.trim());
+    }
   }
 
   function handleUpdate(updated: Query) {
@@ -312,22 +320,21 @@ export default function QueriesPage() {
             Manage BigBrain SQL queries and LLM prompts. New entries start as unverified.
           </p>
         </div>
-        {secret && (
+        {secret ? (
           <button
             onClick={() => setShowCreate((v) => !v)}
             className="px-4 py-2 bg-accent-blue text-white text-sm rounded-lg hover:bg-accent-blue/80 transition-colors"
           >
             {showCreate ? '✕ Cancel' : '+ New Query'}
           </button>
-        )}
+        ) : null}
       </div>
 
-      {/* Auth gate */}
+      {/* Auth prompt (only for edit mode — queries load without auth) */}
       {!secret && (
-        <div className="bg-bg-card border border-bg-border rounded-xl p-6 max-w-md">
-          <h2 className="text-sm font-semibold text-text-primary mb-1">Authenticate</h2>
-          <p className="text-xs text-text-muted mb-4">
-            Enter your <code className="text-accent-blue">ADMIN_SYNC_SECRET</code> to manage queries.
+        <div className="bg-bg-card border border-bg-border rounded-xl p-4 max-w-md mb-6">
+          <p className="text-xs text-text-muted mb-2">
+            🔒 Enter <code className="text-accent-blue">ADMIN_SYNC_SECRET</code> to edit/approve queries.
           </p>
           <form onSubmit={handleSubmitSecret} className="flex gap-2">
             <input
@@ -336,24 +343,23 @@ export default function QueriesPage() {
               onChange={(e) => setSecretInput(e.target.value)}
               placeholder="ADMIN_SYNC_SECRET"
               className="flex-1 bg-bg-hover border border-bg-border rounded-lg px-3 py-2 text-sm text-text-primary outline-none focus:border-accent-blue"
-              autoFocus
             />
             <button
               type="submit"
               disabled={loading || !secretInput.trim()}
               className="px-4 py-2 bg-accent-blue text-white text-sm rounded-lg hover:bg-accent-blue/80 disabled:opacity-40 transition-colors"
             >
-              {loading ? '…' : 'Load'}
+              Unlock Edit
             </button>
           </form>
           {error && <p className="text-xs text-red-400 mt-2">{error}</p>}
         </div>
       )}
 
-      {secret && (
+      {
         <>
-          {/* Create form */}
-          {showCreate && (
+          {/* Create form — only with auth */}
+          {secret && showCreate && (
             <div className="bg-bg-card border border-accent-blue/30 rounded-xl p-5 mb-6">
               <h2 className="text-sm font-semibold text-text-primary mb-4">Create New Query / Prompt</h2>
               <form onSubmit={handleCreate} className="space-y-3">
@@ -505,7 +511,7 @@ export default function QueriesPage() {
             )}
           </div>
         </>
-      )}
+      }
     </div>
   );
 }

@@ -15,12 +15,9 @@ function verifyAuth(req: NextRequest): boolean {
   return timingSafeEqual(Buffer.from(token), Buffer.from(SYNC_SECRET));
 }
 
-// GET /api/admin/queries — list all queries
+// GET /api/admin/queries — list all queries (public read-only, no auth required)
 // Query params: ?type=query|prompt  ?status=verified|unverified|disabled
 export async function GET(req: NextRequest) {
-  if (!verifyAuth(req)) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
 
   const { searchParams } = new URL(req.url);
   const typeFilter = searchParams.get('type');

@@ -15,11 +15,8 @@ function verifyAuth(req: NextRequest): boolean {
   return timingSafeEqual(Buffer.from(token), Buffer.from(SYNC_SECRET));
 }
 
-// GET /api/admin/queries/[id] — get single query
+// GET /api/admin/queries/[id] — get single query (public read-only, no auth required)
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  if (!verifyAuth(req)) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
 
   const { id: idStr } = await params;
   const id = parseInt(idStr, 10);
