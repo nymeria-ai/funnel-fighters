@@ -192,7 +192,16 @@ export async function GET(req: NextRequest) {
   }
 
   // ── BigBrain funnel data (signups → engaged → paying) ──────────────────
-  const bbRows = await query<{ source: string; total_signups: string; hard_signups: string; engaged_2nd_day: string; paying: string }>(
+  // Try product_campaign_funnel first (new table), fall back to bigbrain_funnel (legacy)
+  const pcfChannelRows = await query<{ source: string; total_signups: string; engaged_2nd_day: string; paying_accounts: string }>(
+    `SELECT source,
+            SUM(total_signups)::bigint AS total_signups,
+            SUM(engaged_2nd_day)::bigint AS engaged_2nd_day,
+            SUM(paying_accounts)::bigint AS paying_accounts
+     FROM product_campaign_funnel
+     GROUP BY source`
+  );
+  const bbRows = (pcfChannelRows && pcfChannelRows.length > 0) ? null : await query<{ source: string; total_signups: string; hard_signups: string; engaged_2nd_day: string; paying: string }>(
     `SELECT source,
             SUM(total_signups)::bigint AS total_signups,
             SUM(hard_signups)::bigint AS hard_signups,
@@ -202,7 +211,15 @@ export async function GET(req: NextRequest) {
      GROUP BY source`
   );
   const bbBySource: Record<string, { signups: number; engaged: number; paying: number }> = {};
-  if (bbRows) {
+  if (pcfChannelRows && pcfChannelRows.length > 0) {
+    for (const p of pcfChannelRows) {
+      bbBySource[p.source] = {
+        signups: Number(p.total_signups),
+        engaged: Number(p.engaged_2nd_day),
+        paying: Number(p.paying_accounts),
+      };
+    }
+  } else if (bbRows) {
     for (const b of bbRows) {
       bbBySource[b.source] = {
         signups: Number(b.total_signups),
@@ -435,9 +452,68 @@ export async function GET(req: NextRequest) {
     );
   }
 
+  // ── Product funnel data for drilldown rows ──────────────────────────────
+  type PcfRow = { campaign: string; total_signups: string; engaged_2nd_day: string; paying_accounts: string };
+  const pcfByKey: Record<string, { signups: number; engaged: number; paying: number }> = {};
+
+  if (!country && !campaignId) {
+    // Level 1 (country): we don't have country in product_campaign_funnel,
+    // so show source-level totals on the channel row (already done above)
+  } else if (country && !campaignId) {
+    // Level 2 (campaign): match product data by source + campaign
+    const pcfRows = await query<PcfRow>(
+      `SELECT campaign,
+              SUM(total_signups)::bigint AS total_signups,
+              SUM(engaged_2nd_day)::bigint AS engaged_2nd_day,
+              SUM(paying_accounts)::bigint AS paying_accounts
+       FROM product_campaign_funnel
+       WHERE source = $1
+       GROUP BY campaign`,
+      [source]
+    );
+    if (pcfRows) {
+      for (const p of pcfRows) {
+        pcfByKey[p.campaign] = {
+          signups: Number(p.total_signups),
+          engaged: Number(p.engaged_2nd_day),
+          paying: Number(p.paying_accounts),
+        };
+      }
+    }
+  } else if (campaignId) {
+    // Level 3 (ad group): roll up from parent campaign
+    // Get campaign name to look up product data
+    const campRow = await query<{ name: string }>(
+      `SELECT name FROM campaigns WHERE id = $1 LIMIT 1`,
+      [campaignId]
+    );
+    if (campRow && campRow[0]) {
+      const pcfRows = await query<PcfRow>(
+        `SELECT campaign,
+                SUM(total_signups)::bigint AS total_signups,
+                SUM(engaged_2nd_day)::bigint AS engaged_2nd_day,
+                SUM(paying_accounts)::bigint AS paying_accounts
+         FROM product_campaign_funnel
+         WHERE source = $1 AND campaign = $2
+         GROUP BY campaign`,
+        [source, campRow[0].name]
+      );
+      if (pcfRows && pcfRows[0]) {
+        // All ad groups in this campaign share the same product data
+        pcfByKey['__campaign__'] = {
+          signups: Number(pcfRows[0].total_signups),
+          engaged: Number(pcfRows[0].engaged_2nd_day),
+          paying: Number(pcfRows[0].paying_accounts),
+        };
+      }
+    }
+  }
+
   const drilldown: DrilldownItem[] = (drillRows ?? []).map((r) => {
     const imp = Number(r.impressions);
     const clk = Number(r.clicks);
+    // For campaign level, match by campaign name (label); for ad group level, use shared campaign data
+    const pcf = pcfByKey[r.label] || pcfByKey['__campaign__'] || null;
     return {
       label: r.label,
       key: r.key,
@@ -446,9 +522,9 @@ export async function GET(req: NextRequest) {
       clicks: clk,
       ctr: imp > 0 ? (clk / imp) * 100 : 0,
       cost: Number(r.cost),
-      signups: null,
-      engaged_2nd_day: null,
-      paying: null,
+      signups: pcf?.signups ?? null,
+      engaged_2nd_day: pcf?.engaged ?? null,
+      paying: pcf?.paying ?? null,
       ad_quality: null,
       lp_quality: null,
       product_score: null,
