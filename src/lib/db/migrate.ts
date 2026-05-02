@@ -62,6 +62,22 @@ CREATE TABLE IF NOT EXISTS funnel_weekly (
   PRIMARY KEY (week_start, device)
 );
 
+CREATE TABLE IF NOT EXISTS product_campaign_funnel (
+  source              TEXT NOT NULL,
+  campaign            TEXT NOT NULL,
+  product             TEXT NOT NULL DEFAULT '(unknown)',
+  total_signups       INTEGER DEFAULT 0,
+  engaged_2nd_day     INTEGER DEFAULT 0,
+  paying_accounts     INTEGER DEFAULT 0,
+  engagement_rate     NUMERIC(5,2) DEFAULT 0,
+  payer_rate          NUMERIC(5,2) DEFAULT 0,
+  updated_at          TIMESTAMPTZ DEFAULT NOW(),
+  PRIMARY KEY (source, campaign, product)
+);
+
+CREATE INDEX IF NOT EXISTS idx_pcf_source ON product_campaign_funnel(source);
+CREATE INDEX IF NOT EXISTS idx_pcf_product ON product_campaign_funnel(product);
+
 CREATE TABLE IF NOT EXISTS duck_scores (
   measured_at       DATE NOT NULL,
   duck_type         TEXT NOT NULL,

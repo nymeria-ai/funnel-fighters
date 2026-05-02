@@ -26,6 +26,7 @@ const TABLE_CONFIGS: Array<{ table: string; lastSyncedCol: string }> = [
   { table: 'landing_page_extension', lastSyncedCol: 'computed_at' },
   { table: 'lp_funnel_metrics',      lastSyncedCol: 'updated_at' },
   { table: 'product_funnel_metrics', lastSyncedCol: 'updated_at' },
+  { table: 'product_campaign_funnel', lastSyncedCol: 'updated_at' },
 ];
 
 // GET /api/admin/sync-status — per-table row counts + last synced + last 10 sync_runs
