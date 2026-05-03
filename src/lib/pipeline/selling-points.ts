@@ -1,10 +1,18 @@
 /**
  * Pipeline Step 2: Compute selling points for new/changed ads.
  * Hash-based: only recomputes when MD5(headlines + descriptions) differs from stored hash.
+ *
+ * v2 — 2026-05-03: Added LIMIT + batch upserts to prevent Vercel timeout on large backlogs.
  */
 
 import { createHash } from 'crypto';
 import { query } from '@/lib/db/client';
+
+/** Max ads to process per pipeline run. Backlog clears over multiple daily runs. */
+const BATCH_LIMIT = Number(process.env.SELLING_POINTS_BATCH_LIMIT) || 5000;
+
+/** Number of rows per multi-row INSERT. */
+const UPSERT_CHUNK = 100;
 
 interface AdRow extends Record<string, unknown> {
   id: string;
@@ -36,9 +44,6 @@ function normalizeJsonb(val: unknown): string {
 
 function extractSellingPoint(headlines: unknown, descriptions: unknown): string {
   // TODO: Replace with real LLM call (claude-opus-4-6 or configured model from settings table)
-  // LLM prompt: "Given these ad headlines and descriptions, extract the single most compelling
-  //              selling point in one concise sentence."
-  // For now: use first headline + first description as placeholder.
   const h = Array.isArray(headlines) ? headlines : [];
   const d = Array.isArray(descriptions) ? descriptions : [];
   const firstHeadline = typeof h[0] === 'string' ? h[0] : (typeof h[0] === 'object' && h[0] !== null ? String((h[0] as Record<string, unknown>).text ?? '') : '');
@@ -47,16 +52,49 @@ function extractSellingPoint(headlines: unknown, descriptions: unknown): string 
 }
 
 /**
+ * Upsert a chunk of selling points in a single multi-row INSERT.
+ */
+async function upsertChunk(
+  chunk: Array<{ id: string; sellingPoint: string; hash: string }>
+): Promise<void> {
+  if (chunk.length === 0) return;
+
+  // Build VALUES ($1,$2,$3), ($4,$5,$6), ...
+  const values: unknown[] = [];
+  const placeholders: string[] = [];
+  for (let i = 0; i < chunk.length; i++) {
+    const offset = i * 3;
+    placeholders.push(`($${offset + 1}, $${offset + 2}, $${offset + 3}, NOW())`);
+    values.push(chunk[i].id, chunk[i].sellingPoint, chunk[i].hash);
+  }
+
+  await query(
+    `INSERT INTO ad_extension (ad_id, selling_point, selling_point_hash, computed_at)
+     VALUES ${placeholders.join(', ')}
+     ON CONFLICT (ad_id) DO UPDATE SET
+       selling_point = EXCLUDED.selling_point,
+       selling_point_hash = EXCLUDED.selling_point_hash,
+       computed_at = NOW()`,
+    values
+  );
+}
+
+/**
  * Finds ads that are new or whose content hash has changed, computes their selling points,
  * and upserts into ad_extension.
+ *
+ * Processes at most BATCH_LIMIT ads per invocation to stay within Vercel's 300s timeout.
+ * The backlog clears over successive daily pipeline runs.
+ *
  * @param channel Optional channel filter ('google', 'meta', etc.). If omitted, processes all channels.
  * @returns Number of ads processed.
  */
 export async function computeSellingPointsForNewAds(channel?: string): Promise<number> {
   const channelFilter = channel ? `AND a.channel = $1` : '';
-  const params: unknown[] = channel ? [channel] : [];
+  const params: unknown[] = channel ? [channel, BATCH_LIMIT] : [BATCH_LIMIT];
+  const limitParam = channel ? '$2' : '$1';
 
-  // Select ads where ad_extension row is missing OR hash has changed
+  // Select ads where ad_extension row is missing OR hash has changed — with LIMIT
   const rows = await query<AdRow>(
     `SELECT a.id, a.channel, a.headlines, a.descriptions
      FROM ads a
@@ -65,30 +103,24 @@ export async function computeSellingPointsForNewAds(channel?: string): Promise<n
        ae.ad_id IS NULL
        OR ae.selling_point_hash IS DISTINCT FROM MD5(a.headlines::TEXT || a.descriptions::TEXT)
      )
-     -- NOTE: JS computeHash() must produce the same string as Postgres
-     -- headlines::TEXT || descriptions::TEXT. Both use compact JSON (no spaces).
-     ${channelFilter}`,
+     ${channelFilter}
+     LIMIT ${limitParam}`,
     params
   );
 
-  if (!rows) return 0;
+  if (!rows || rows.length === 0) return 0;
 
-  let processed = 0;
-  for (const ad of rows) {
-    const hash = computeHash(ad.headlines, ad.descriptions);
-    const sellingPoint = extractSellingPoint(ad.headlines, ad.descriptions);
+  // Compute all selling points + hashes in memory (CPU-only, fast)
+  const computed = rows.map(ad => ({
+    id: ad.id,
+    sellingPoint: extractSellingPoint(ad.headlines, ad.descriptions),
+    hash: computeHash(ad.headlines, ad.descriptions),
+  }));
 
-    await query(
-      `INSERT INTO ad_extension (ad_id, selling_point, selling_point_hash, computed_at)
-       VALUES ($1, $2, $3, NOW())
-       ON CONFLICT (ad_id) DO UPDATE SET
-         selling_point = EXCLUDED.selling_point,
-         selling_point_hash = EXCLUDED.selling_point_hash,
-         computed_at = NOW()`,
-      [ad.id, sellingPoint, hash]
-    );
-    processed++;
+  // Batch upsert in chunks
+  for (let i = 0; i < computed.length; i += UPSERT_CHUNK) {
+    await upsertChunk(computed.slice(i, i + UPSERT_CHUNK));
   }
 
-  return processed;
+  return computed.length;
 }
