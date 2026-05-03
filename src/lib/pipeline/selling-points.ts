@@ -8,11 +8,14 @@
 import { createHash } from 'crypto';
 import { query } from '@/lib/db/client';
 
-/** Max ads to process per pipeline run. Backlog clears over multiple daily runs. */
+/** Max ads to process per SELECT batch. */
 const BATCH_LIMIT = Number(process.env.SELLING_POINTS_BATCH_LIMIT) || 5000;
 
 /** Number of rows per multi-row INSERT. */
 const UPSERT_CHUNK = 100;
+
+/** Stop fetching new batches when this many seconds remain before Vercel timeout. */
+const TIME_BUDGET_MS = Number(process.env.SELLING_POINTS_TIME_BUDGET_MS) || 240_000; // 240s of 300s
 
 interface AdRow extends Record<string, unknown> {
   id: string;
@@ -83,8 +86,9 @@ async function upsertChunk(
  * Finds ads that are new or whose content hash has changed, computes their selling points,
  * and upserts into ad_extension.
  *
- * Processes at most BATCH_LIMIT ads per invocation to stay within Vercel's 300s timeout.
- * The backlog clears over successive daily pipeline runs.
+ * Loops through BATCH_LIMIT-sized batches until either no more rows remain or the
+ * time budget is exhausted (default 240s of Vercel's 300s limit). This clears large
+ * backlogs in a single invocation instead of needing many pipeline triggers.
  *
  * @param channel Optional channel filter ('google', 'meta', etc.). If omitted, processes all channels.
  * @returns Number of ads processed.
@@ -93,34 +97,44 @@ export async function computeSellingPointsForNewAds(channel?: string): Promise<n
   const channelFilter = channel ? `AND a.channel = $1` : '';
   const params: unknown[] = channel ? [channel, BATCH_LIMIT] : [BATCH_LIMIT];
   const limitParam = channel ? '$2' : '$1';
+  const startTime = Date.now();
+  let totalProcessed = 0;
 
-  // Select ads where ad_extension row is missing OR hash has changed — with LIMIT
-  const rows = await query<AdRow>(
-    `SELECT a.id, a.channel, a.headlines, a.descriptions
-     FROM ads a
-     LEFT JOIN ad_extension ae ON ae.ad_id = a.id
-     WHERE (
-       ae.ad_id IS NULL
-       OR ae.selling_point_hash IS DISTINCT FROM MD5(a.headlines::TEXT || a.descriptions::TEXT)
-     )
-     ${channelFilter}
-     LIMIT ${limitParam}`,
-    params
-  );
+  while (Date.now() - startTime < TIME_BUDGET_MS) {
+    // Select next batch of ads needing selling points
+    const rows = await query<AdRow>(
+      `SELECT a.id, a.channel, a.headlines, a.descriptions
+       FROM ads a
+       LEFT JOIN ad_extension ae ON ae.ad_id = a.id
+       WHERE (
+         ae.ad_id IS NULL
+         OR ae.selling_point_hash IS DISTINCT FROM MD5(a.headlines::TEXT || a.descriptions::TEXT)
+       )
+       ${channelFilter}
+       LIMIT ${limitParam}`,
+      params
+    );
 
-  if (!rows || rows.length === 0) return 0;
+    if (!rows || rows.length === 0) break; // backlog cleared
 
-  // Compute all selling points + hashes in memory (CPU-only, fast)
-  const computed = rows.map(ad => ({
-    id: ad.id,
-    sellingPoint: extractSellingPoint(ad.headlines, ad.descriptions),
-    hash: computeHash(ad.headlines, ad.descriptions),
-  }));
+    // Compute all selling points + hashes in memory (CPU-only, fast)
+    const computed = rows.map(ad => ({
+      id: ad.id,
+      sellingPoint: extractSellingPoint(ad.headlines, ad.descriptions),
+      hash: computeHash(ad.headlines, ad.descriptions),
+    }));
 
-  // Batch upsert in chunks
-  for (let i = 0; i < computed.length; i += UPSERT_CHUNK) {
-    await upsertChunk(computed.slice(i, i + UPSERT_CHUNK));
+    // Batch upsert in chunks
+    for (let i = 0; i < computed.length; i += UPSERT_CHUNK) {
+      await upsertChunk(computed.slice(i, i + UPSERT_CHUNK));
+    }
+
+    totalProcessed += computed.length;
+    console.log(`[selling-points] Batch done: +${computed.length} (total: ${totalProcessed}, elapsed: ${((Date.now() - startTime) / 1000).toFixed(1)}s)`);
+
+    // If we got fewer than BATCH_LIMIT, there's no more to process
+    if (rows.length < BATCH_LIMIT) break;
   }
 
-  return computed.length;
+  return totalProcessed;
 }
