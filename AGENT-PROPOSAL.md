@@ -30,7 +30,23 @@ This system replaces manual, channel-siloed marketing optimization with an auton
 
 **Channels covered:** Search (Google), Meta, YouTube, LinkedIn, Reddit, Marketing Partnerships/Affiliates
 
-**Architecture principle:** One Brain orchestrates. Six function agents span all channels. Each function agent decomposes into per-channel sub-tasks or per-format sub-agents as needed. Channel executors are tool calls, not standalone agents.
+**Architecture principle:** One Brain orchestrates. Six function agents span all channels. Each function agent decomposes into per-channel sub-tasks or per-format sub-agents as needed. A shared **Channel Executor Layer** provides write access to platform APIs — any function agent can request execution through these shared tools.
+
+### Channel Executor Layer (Shared Infrastructure)
+
+Channel executors are **shared API write tools**, not standalone agents. They have no decision-making ability — they only execute approved changes from function agents.
+
+| Executor | Platform API | Used By |
+|----------|-------------|--------|
+| Google Ads Writer | Google Ads API (campaigns, ad groups, ads, bids, keywords) | Performance, Audience, Creative |
+| Meta Writer | Meta Marketing API (campaigns, ad sets, ads, audiences) | Performance, Audience, Creative |
+| YouTube Writer | Google Ads API (video campaigns, targeting) | Performance, Audience, Creative |
+| LinkedIn Writer | LinkedIn Campaign Manager API | Performance, Audience, Creative |
+| Reddit Writer | Reddit Ads API | Performance, Audience, Creative |
+| Webflow Writer | Webflow CMS API (page creation, A/B variants) | Landing Pages |
+| Braze/HubSpot Writer | Lifecycle messaging APIs | Onboarding & Lifecycle |
+
+**Key distinction:** Function agents have **channel-specific analytical sub-tasks** (e.g., "analyze Google Search account structure"). When action is needed, they request execution through the shared executor for that channel. The Brain controls which agents get executor access and when.
 
 ---
 
