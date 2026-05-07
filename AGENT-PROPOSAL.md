@@ -20,7 +20,8 @@
    - [Product Behaviour Insights Agent](#7-product-behaviour-insights-agent)
 4. [Cross-Agent Communication](#cross-agent-communication)
 5. [Data Architecture](#data-architecture)
-6. [Implementation Priority](#implementation-priority)
+6. [Technical Implementation Options](#technical-implementation-options)
+7. [Implementation Priority](#implementation-priority)
 
 ---
 
@@ -1135,6 +1136,355 @@ When agents produce conflicting recommendations (e.g., Creative Agent wants to t
 | **Billing system** | Product Behaviour | Read: on-demand |
 | **Slack API** | All agents | Write: notifications, alerts, digests |
 | **monday.com API** | Brain, Creative | Write: tasks, creative briefs |
+
+---
+
+## Technical Implementation Options
+
+Two concrete approaches for building this agent system. Both assume the same 7-agent architecture described above — the difference is **how** the agents are orchestrated, deployed, and maintained.
+
+---
+
+### Option A: OpenClaw Native
+
+**Build on OpenClaw's existing agent infrastructure — sub-agent spawning, cron scheduling, tool ecosystem, session management. This is what we already use daily with Nymeria and Ygritte.**
+
+#### 1. Framework & Runtime
+
+- **Orchestration:** OpenClaw's native agent runtime (Claude-based agents with system prompts, tools, and session memory)
+- **Runtime:** Runs inside the existing OpenClaw environment — same infrastructure Nymeria and Ygritte already use
+- **Agent definition:** Each agent is an OpenClaw agent config: system prompt (markdown), tool allowlist, memory files, and CLAUDE.md project instructions
+- **LLM backbone:** Claude Opus 4.6 for The Brain + complex analysis; Claude Sonnet 4.6 for high-frequency sub-tasks (bid checks, fatigue scans); Claude Haiku 4.5 for simple data extraction and formatting
+
+#### 2. Agent Definition
+
+Each of the 7 agents is a **project directory** with:
+
+```
+agents/
+├── brain/
+│   ├── CLAUDE.md              # System prompt + personality + constraints
+│   ├── tools/                 # Custom MCP tools (API readers, scorers)
+│   └── memory/                # Persistent state (priorities, scores)
+├── performance/
+│   ├── CLAUDE.md
+│   ├── tools/
+│   └── memory/
+├── audience/
+├── creative/
+├── landing-pages/
+├── onboarding/
+└── product-behaviour/
+```
+
+- The Brain runs as a persistent OpenClaw agent with cron-triggered analysis cycles
+- Function agents are spawned by The Brain as sub-agents (using OpenClaw's `Agent` tool) with scoped tool access
+- Creative sub-agents (Text, Video, Visual) are nested sub-agents spawned by the Creative agent
+- Each agent's CLAUDE.md contains its full role definition, data sources, autonomy constraints, and output formats from the spec above
+
+#### 3. Communication
+
+- **Brain → Function agents:** Direct sub-agent spawning with structured task prompts. The Brain passes context (priority queue, 4-duck scores, budget constraints) as part of the spawn prompt
+- **Function agents → Brain:** Task completion returns structured JSON findings via the sub-agent return value
+- **Cross-agent data sharing:** Shared Postgres tables (`agent_findings`, `agent_messages`) — agents read/write via SQL MCP tools
+- **Async notifications:** Agents write to a `notifications` table; The Brain polls on each cycle or a lightweight cron job pushes to Slack
+- **No message bus needed** — OpenClaw's sub-agent model is inherently synchronous within a cycle, and async handoffs go through Postgres
+
+#### 4. Data Layer
+
+- **Primary store:** Neon Postgres (already provisioned for Funnel Fighters)
+- **Agent state tables:** `agent_tasks`, `agent_findings`, `recommendations`, `audit_log`, `duck_scores`, `experiment_results`, `agent_confidence`, `autonomy_levels` (as specified in Data Architecture above)
+- **Memory files:** Each agent has persistent memory via OpenClaw's auto-memory (fast access to recent context, preferences, learned patterns)
+- **External reads:** DWT Mart (Snowflake), GA4 (BigQuery), BigBrain — accessed via MCP tools wrapping API endpoints
+- **Caching:** Frequently queried metrics cached in Neon with TTLs to avoid redundant API calls
+
+#### 5. Channel Executor Integration
+
+- Each channel executor (Google Ads Writer, Meta Writer, etc.) is an **MCP tool** registered in OpenClaw
+- Tools accept structured JSON payloads (campaign ID, change type, new values) and return success/failure
+- The Brain controls executor access: function agents request changes → Brain validates against budget/autonomy constraints → executor tool fires
+- At autonomy Level 0-1: executor calls are logged as `recommendations` for human approval before firing
+- At Level 2+: executor fires immediately, logs to `audit_log`, and posts a Slack notification
+
+```
+Function Agent → recommendation record → Brain validates →
+  Level 0-1: Slack notification → Human approves → Executor fires
+  Level 2+:  Executor fires → Slack notification (FYI)
+```
+
+#### 6. Scheduling & Triggers
+
+- **Daily analysis cycle:** OpenClaw cron job triggers The Brain at 06:00 UTC (before Ido's morning). The Brain runs its priority scoring, spawns function agents as needed, collects findings, produces daily digest
+- **Event-driven triggers:** A lightweight webhook listener (Next.js API route on Vercel) catches events (budget alerts, spend anomalies from platform webhooks) and writes to `agent_tasks` table. Next Brain cycle picks them up — or for critical alerts, triggers an immediate Brain spawn via OpenClaw API
+- **Ad-hoc runs:** Ido or Guy can trigger any agent via Slack command or Funnel Fighters dashboard button → hits API route → spawns agent
+- **Recurring sub-tasks:** Some function agents have their own cron schedules (e.g., Performance Agent runs bid check every 6 hours, Creative Agent runs fatigue scan daily)
+
+#### 7. UI Integration
+
+- **Dashboard:** Funnel Fighters v2 (Next.js on Vercel) reads directly from Neon Postgres
+- **Real-time updates:** Dashboard polls agent status from `agent_tasks` table (simple, no WebSocket needed at this scale)
+- **Recommendation queue:** Dashboard shows pending recommendations from `recommendations` table. Ido approves/rejects inline → status updates → next Brain cycle executes approved changes
+- **Agent activity feed:** `audit_log` table powers a timeline view showing what each agent did and why
+- **No separate API layer needed** — Next.js API routes query Neon directly (same pattern as current Funnel Fighters setup)
+
+#### 8. Monitoring & Observability
+
+- **Cost tracking:** Each agent call logs model, token count, and estimated cost to `audit_log`. Daily cost summary in Brain's digest
+- **Error handling:** OpenClaw's built-in error recovery (retry with backoff). Failed tool calls logged with full context for debugging
+- **Performance metrics:** Agent cycle duration, findings per cycle, recommendation approval rate — all derivable from existing tables
+- **Alerting:** Brain posts to Slack on: cycle failure, cost spike (>2x daily average), executor error, autonomy violation
+- **Debugging:** Full conversation logs available in OpenClaw's session history. Memory files show agent state evolution over time
+
+#### 9. Deployment
+
+- **Infrastructure:** Zero new infrastructure. OpenClaw runs on existing setup. Neon Postgres already provisioned. Vercel already hosting dashboard
+- **New components:** MCP tools for platform APIs (Google Ads, Meta, etc.), agent CLAUDE.md files, Postgres migration for agent tables
+- **Rollout:** Deploy agents one at a time. Brain first, then Performance, then Creative+LP — matches the priority order in Implementation Priority
+- **Scaling:** OpenClaw handles concurrent agent spawning. Neon auto-scales for query load. No container orchestration needed
+- **Updates:** Changing agent behavior = editing a CLAUDE.md file. No redeployment, no CI/CD pipeline for agent logic
+
+#### 10. Estimated Build Effort
+
+| Phase | Scope | Timeline |
+|-------|-------|----------|
+| **Phase 0: Foundation** | Agent Postgres tables migration, MCP tools for Google Ads + Meta read APIs, Channel Executor MCP tools (write), Brain CLAUDE.md + cron setup | 1-2 weeks |
+| **Phase 1: Brain + Performance** | Brain orchestration logic, Performance Agent, bid optimization executor, daily digest, Slack integration | 2-3 weeks |
+| **Phase 2: Creative + LP** | Creative Agent + sub-agents, LP Agent, Webflow MCP tools, A/B test framework | 2-3 weeks |
+| **Phase 3: Remaining agents** | Audience, Product Behaviour, Onboarding agents | 2-3 weeks |
+| **Phase 4: Autonomy ramp** | Approval rate tracking, autonomy level upgrades, confidence scoring | 1-2 weeks |
+| **Total** | | **8-13 weeks** |
+
+#### 11. Cost Model
+
+| Item | Estimated Monthly Cost |
+|------|----------------------|
+| **LLM API (Claude)** | $200-600/mo — Brain (Opus) ~$3-5/cycle × 30 days = $90-150. Function agents (Sonnet) ~$0.50-1/run × ~6 agents × 30 days = $90-180. Sub-tasks (Haiku) ~$50-100. Burst capacity for ad-hoc runs ~$50-150 |
+| **Neon Postgres** | $0-19/mo — current plan likely sufficient, may need Pro ($19/mo) for connection limits |
+| **Vercel** | $0-20/mo — already on existing plan |
+| **OpenClaw** | Existing subscription — no incremental cost |
+| **Total** | **$200-650/mo** |
+
+#### Pros
+
+- **Zero new infrastructure** — runs on what we already have and use daily
+- **Fastest time to value** — no framework to learn, no new deployment pipeline, no new monitoring stack
+- **Agent behavior is just markdown** — CLAUDE.md files are easy to iterate on, review, and version control
+- **Battle-tested patterns** — Nymeria and Ygritte already prove this works for complex multi-step workflows
+- **Natural language debugging** — can literally ask an agent "why did you do that?" and get an answer from session history
+- **Incremental adoption** — deploy one agent at a time, no big-bang cutover
+- **Team familiarity** — Guy and Ido already interact with OpenClaw agents daily
+
+#### Cons
+
+- **No visual workflow editor** — agent logic lives in markdown, not a DAG visualization tool
+- **Sequential sub-agent model** — OpenClaw spawns sub-agents one at a time within a session; true parallelism requires multiple cron-triggered top-level agents
+- **Token cost at scale** — Claude Opus for Brain reasoning isn't cheap; complex multi-agent cycles can burn through tokens
+- **Vendor coupling** — deeply tied to OpenClaw + Anthropic. If we need to swap LLM providers, significant rewrite
+- **Observability is DIY** — no built-in agent tracing dashboard; we build our own from audit_log data
+- **Stateless between sessions** — agents don't have running memory beyond what's in Postgres + memory files; long-running reasoning chains restart each cycle
+
+---
+
+### Option B: Custom Orchestration (LangGraph / CrewAI)
+
+**Build a standalone agent orchestration service using a dedicated multi-agent framework, deployed as a separate backend service.**
+
+#### 1. Framework & Runtime
+
+- **Orchestration:** LangGraph (LangChain's stateful agent graph framework) — chosen over CrewAI/AutoGen for its explicit state machine model, better production readiness, and LangSmith observability integration
+- **Runtime:** Python service deployed on Railway / Fly.io / a small EC2 instance (or containerized on Vercel's serverless if we keep it lightweight)
+- **Agent definition:** Each agent is a LangGraph node with a state schema, tool bindings, and prompt template. The overall system is a `StateGraph` with edges defining agent communication flows
+- **LLM backbone:** Same model tier strategy (Opus/Sonnet/Haiku) but called via Anthropic Python SDK directly. Could also swap in GPT-4o or Gemini for cost optimization on specific tasks
+
+#### 2. Agent Definition
+
+```python
+# agents/brain.py
+from langgraph.graph import StateGraph, END
+from langchain_anthropic import ChatAnthropic
+
+class BrainState(TypedDict):
+    priorities: list[dict]
+    duck_scores: list[dict]
+    budget_status: dict
+    agent_tasks: list[dict]
+    findings: list[dict]
+    recommendations: list[dict]
+    cycle_metadata: dict
+
+brain_llm = ChatAnthropic(model="claude-opus-4-6", max_tokens=8192)
+
+def score_funnels(state: BrainState) -> BrainState:
+    """Node: compute 4-duck alignment scores"""
+    ...
+
+def prioritize(state: BrainState) -> BrainState:
+    """Node: rank opportunities by impact × confidence"""
+    ...
+
+def dispatch_agents(state: BrainState) -> BrainState:
+    """Node: spawn function agent subgraphs"""
+    ...
+
+def synthesize(state: BrainState) -> BrainState:
+    """Node: collect findings, produce recommendations"""
+    ...
+
+brain_graph = StateGraph(BrainState)
+brain_graph.add_node("score", score_funnels)
+brain_graph.add_node("prioritize", prioritize)
+brain_graph.add_node("dispatch", dispatch_agents)
+brain_graph.add_node("synthesize", synthesize)
+brain_graph.add_edge("score", "prioritize")
+brain_graph.add_edge("prioritize", "dispatch")
+brain_graph.add_edge("dispatch", "synthesize")
+brain_graph.add_edge("synthesize", END)
+```
+
+Each function agent is a similar subgraph. The Creative agent's graph contains nested nodes for Text/Video/Visual sub-agents.
+
+#### 3. Communication
+
+- **Graph edges:** Brain dispatches function agents as parallel branches in the LangGraph state graph. Results merge back at a synchronization node
+- **Shared state:** LangGraph's `State` object passes between nodes. Cross-agent data sharing happens through state keys
+- **Persistent state:** LangGraph checkpointing to Postgres (via `PostgresSaver`) — enables pause/resume, retry from last checkpoint
+- **Async events:** A Redis or Postgres-based task queue (e.g., Celery, or simple `LISTEN/NOTIFY`) for event-driven triggers between cycles
+- **Message format:** Structured Pydantic models for all inter-agent messages (typed, validated, serializable)
+
+#### 4. Data Layer
+
+- **Primary store:** Neon Postgres (same instance as Funnel Fighters, separate schema `agents.*`)
+- **Checkpointing:** LangGraph's built-in Postgres checkpointer for graph state persistence
+- **Agent state tables:** Same schema as Option A — `agent_tasks`, `agent_findings`, `recommendations`, `audit_log`, etc.
+- **Vector store (optional):** If we want semantic search over past findings/recommendations, add pgvector extension to Neon
+- **External reads:** Python clients for Snowflake (snowflake-connector-python), BigQuery (google-cloud-bigquery), platform APIs (google-ads, facebook-business)
+- **Caching:** Redis or in-memory LRU for hot metrics (adds infrastructure)
+
+#### 5. Channel Executor Integration
+
+- Each executor is a **LangChain Tool** class wrapping the platform SDK:
+
+```python
+class GoogleAdsWriterTool(BaseTool):
+    name = "google_ads_writer"
+    description = "Execute approved changes to Google Ads campaigns"
+
+    def _run(self, payload: GoogleAdsChangePayload) -> ExecutionResult:
+        # Validate against autonomy level
+        # Execute via Google Ads API
+        # Log to audit_log
+        ...
+```
+
+- Same approval flow as Option A: recommendations queue → human approval at Level 0-1, auto-execute at Level 2+
+- Executor tools are shared across all agent subgraphs via LangGraph's tool injection
+
+#### 6. Scheduling & Triggers
+
+- **Daily cycle:** Cron job (system cron, or Railway/Fly.io scheduled tasks, or a simple APScheduler in the Python service) triggers the Brain graph at 06:00 UTC
+- **Event-driven:** Webhook endpoint (FastAPI route in the orchestration service) receives platform alerts → enqueues task → triggers immediate or deferred graph execution
+- **Ad-hoc runs:** API endpoint accepts agent run requests from dashboard or Slack bot → spawns the appropriate subgraph
+- **Recurring sub-tasks:** APScheduler or Celery Beat for function agent sub-schedules (bid checks, fatigue scans)
+- **Note:** This means running a **persistent Python process** (not serverless) for scheduler reliability
+
+#### 7. UI Integration
+
+- **Dashboard:** Funnel Fighters v2 (Next.js on Vercel) — same frontend
+- **API layer:** The Python orchestration service exposes a REST/GraphQL API for agent status, recommendations, audit log. Dashboard calls this API instead of (or in addition to) querying Neon directly
+- **WebSocket option:** The orchestration service can push real-time agent progress updates via WebSocket (nice-to-have, not essential)
+- **Recommendation queue:** Same UX — dashboard shows pending recommendations, Ido approves inline, orchestration service picks up approvals
+- **Added complexity:** Two backend services (Next.js API routes + Python orchestration API) instead of one. Need CORS, auth, and API versioning between them
+
+#### 8. Monitoring & Observability
+
+- **LangSmith integration:** LangGraph has native LangSmith tracing — every LLM call, tool invocation, and state transition is captured with latency, tokens, and cost. This is significantly better than DIY observability
+- **Traces:** Full DAG visualization of each agent cycle — can see exactly which node took how long, what the LLM saw, and what it decided
+- **Cost tracking:** LangSmith provides per-run cost breakdowns by model
+- **Error handling:** LangGraph supports retry policies, fallback nodes, and human-in-the-loop interrupts at any graph node
+- **Alerting:** Custom alerting via the Python service (Slack webhooks on error/cost spike), or LangSmith's built-in alerting (paid tier)
+
+#### 9. Deployment
+
+- **New infrastructure required:**
+  - Python service (Railway/Fly.io/EC2) — $5-50/mo depending on instance size
+  - Redis (if using for task queue/caching) — $0-15/mo
+  - LangSmith account (free tier available, paid for team features) — $0-400/mo
+- **CI/CD:** Need a deployment pipeline for the Python service (Docker build, push, deploy). Separate from Vercel frontend pipeline
+- **Rollout:** Deploy orchestration service first with Brain graph only, add function agent subgraphs incrementally
+- **Scaling:** Can horizontally scale the Python service. LangGraph supports distributed execution. But this is unlikely to be needed at our volume
+- **Updates:** Changing agent behavior = modifying Python code + prompt templates. Requires redeploy (even if just prompt changes)
+
+#### 10. Estimated Build Effort
+
+| Phase | Scope | Timeline |
+|-------|-------|----------|
+| **Phase 0: Foundation** | Python project setup, LangGraph scaffolding, Postgres schema, API clients for Google Ads + Meta, FastAPI endpoints, Docker + deployment pipeline, LangSmith setup | 3-4 weeks |
+| **Phase 1: Brain + Performance** | Brain state graph, Performance agent subgraph, executor tools, daily cron, Slack integration, dashboard API endpoints | 3-4 weeks |
+| **Phase 2: Creative + LP** | Creative agent graph + sub-agent nodes, LP agent, Webflow tools, A/B test state management | 3-4 weeks |
+| **Phase 3: Remaining agents** | Audience, Product Behaviour, Onboarding agent graphs | 2-3 weeks |
+| **Phase 4: Autonomy ramp** | Approval tracking, confidence scoring, autonomy state machine | 1-2 weeks |
+| **Total** | | **12-17 weeks** |
+
+#### 11. Cost Model
+
+| Item | Estimated Monthly Cost |
+|------|----------------------|
+| **LLM API (Claude)** | $200-600/mo — same token usage as Option A |
+| **Neon Postgres** | $0-19/mo — same as Option A |
+| **Vercel** | $0-20/mo — same as Option A |
+| **Python hosting (Railway/Fly.io)** | $10-50/mo — persistent process for scheduler + API |
+| **Redis** | $0-15/mo — if used for task queue |
+| **LangSmith** | $0-400/mo — free tier may suffice initially, paid for team tracing |
+| **Total** | **$210-1,100/mo** |
+
+#### Pros
+
+- **Superior observability** — LangSmith gives production-grade tracing, cost tracking, and debugging out of the box. This is genuinely better than anything we'd build ourselves
+- **Explicit state machines** — agent workflows are defined as typed graphs with clear state transitions. Easier to reason about complex flows, test individual nodes, and handle edge cases
+- **True parallelism** — LangGraph can run function agents in parallel within a single cycle (not sequential sub-agent spawning)
+- **LLM flexibility** — can mix Claude, GPT-4o, and Gemini per node for cost optimization. Not locked into one provider
+- **Strong typing** — Pydantic state schemas catch integration bugs at development time, not runtime
+- **Growing ecosystem** — LangGraph templates, community tools, and LangChain integrations for common platforms
+- **Testability** — can unit test individual graph nodes with mock state, run integration tests on subgraphs
+
+#### Cons
+
+- **New infrastructure** — need to deploy, monitor, and maintain a separate Python service. New failure mode (service goes down = no agent cycles)
+- **Slower time to value** — 3-4 weeks of foundation work before any agent produces value. Framework learning curve for the team
+- **Two backend services** — dashboard talks to both Vercel (frontend API) and Python service (agent API). More moving parts, more things to break
+- **Framework churn risk** — LangGraph is actively evolving. Breaking changes between versions. LangChain ecosystem has a history of rapid API changes
+- **Overkill for our scale** — we have 6 channels and ~7 agents. LangGraph's distributed execution, checkpointing, and parallelism are designed for much larger systems
+- **Prompt iteration friction** — changing agent behavior requires code changes + redeploy, vs. editing a markdown file
+- **Python expertise** — the team's daily tooling is OpenClaw (TypeScript/Claude). Adding a Python service means context-switching and maintaining two tech stacks
+- **Vendor coupling anyway** — swapping LangGraph for something else later is a full rewrite, same as swapping OpenClaw
+
+---
+
+### Recommendation
+
+**Option A (OpenClaw Native) is the clear choice. Here's why.**
+
+The deciding factor isn't technical — it's operational. We are a small team (Guy, Ido, and us AI agents) running marketing for monday.com's growth channels. We don't have a platform engineering team to maintain a separate Python service. Every hour spent on infrastructure is an hour not spent on the actual goal: autonomous full-funnel optimization.
+
+**What matters most right now:**
+
+1. **Time to first value.** Option A gets Brain + Performance Agent live in 3-5 weeks. Option B needs 6-8 weeks to reach the same point. That's a month of wasted spend we could have been catching.
+
+2. **Iteration speed.** Agent behavior will change constantly as we learn what works. In Option A, that's editing a CLAUDE.md file — Ido could even do it himself. In Option B, it's a code change, PR, deploy cycle.
+
+3. **Zero new failure modes.** Option A adds Postgres tables to an existing database and MCP tools to an existing runtime. Option B adds a Python service, possibly Redis, a deployment pipeline, and a monitoring stack. Each new component is a thing that can break at 2am.
+
+4. **We already know it works.** Nymeria and Ygritte handle complex multi-step workflows with external API calls, persistent memory, cron scheduling, and human-in-the-loop approvals. That's literally the agent system spec.
+
+**What we give up:**
+
+- LangSmith's observability is genuinely excellent. We'll need to build a simpler version ourselves from `audit_log` data. This is a real tradeoff — but it's a dashboard feature, not a blocker.
+- True parallel agent execution within a single cycle. In practice, sequential execution is fine for daily analysis cycles that run at 6am. If we ever need sub-second orchestration, we can revisit.
+- LLM provider flexibility. We're betting on Claude. Given that we *are* Claude agents, this seems like a reasonable bet.
+
+**The honest bridge option:** If LangSmith-grade observability becomes a real need (not a nice-to-have), we can add LangSmith tracing to our OpenClaw MCP tools without adopting LangGraph for orchestration. Best of both worlds.
+
+**Bottom line:** Build the agents, not the platform. Option A lets us focus on what the agents *do* instead of how they're *deployed*. We can always migrate to a custom orchestration layer later if we outgrow OpenClaw — but we should earn that complexity, not assume it.
 
 ---
 
