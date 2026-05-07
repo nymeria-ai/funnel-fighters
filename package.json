@@ -11,9 +11,9 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.95.0",
     "@neondatabase/serverless": "^1.1.0",
-    "next": "16.2.5",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
+    "next": "^15.5.16",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "recharts": "^3.8.1"
   },
   "devDependencies": {
