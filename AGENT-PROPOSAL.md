@@ -47,7 +47,42 @@ Channel executors are **shared API write tools**, not standalone agents. They ha
 | Webflow Writer | Webflow CMS API (page creation, A/B variants) | Landing Pages |
 | Braze/HubSpot Writer | Lifecycle messaging APIs | Onboarding & Lifecycle |
 
-**Key distinction:** Function agents have **channel-specific analytical sub-tasks** (e.g., "analyze Google Search account structure"). When action is needed, they request execution through the shared executor for that channel. The Brain controls which agents get executor access and when.
+**Key distinction:** Function agents have **channel-specific analytical sub-tasks** (e.g., "analyze Google Search account structure"). When action is needed, they request execution through the Channel Manager for that platform. The Brain controls priority and conflict resolution.
+
+### Channel Manager Agents (Phase 1: 3 agents)
+
+Channel Managers are **real agents** (not dumb API wrappers). They understand account context, validate requests, resolve conflicts, and serve as the interface for both function agents AND human channel teams.
+
+| Channel Manager | Platform | Why Phase 1 |
+|----------------|----------|-------------|
+| **Google Search Manager** | Google Ads API (Search campaigns, keywords, RSAs, bids) | Largest search spend, most granular optimization |
+| **Meta Manager** | Meta Marketing API (campaigns, ad sets, ads, audiences, creatives) | Largest social spend, creative-heavy |
+| **YouTube Manager** | Google Ads API (video campaigns, targeting, bumper/in-stream) | Growing channel, distinct creative format |
+
+**Phase 2 (later):** LinkedIn Manager, Reddit Manager, Partnerships Manager — start as simple executors, upgrade to full managers when volume justifies it.
+
+#### What a Channel Manager Does
+
+1. **Accepts requests from function agents** — Performance says "restructure this ad group", Creative says "launch this new RSA", Audience says "create this lookalike"
+2. **Accepts ad-hoc requests from human teams** — Campaign manager asks "pause campaign X" or "what's the status of campaign Y?" or "shift $2K from brand to non-brand"
+3. **Validates before executing** — checks guardrails (budget ceilings, min ROAS thresholds, active experiments), rejects unsafe changes
+4. **Resolves conflicts** — if Performance wants to increase bids but Creative wants to pause the ad for refresh, the Channel Manager queues both and escalates to the Brain if needed
+5. **Maintains channel context** — knows account structure, recent changes, pending experiments, active A/B tests, pacing status
+6. **Audits every change** — timestamps, who requested it (agent or human), what changed, rollback capability
+
+#### Autonomy Model for Channel Managers
+
+| Action Type | Starting Level | Example |
+|-------------|---------------|--------|
+| Status queries | Level 4 (full auto) | "What's campaign X spending today?" |
+| Bid adjustments ≤10% | Level 2 (act + notify) | Increase keyword bid by 5% |
+| Bid adjustments >10% | Level 1 (recommend) | Double bid on top performer |
+| Pause/enable campaigns | Level 1 (recommend) | Pause underperformer |
+| Budget shifts ≤15% | Level 2 (act + notify) | Move $500 between ad groups |
+| Budget shifts >15% | Level 1 (recommend) | Reallocate $5K across campaigns |
+| Create new campaigns/ad groups | Level 1 (recommend) | New campaign structure |
+| Create/upload new ads | Level 1 (recommend) | New RSA from Creative agent |
+| Account structure changes | Level 0 (observe) → Level 1 | Merge/split ad groups |
 
 ---
 
