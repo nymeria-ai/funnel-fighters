@@ -1,0 +1,370 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); color: var(--color-text-primary); }
+  .root { padding: 1.5rem 0; }
+  .section { margin-bottom: 2rem; }
+  .section-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 10px; }
+  .card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 10px; }
+  .card-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
+  .card-desc { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
+  .tab-row { display: flex; gap: 8px; margin-bottom: 1.5rem; }
+  .tab { padding: 6px 14px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); font-size: 13px; font-weight: 500; cursor: pointer; background: var(--color-background-secondary); color: var(--color-text-secondary); }
+  .tab.active-q { background: #EEEDFE; color: #3C3489; border-color: #AFA9EC; }
+  .tab.active-n { background: #E1F5EE; color: #085041; border-color: #5DCAA5; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 99px; margin-right: 4px; }
+  .badge-purple { background: #EEEDFE; color: #3C3489; }
+  .badge-teal { background: #E1F5EE; color: #085041; }
+  .badge-coral { background: #FAECE7; color: #712B13; }
+  .badge-amber { background: #FAEEDA; color: #633806; }
+  .badge-gray { background: #F1EFE8; color: #444441; }
+  .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; }
+  .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+  .metric-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 1rem; }
+  .metric-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
+  .metric-val { font-size: 20px; font-weight: 500; color: var(--color-text-primary); }
+  .metric-sub { font-size: 11px; color: var(--color-text-tertiary); margin-top: 2px; }
+  .divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 1.5rem 0; }
+  .funnel-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .funnel-stage { flex: 1; background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 8px 12px; font-size: 13px; }
+  .funnel-arrow { color: var(--color-text-tertiary); font-size: 16px; }
+  .field-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+  .field-pill { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: 99px; font-size: 12px; padding: 3px 10px; color: var(--color-text-secondary); }
+  .consistency-row { display: flex; gap: 8px; margin-top: 8px; align-items: flex-start; }
+  .consistency-stage { flex: 1; border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 10px 12px; min-width: 0; }
+  .cs-label { font-size: 11px; color: var(--color-text-tertiary); margin-bottom: 4px; }
+  .cs-title { font-size: 13px; font-weight: 500; }
+  .cs-body { font-size: 12px; color: var(--color-text-secondary); margin-top: 3px; line-height: 1.5; }
+  .arrow-connector { display: flex; align-items: center; color: var(--color-text-tertiary); font-size: 18px; padding-top: 24px; }
+  .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem; }
+  .filter-chip { display: flex; align-items: center; gap: 6px; background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 5px 12px; font-size: 12px; }
+  .filter-chip select { border: none; background: transparent; font-size: 12px; color: var(--color-text-primary); outline: none; cursor: pointer; }
+</style>
+
+<div class="root">
+
+  <div class="section">
+    <div class="section-label">Product overview</div>
+    <div class="card">
+      <div class="card-title">Funnel Messaging Consistency & Analytics Dashboard</div>
+      <div class="card-desc" style="margin-top:6px">A two-tab analytics tool that helps performance marketers verify messaging alignment across the full acquisition funnel — from paid ad to product onboarding — and measure quantitative performance at each stage. The primary axis of analysis is always <strong style="font-weight:500">Audience × Channel × Selling Point</strong>.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Navigation</div>
+    <div class="tab-row">
+      <div class="tab active-q">Qualitative — messaging consistency</div>
+      <div class="tab active-n">Quantitative — funnel performance</div>
+    </div>
+    <div class="card-desc" style="font-size:12px; color: var(--color-text-tertiary)">Both tabs share the same global filter state: Audience segment, Ad channel, Selling point, and Date range.</div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- GLOBAL FILTERS -->
+  <div class="section">
+    <div class="section-label">Global filter bar — shared across both tabs</div>
+    <div class="filter-bar">
+      <div class="filter-chip">
+        <span style="color:var(--color-text-secondary);font-size:11px">Audience</span>
+        <select><option>All audiences</option><option>Retargeting</option><option>Lookalike</option><option>Branded KW</option><option>Non-brand KW</option></select>
+      </div>
+      <div class="filter-chip">
+        <span style="color:var(--color-text-secondary);font-size:11px">Channel</span>
+        <select><option>All channels</option><option>Search</option><option>Meta</option><option>YouTube</option></select>
+      </div>
+      <div class="filter-chip">
+        <span style="color:var(--color-text-secondary);font-size:11px">Selling point</span>
+        <select><option>All selling points</option><option>Speed</option><option>Price</option><option>Ease of use</option><option>Social proof</option></select>
+      </div>
+      <div class="filter-chip">
+        <span style="color:var(--color-text-secondary);font-size:11px">Date range</span>
+        <select><option>Last 30 days</option><option>Last 7 days</option><option>Custom</option></select>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- TAB 1: QUALITATIVE -->
+  <div class="section">
+    <div class="tab active-q" style="display:inline-block;margin-bottom:1rem">Tab 1 — qualitative: messaging consistency</div>
+
+    <div class="section-label">Purpose</div>
+    <div class="card">
+      <div class="card-desc">For a selected Audience + Channel + Selling Point combination, show the marketer the actual creative content at each funnel stage side-by-side, so they can visually verify that the selling point introduced in the ad is carried through to the landing page and into the onboarding experience.</div>
+    </div>
+
+    <div class="section-label" style="margin-top:1rem">Core layout — 3-stage side-by-side view</div>
+    <div class="consistency-row">
+      <div class="consistency-stage">
+        <div class="cs-label"><span class="badge badge-purple">Stage 1</span> Ad creative</div>
+        <div class="cs-title">Ad content viewer</div>
+        <div class="cs-body">Display the actual ad (image, video thumbnail, or copy) served to the selected audience. Show: headline, primary text, CTA label, visual asset. Tag which selling point(s) are present using a structured label extracted from the ad taxonomy.</div>
+        <div class="field-row" style="margin-top:8px">
+          <span class="field-pill">Headline</span>
+          <span class="field-pill">Body copy</span>
+          <span class="field-pill">CTA</span>
+          <span class="field-pill">Visual asset</span>
+          <span class="field-pill">Selling point tags</span>
+          <span class="field-pill">Ad channel</span>
+        </div>
+      </div>
+      <div class="arrow-connector">→</div>
+      <div class="consistency-stage">
+        <div class="cs-label"><span class="badge badge-teal">Stage 2</span> Landing page</div>
+        <div class="cs-title">LP content snapshot</div>
+        <div class="cs-body">Show the landing page variant the audience lands on (matched by UTM parameters). Display: hero headline, subheadline, primary CTA, key value propositions listed in fold-1. Tag which selling points appear and their prominence (above fold / below fold / absent).</div>
+        <div class="field-row" style="margin-top:8px">
+          <span class="field-pill">Hero headline</span>
+          <span class="field-pill">Subheadline</span>
+          <span class="field-pill">CTA</span>
+          <span class="field-pill">Value props</span>
+          <span class="field-pill">Selling point presence</span>
+          <span class="field-pill">LP variant ID</span>
+        </div>
+      </div>
+      <div class="arrow-connector">→</div>
+      <div class="consistency-stage">
+        <div class="cs-label"><span class="badge badge-coral">Stage 3</span> Onboarding</div>
+        <div class="cs-title">Onboarding flow snapshot</div>
+        <div class="cs-body">Show the product onboarding steps the user sees after signup. Display: welcome screen copy, key benefit messaging shown during setup steps, any selling-point-specific feature highlights. Tag selling point presence per step.</div>
+        <div class="field-row" style="margin-top:8px">
+          <span class="field-pill">Welcome copy</span>
+          <span class="field-pill">Setup step headlines</span>
+          <span class="field-pill">Feature highlights</span>
+          <span class="field-pill">Selling point presence</span>
+          <span class="field-pill">Onboarding variant ID</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:1.5rem">Consistency score logic</div>
+    <div class="card">
+      <div class="card-title">Selling point consistency score (per row)</div>
+      <div class="card-desc">For each active selling point in the selected ad, compute a binary or 3-level presence score at each downstream stage: <span class="badge badge-teal">Present above fold</span> <span class="badge badge-amber">Present below fold</span> <span class="badge badge-gray">Absent</span>. Roll up into a single consistency indicator per funnel path. This score is displayed both in the 3-stage view and as a sortable column in the row-level table below.</div>
+    </div>
+
+    <div class="section-label" style="margin-top:1rem">Row-level table beneath the side-by-side view</div>
+    <div class="card">
+      <div class="card-desc">A filterable table where each row = one unique Audience + Channel + Selling Point + Ad variant combination. Columns: Audience, Channel, Selling point, Ad variant ID, LP variant ID, Onboarding variant ID, Ad→LP consistency, LP→Onboarding consistency, Overall consistency score, Last updated.</div>
+    </div>
+
+    <div class="section-label" style="margin-top:1rem">Data requirements for this tab</div>
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title">Ad taxonomy / creative library</div>
+        <div class="card-desc">Each ad must be tagged with: audience segment, channel, selling point(s), creative asset URL, headline, body copy, CTA. Source: ad platform export or internal creative CMS.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Landing page content map</div>
+        <div class="card-desc">Each LP variant tagged with its UTM parameters and a structured content schema: hero headline, subheadline, CTA, value prop list with fold position. Source: CMS or manual content tagging layer.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Onboarding content map</div>
+        <div class="card-desc">Each onboarding flow variant tagged with: welcome copy, per-step headlines and feature highlights, selling point tags. Source: product team export or in-app content layer.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Audience → variant mapping</div>
+        <div class="card-desc">A lookup table linking Audience segment + Channel to the specific Ad variant, LP variant, and Onboarding variant they received. This is the spine that joins all three stages.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- TAB 2: QUANTITATIVE -->
+  <div class="section">
+    <div class="tab active-n" style="display:inline-block;margin-bottom:1rem">Tab 2 — quantitative: funnel performance</div>
+
+    <div class="section-label">Purpose</div>
+    <div class="card">
+      <div class="card-desc">For each Audience + Channel + Selling Point combination, show the four key performance metrics across the funnel stages: Ad CTR, Landing Page behavior, LP conversion rate, and Product onboarding success (Day-2 DAU). All metrics are breakable by audience segment and keyword.</div>
+    </div>
+
+    <div class="section-label" style="margin-top:1rem">Summary metric cards (top of tab)</div>
+    <div class="grid3">
+      <div class="metric-card">
+        <div class="metric-label">Ad CTR</div>
+        <div class="metric-val">—%</div>
+        <div class="metric-sub">Clicks ÷ impressions, by audience/KW</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">LP engagement score</div>
+        <div class="metric-val">—</div>
+        <div class="metric-sub">Scroll depth, time on page, rage clicks</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">LP conversion rate</div>
+        <div class="metric-val">—%</div>
+        <div class="metric-sub">Signups ÷ sessions from ad</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Day-2 DAU rate</div>
+        <div class="metric-val">—%</div>
+        <div class="metric-sub">Users returning day after signup</div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:1.5rem">Metric 1 — Ad CTR</div>
+    <div class="card">
+      <div class="card-title">Click-through rate by audience and keyword</div>
+      <div class="card-desc">Breakdown by: Channel (Search / Meta / YouTube), then by Audience segment, then by Keyword (for Search) or Ad set (for Meta/YouTube). Display as a bar chart or ranked table. Show: Impressions, Clicks, CTR%, and CTR delta vs. account average.</div>
+      <div class="field-row">
+        <span class="field-pill">Channel</span>
+        <span class="field-pill">Audience segment</span>
+        <span class="field-pill">Keyword / ad set</span>
+        <span class="field-pill">Impressions</span>
+        <span class="field-pill">Clicks</span>
+        <span class="field-pill">CTR%</span>
+        <span class="field-pill">vs. avg delta</span>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:1rem">Metric 2 — Landing page user behavior</div>
+    <div class="card">
+      <div class="card-title">Session behavior for traffic arriving from each ad segment</div>
+      <div class="card-desc">Segment LP sessions by the UTM source linking back to the Audience + Channel + KW. Show per segment: avg. session duration, scroll depth (% reaching key sections), bounce rate, heatmap availability flag, click events on primary CTA. This tells the marketer whether users from a given ad are engaging with the LP or abandoning it.</div>
+      <div class="field-row">
+        <span class="field-pill">Avg. session duration</span>
+        <span class="field-pill">Scroll depth %</span>
+        <span class="field-pill">Bounce rate</span>
+        <span class="field-pill">CTA click rate</span>
+        <span class="field-pill">Sessions from segment</span>
+        <span class="field-pill">UTM linkage</span>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:1rem">Metric 3 — Landing page conversion rate</div>
+    <div class="card">
+      <div class="card-title">Signup conversion rate per ad segment</div>
+      <div class="card-desc">Conversion = user completing the primary LP CTA (signup / trial start). Broken down by Audience + Channel + KW. Show: Sessions, Conversions, CVR%, and CVR delta vs. blended average. Also show the specific LP variant served to that segment (linked to the qualitative tab).</div>
+      <div class="field-row">
+        <span class="field-pill">Sessions</span>
+        <span class="field-pill">Conversions</span>
+        <span class="field-pill">CVR%</span>
+        <span class="field-pill">vs. blended avg delta</span>
+        <span class="field-pill">LP variant ref</span>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:1rem">Metric 4 — Product onboarding success (Day-2 DAU)</div>
+    <div class="card">
+      <div class="card-title">Day-2 return rate from each ad → LP path</div>
+      <div class="card-desc">For users who signed up via a specific Ad + LP path, track whether they return to the product on Day 2 (defined as a session starting between 24h and 48h after first signup session). This is the proxy for successful onboarding. Show: Signups from segment, Day-2 returnees, Day-2 DAU rate%, and delta vs. overall cohort baseline. Future-proof the model to accept additional onboarding metrics (Day-7, feature adoption events) as they are defined by the product team.</div>
+      <div class="field-row">
+        <span class="field-pill">Signups from segment</span>
+        <span class="field-pill">Day-2 returnees</span>
+        <span class="field-pill">Day-2 DAU rate%</span>
+        <span class="field-pill">vs. cohort baseline</span>
+        <span class="field-pill">Ad variant ref</span>
+        <span class="field-pill">LP variant ref</span>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:1rem">Full funnel breakdown table</div>
+    <div class="card">
+      <div class="card-title">One row per Audience + Channel + Keyword/Ad set combination</div>
+      <div class="card-desc">The primary analysis surface. Each row shows all four metrics side-by-side so the marketer can spot drop-offs: a high-CTR audience with low LP CVR signals a messaging mismatch (link to qualitative tab). A high-CVR audience with poor Day-2 DAU signals an onboarding problem. Sortable by any column. Exportable to CSV.</div>
+      <div class="field-row" style="margin-top:8px">
+        <span class="field-pill">Audience</span>
+        <span class="field-pill">Channel</span>
+        <span class="field-pill">KW / ad set</span>
+        <span class="field-pill">CTR%</span>
+        <span class="field-pill">Bounce rate</span>
+        <span class="field-pill">Scroll depth</span>
+        <span class="field-pill">CVR%</span>
+        <span class="field-pill">Day-2 DAU%</span>
+        <span class="field-pill">Consistency score</span>
+        <span class="field-pill">→ Qualitative view</span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- DATA MODEL -->
+  <div class="section">
+    <div class="section-label">Data model — entities and relationships</div>
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title">AudienceSegment</div>
+        <div class="card-desc">id, name, channel, targeting_type (KW / interest / retargeting / lookalike), keyword (nullable for non-search)</div>
+      </div>
+      <div class="card">
+        <div class="card-title">AdVariant</div>
+        <div class="card-desc">id, audience_segment_id, channel, headline, body_copy, cta_label, asset_url, selling_points[ ], impressions, clicks, ctr</div>
+      </div>
+      <div class="card">
+        <div class="card-title">LandingPageVariant</div>
+        <div class="card-desc">id, utm_params, hero_headline, subheadline, cta_label, value_props[ {text, fold_position} ], selling_points[ ]</div>
+      </div>
+      <div class="card">
+        <div class="card-title">LPSession</div>
+        <div class="card-desc">id, lp_variant_id, audience_segment_id, session_duration_s, scroll_depth_pct, bounced, cta_clicked, converted, timestamp</div>
+      </div>
+      <div class="card">
+        <div class="card-title">OnboardingVariant</div>
+        <div class="card-desc">id, steps[ {headline, copy, selling_points[ ]} ], welcome_copy, selling_points[ ]</div>
+      </div>
+      <div class="card">
+        <div class="card-title">UserOnboardingEvent</div>
+        <div class="card-desc">user_id, ad_variant_id, lp_variant_id, onboarding_variant_id, signup_ts, day2_returned (bool), future_events[ ]</div>
+      </div>
+      <div class="card">
+        <div class="card-title">FunnelPath</div>
+        <div class="card-desc">The join key: audience_segment_id → ad_variant_id → lp_variant_id → onboarding_variant_id. Every metric in both tabs resolves back to this 4-way mapping.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">SellingPoint (enum/taxonomy)</div>
+        <div class="card-desc">A shared controlled vocabulary of selling points (e.g. Speed, Price, Ease of use, Social proof, Security) used consistently across Ad, LP, and Onboarding tagging to enable cross-stage comparison.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- INTERACTIONS -->
+  <div class="section">
+    <div class="section-label">Key interactions and cross-tab links</div>
+    <div class="card">
+      <div class="card-title">From quantitative → qualitative drill-down</div>
+      <div class="card-desc">Clicking a row in the funnel breakdown table opens the qualitative 3-stage view pre-filtered to that exact Audience + Channel + KW + Selling Point. This is the core diagnostic workflow: spot an anomaly in the numbers, then inspect the creative to understand why.</div>
+    </div>
+    <div class="card" style="margin-top:8px">
+      <div class="card-title">Consistency score as a filter in the quant tab</div>
+      <div class="card-desc">The user can filter the quantitative table to only show rows where consistency score is "partial" or "absent" to prioritize investigation.</div>
+    </div>
+    <div class="card" style="margin-top:8px">
+      <div class="card-title">Selling point presence toggle in qualitative view</div>
+      <div class="card-desc">Within the 3-stage side-by-side, highlight/dim content blocks based on which selling point is selected, so the marketer can visually trace a single message through the funnel.</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- EDGE CASES -->
+  <div class="section">
+    <div class="section-label">Edge cases and constraints agents should handle</div>
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title">Multiple selling points per ad</div>
+        <div class="card-desc">An ad may carry more than one selling point. The consistency check runs independently for each. The overall consistency score for the path is the mean or minimum across all active selling points — product owner to decide aggregation method.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Missing UTM linkage</div>
+        <div class="card-desc">If LP sessions cannot be attributed back to a specific ad/audience (missing or broken UTMs), surface a data quality warning on the affected rows in the quant tab rather than silently dropping the data.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Search vs. social channel differences</div>
+        <div class="card-desc">Search ads use keywords as the primary segment key; Meta and YouTube use audience/ad set. The data model and filters must accommodate both without forcing a false equivalence.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Onboarding variant not yet defined</div>
+        <div class="card-desc">If a funnel path has no mapped onboarding variant (e.g. single universal flow), Stage 3 in the qualitative view shows the universal flow with a note that it is not audience-specific.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
