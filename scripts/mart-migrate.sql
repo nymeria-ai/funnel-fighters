@@ -126,10 +126,13 @@ CREATE TABLE campaign_metrics (
   waste_score REAL,
   scale_score REAL,
   predicted_value_score REAL,
-  priority_tier TEXT,
+  priority_tier TEXT
+);
 
-  -- Dedup key
-  UNIQUE (day, channel, country, campaign, ad_group, ad_name, keyword)
+-- Dedup index with COALESCE to handle NULLs
+CREATE UNIQUE INDEX idx_cm_dedup ON campaign_metrics (
+  day, channel, country, campaign,
+  COALESCE(ad_group, ''), COALESCE(ad_name, ''), COALESCE(keyword, '')
 );
 
 -- Performance indexes

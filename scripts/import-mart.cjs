@@ -87,6 +87,16 @@ function rowToValues(row) {
   });
 }
 
+function deduplicateBatch(rows) {
+  // Keep last occurrence of each composite key within the batch
+  const map = new Map();
+  for (const row of rows) {
+    const key = `${row.day}|${row.channel}|${row.country}|${row.campaign}|${row.adGroup||''}|${row.adName||''}|${row.keyword||''}`;
+    map.set(key, row);
+  }
+  return Array.from(map.values());
+}
+
 function buildInsertSQL(rows) {
   const placeholders = [];
   const values = [];
@@ -98,13 +108,13 @@ function buildInsertSQL(rows) {
     values.push(...vals);
   }
   const colList = DB_COLS.join(",");
-  const conflictCols = "day,channel,country,campaign,ad_group,ad_name,keyword";
+  const conflictExpr = "day,channel,country,campaign,COALESCE(ad_group,''),COALESCE(ad_name,''),COALESCE(keyword,'')";
   const updateSet = DB_COLS
     .filter((c) => !["day","channel","country","campaign","ad_group","ad_name","keyword"].includes(c))
     .map((c) => `${c}=EXCLUDED.${c}`)
     .join(",");
   return {
-    text: `INSERT INTO campaign_metrics (${colList}) VALUES ${placeholders.join(",")} ON CONFLICT (${conflictCols}) DO UPDATE SET ${updateSet}`,
+    text: `INSERT INTO campaign_metrics (${colList}) VALUES ${placeholders.join(",")} ON CONFLICT (${conflictExpr}) DO UPDATE SET ${updateSet}`,
     values,
   };
 }
@@ -116,7 +126,11 @@ async function main() {
   // Run migration
   console.log("Running migration...");
   const migrationSQL = readFileSync("scripts/mart-migrate.sql", "utf8");
-  const statements = migrationSQL.split(";").map(s => s.trim()).filter(s => s.length > 0);
+  // Split on semicolons that are at the end of a line (not inside expressions)
+  const statements = migrationSQL
+    .split(/;\s*$/m)
+    .map(s => s.trim())
+    .filter(s => s.length > 0);
   for (const stmt of statements) {
     await sql.query(stmt);
   }
@@ -142,7 +156,8 @@ async function main() {
         const currentBatch = batch;
         batch = [];
         try {
-          const { text, values } = buildInsertSQL(currentBatch);
+          const dedupBatch = deduplicateBatch(currentBatch);
+          const { text, values } = buildInsertSQL(dedupBatch);
           await sql.query(text, values);
           imported += currentBatch.length;
         } catch (e) {
@@ -160,7 +175,8 @@ async function main() {
     pipeline.on("end", async () => {
       if (batch.length > 0) {
         try {
-          const { text, values } = buildInsertSQL(batch);
+          const dedupBatch2 = deduplicateBatch(batch);
+          const { text, values } = buildInsertSQL(dedupBatch2);
           await sql.query(text, values);
           imported += batch.length;
         } catch (e) {
