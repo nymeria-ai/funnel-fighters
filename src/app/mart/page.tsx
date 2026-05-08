@@ -183,7 +183,7 @@ export default async function MartPage({ searchParams }: PageProps) {
           AVG(ctr) as avg_ctr,
           CASE WHEN SUM(hard_signups_n) > 0 THEN SUM(spend)/SUM(hard_signups_n) ELSE NULL END as avg_cost_per_signup
         FROM campaign_metrics ${where}
-        GROUP BY channel ORDER BY SUM(spend) DESC`, qp
+        GROUP BY channel ORDER BY SUM(COALESCE(spend,0)) DESC`, qp
       ),
       query<TierRow>(
         `SELECT priority_tier, COUNT(*) as cnt, SUM(spend) as spend, SUM(hard_signups_n) as signups
@@ -206,7 +206,7 @@ export default async function MartPage({ searchParams }: PageProps) {
           AVG(arr_proxy_per_spend) as arr_proxy_per_spend
         FROM campaign_metrics ${where}
         GROUP BY campaign, channel
-        ORDER BY SUM(spend) DESC
+        ORDER BY SUM(COALESCE(spend,0)) DESC
         LIMIT 100`, qp
       ),
     ]);
@@ -231,7 +231,7 @@ export default async function MartPage({ searchParams }: PageProps) {
           <h1 className="text-xl font-bold text-zinc-100">Mart Analytics</h1>
           <p className="text-xs text-zinc-500 mt-0.5">
             Campaign performance from Snowflake DWH
-            {hasData && ` · ${s.min_day} → ${s.max_day} · ${fmt(Number(s.total_rows))} rows`}
+            {hasData && ` · ${String(s.min_day).slice(0,10)} → ${String(s.max_day).slice(0,10)} · ${fmt(Number(s.total_rows))} rows`}
           </p>
         </div>
         <Link href="/consistency" className="text-xs text-indigo-400 hover:text-indigo-300">
