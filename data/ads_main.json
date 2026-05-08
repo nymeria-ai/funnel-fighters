@@ -1,0 +1,3008 @@
+[{
+  "results": [
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1032549969",
+        "name": "us-en-prm-workos-work_mgmt-comp_trello-e-search-desktop-core-aw",
+        "id": "1032549969"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/56273183928",
+        "id": "56273183928",
+        "name": "trello"
+      },
+      "metrics": {
+        "clicks": "1971",
+        "conversions": 153.322155,
+        "costMicros": "73358465988",
+        "impressions": "88620"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/56273183928~532878693789",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/532878693789",
+          "id": "532878693789",
+          "finalUrls": [
+            "https://monday.com/ap/comp/trello"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1748362261",
+        "name": "us-en-prm-workos-work_mgmt-comp_asana-h-search-desktop-core-aw",
+        "id": "1748362261"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/68142613413",
+        "id": "68142613413",
+        "name": "asana"
+      },
+      "metrics": {
+        "clicks": "1710",
+        "conversions": 91.499999,
+        "costMicros": "52337279627",
+        "impressions": "124674"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/68142613413~533004521999",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/533004521999",
+          "id": "533004521999",
+          "finalUrls": [
+            "https://monday.com/ap/comp/asana"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1032549969",
+        "name": "us-en-prm-workos-work_mgmt-comp_trello-e-search-desktop-core-aw",
+        "id": "1032549969"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/56273183928",
+        "id": "56273183928",
+        "name": "trello"
+      },
+      "metrics": {
+        "clicks": "828",
+        "conversions": 113.083333,
+        "costMicros": "40305123691",
+        "impressions": "96938"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/56273183928~650207548686",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/650207548686",
+          "id": "650207548686",
+          "finalUrls": [
+            "https://monday.com/ap/comp/trello"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1748362261",
+        "name": "us-en-prm-workos-work_mgmt-comp_asana-h-search-desktop-core-aw",
+        "id": "1748362261"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/68142613413",
+        "id": "68142613413",
+        "name": "asana"
+      },
+      "metrics": {
+        "clicks": "936",
+        "conversions": 48.342849,
+        "costMicros": "34169629933",
+        "impressions": "171798"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/68142613413~650242521997",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/650242521997",
+          "id": "650242521997",
+          "finalUrls": [
+            "https://monday.com/ap/comp/asana"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/16874163728",
+        "name": "us-en-prm-workos-project-project_management_lt-e-search-desktop-core-aw",
+        "id": "16874163728"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/134185656454",
+        "id": "134185656454",
+        "name": "project management task"
+      },
+      "metrics": {
+        "clicks": "2212",
+        "conversions": 195.333334,
+        "costMicros": "31467513696",
+        "impressions": "59088"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/134185656454~710084127337",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/710084127337",
+          "id": "710084127337",
+          "finalUrls": [
+            "https://monday.com/ap/project-management/"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/13230499132",
+        "name": "us-en-prm-workos-work_mgmt-comp_clickup-h-search-desktop-core-aw",
+        "id": "13230499132"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/122351323373",
+        "id": "122351323373",
+        "name": "clickup"
+      },
+      "metrics": {
+        "clicks": "1890",
+        "conversions": 69.438688,
+        "costMicros": "31227646532",
+        "impressions": "94781"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/122351323373~532940298427",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/532940298427",
+          "id": "532940298427",
+          "finalUrls": [
+            "https://monday.com/ap/comp/monday-vs-clickup"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1007550663",
+        "name": "us-en-prm-workos-work_mgmt-task_management-e-search-desktop-core-aw",
+        "id": "1007550663"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/117440264342",
+        "id": "117440264342",
+        "name": "task manager other-"
+      },
+      "metrics": {
+        "clicks": "870",
+        "conversions": 104.319137,
+        "costMicros": "29337812951",
+        "impressions": "39752"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/117440264342~786345894441",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/786345894441",
+          "id": "786345894441",
+          "finalUrls": [
+            "https://monday.com/ap/task-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1007550663",
+        "name": "us-en-prm-workos-work_mgmt-task_management-e-search-desktop-core-aw",
+        "id": "1007550663"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/165598578713",
+        "id": "165598578713",
+        "name": "task management templates"
+      },
+      "metrics": {
+        "clicks": "2546",
+        "conversions": 178.000001,
+        "costMicros": "28051004319",
+        "impressions": "63960"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/165598578713~714607797551",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/714607797551",
+          "id": "714607797551",
+          "finalUrls": [
+            "https://monday.com/ap/task-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1007550663",
+        "name": "us-en-prm-workos-work_mgmt-task_management-e-search-desktop-core-aw",
+        "id": "1007550663"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/55355494051",
+        "id": "55355494051",
+        "name": "task manager"
+      },
+      "metrics": {
+        "clicks": "782",
+        "conversions": 96.333333,
+        "costMicros": "26242381954",
+        "impressions": "32032"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/55355494051~786345894453",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/786345894453",
+          "id": "786345894453",
+          "finalUrls": [
+            "https://monday.com/ap/task-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/12291029943",
+        "name": "us-en-prm-workos-work_mgmt-comp1-h-search-desktop-exp-aw",
+        "id": "12291029943"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/197903449411",
+        "id": "197903449411",
+        "name": "notion"
+      },
+      "metrics": {
+        "clicks": "1324",
+        "conversions": 72.5,
+        "costMicros": "26054145792",
+        "impressions": "120589"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/197903449411~794463703899",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/794463703899",
+          "id": "794463703899",
+          "finalUrls": [
+            "https://monday.com/ap/comp/monday-vs-notion"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1006742531",
+        "name": "us-en-prm-workos-project-project_management-e-search-desktop-core-aw",
+        "id": "1006742531"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/48384008863",
+        "id": "48384008863",
+        "name": "project management software"
+      },
+      "metrics": {
+        "clicks": "408",
+        "conversions": 73,
+        "costMicros": "21915771435",
+        "impressions": "8513"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/48384008863~790383447529",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/790383447529",
+          "id": "790383447529",
+          "finalUrls": [
+            "https://monday.com/ap/project-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/17102133061",
+        "name": "us-en-prm-workos-work_mgmt-gantt-h-search-desktop-core-aw",
+        "id": "17102133061"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/134925142526",
+        "id": "134925142526",
+        "name": "gantt chart"
+      },
+      "metrics": {
+        "clicks": "1680",
+        "conversions": 125.416667,
+        "costMicros": "17780062836",
+        "impressions": "71905"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/134925142526~694185191717",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/694185191717",
+          "id": "694185191717",
+          "finalUrls": [
+            "https://monday.com/ap/gantt"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/23201767388",
+        "name": "us-en-prm-workos-work_mgmt-comp_trello-e-search-desktop-core-aw vbb_test",
+        "id": "23201767388"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/186462211183",
+        "id": "186462211183",
+        "name": "trello"
+      },
+      "metrics": {
+        "clicks": "547",
+        "conversions": 59.485992,
+        "costMicros": "15790781652",
+        "impressions": "31006"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/186462211183~786380270776",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/786380270776",
+          "id": "786380270776",
+          "finalUrls": [
+            "https://monday.com/ap/comp/trello"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/12291029943",
+        "name": "us-en-prm-workos-work_mgmt-comp1-h-search-desktop-exp-aw",
+        "id": "12291029943"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/197903450051",
+        "id": "197903450051",
+        "name": "airtable"
+      },
+      "metrics": {
+        "clicks": "959",
+        "conversions": 38.833333,
+        "costMicros": "15089996129",
+        "impressions": "84909"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/197903450051~794463703908",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/794463703908",
+          "id": "794463703908",
+          "finalUrls": [
+            "https://monday.com/ap/comp"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/15407805515",
+        "name": "us-en-prm-workos-project-project_tracking-h-search-desktop-core-aw",
+        "id": "15407805515"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/128915523783",
+        "id": "128915523783",
+        "name": "project tracking"
+      },
+      "metrics": {
+        "clicks": "716",
+        "conversions": 72.583333,
+        "costMicros": "14754413072",
+        "impressions": "18133"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/128915523783~708348714637",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/708348714637",
+          "id": "708348714637",
+          "finalUrls": [
+            "https://monday.com/ap/project-management/project-tr"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1031636135",
+        "name": "gb-en-prm-workos-work_mgmt-comp_trello-h-search-desktop-core-aw",
+        "id": "1031636135"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/52334579473",
+        "id": "52334579473",
+        "name": "trello"
+      },
+      "metrics": {
+        "clicks": "592",
+        "conversions": 63.82687,
+        "costMicros": "14584260197",
+        "impressions": "40439"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/52334579473~532878693981",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/532878693981",
+          "id": "532878693981",
+          "finalUrls": [
+            "https://monday.com/ap/comp/trello"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1006742531",
+        "name": "us-en-prm-workos-project-project_management-e-search-desktop-core-aw",
+        "id": "1006742531"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/114775260143",
+        "id": "114775260143",
+        "name": "simple project management"
+      },
+      "metrics": {
+        "clicks": "403",
+        "conversions": 41.5,
+        "costMicros": "14225712987",
+        "impressions": "15690"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/114775260143~790383447538",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/790383447538",
+          "id": "790383447538",
+          "finalUrls": [
+            "https://monday.com/ap/project-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/15407805515",
+        "name": "us-en-prm-workos-project-project_tracking-h-search-desktop-core-aw",
+        "id": "15407805515"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/128915523783",
+        "id": "128915523783",
+        "name": "project tracking"
+      },
+      "metrics": {
+        "clicks": "584",
+        "conversions": 63.479681,
+        "costMicros": "13095043795",
+        "impressions": "19091"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/128915523783~789009581414",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/789009581414",
+          "id": "789009581414",
+          "finalUrls": [
+            "https://monday.com/ap/project-management/project-tr"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/15983449605",
+        "name": "row-en-prm-workos-work_mgmt-comp1-h-search-desktop-exp-aw",
+        "id": "15983449605"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/197903449371",
+        "id": "197903449371",
+        "name": "notion"
+      },
+      "metrics": {
+        "clicks": "2342",
+        "conversions": 169.833334,
+        "costMicros": "12791520364",
+        "impressions": "104864"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/197903449371~794463703917",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/794463703917",
+          "id": "794463703917",
+          "finalUrls": [
+            "https://monday.com/ap/comp/monday-vs-notion"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1006742531",
+        "name": "us-en-prm-workos-project-project_management-e-search-desktop-core-aw",
+        "id": "1006742531"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/48384008143",
+        "id": "48384008143",
+        "name": "project management tools"
+      },
+      "metrics": {
+        "clicks": "303",
+        "conversions": 35.5,
+        "costMicros": "12502904215",
+        "impressions": "8132"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/48384008143~790383447523",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/790383447523",
+          "id": "790383447523",
+          "finalUrls": [
+            "https://monday.com/ap/project-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1007550663",
+        "name": "us-en-prm-workos-work_mgmt-task_management-e-search-desktop-core-aw",
+        "id": "1007550663"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/181771385203",
+        "id": "181771385203",
+        "name": "task management excel"
+      },
+      "metrics": {
+        "clicks": "1120",
+        "conversions": 65.25,
+        "costMicros": "12381519110",
+        "impressions": "29760"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/181771385203~762576511831",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/762576511831",
+          "id": "762576511831",
+          "finalUrls": [
+            "https://monday.com/ap/task-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1007550663",
+        "name": "us-en-prm-workos-work_mgmt-task_management-e-search-desktop-core-aw",
+        "id": "1007550663"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/55355494211",
+        "id": "55355494211",
+        "name": "task management software"
+      },
+      "metrics": {
+        "clicks": "229",
+        "conversions": 43.999999,
+        "costMicros": "12311622537",
+        "impressions": "7553"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/55355494211~714607797563",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/714607797563",
+          "id": "714607797563",
+          "finalUrls": [
+            "https://monday.com/ap/task-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/15993540380",
+        "name": "row-en-prm-workos-work_mgmt-comp_clickup-h-search-desktop-core-aw",
+        "id": "15993540380"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/127757044530",
+        "id": "127757044530",
+        "name": "clickup"
+      },
+      "metrics": {
+        "clicks": "1764",
+        "conversions": 84.823115,
+        "costMicros": "11691446238",
+        "impressions": "91586"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/127757044530~576607626901",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/576607626901",
+          "id": "576607626901",
+          "finalUrls": [
+            "https://monday.com/ap/comp/monday-vs-clickup"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/13230499132",
+        "name": "us-en-prm-workos-work_mgmt-comp_clickup-h-search-desktop-core-aw",
+        "id": "13230499132"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/122351323373",
+        "id": "122351323373",
+        "name": "clickup"
+      },
+      "metrics": {
+        "clicks": "577",
+        "conversions": 46.333333,
+        "costMicros": "11446814377",
+        "impressions": "113517"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/122351323373~650207570544",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/650207570544",
+          "id": "650207570544",
+          "finalUrls": [
+            "https://monday.com/ap/comp/monday-vs-clickup"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/9517576695",
+        "name": "row-en-prm-workos-work_mgmt-comp_asana-h-search-desktop-core-aw",
+        "id": "9517576695"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/98746644162",
+        "id": "98746644162",
+        "name": "asana"
+      },
+      "metrics": {
+        "clicks": "1085",
+        "conversions": 66.470611,
+        "costMicros": "11302776294",
+        "impressions": "57205"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/98746644162~533004530144",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/533004530144",
+          "id": "533004530144",
+          "finalUrls": [
+            "https://monday.com/ap/comp/asana"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1762531643",
+        "name": "us-en-prm-workos-work_mgmt-comp_smartsheet-h-search-desktop-core-aw",
+        "id": "1762531643"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/70597855564",
+        "id": "70597855564",
+        "name": "smartsheet"
+      },
+      "metrics": {
+        "clicks": "467",
+        "conversions": 35.470923,
+        "costMicros": "11295324137",
+        "impressions": "54401"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/70597855564~713451994493",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/713451994493",
+          "id": "713451994493",
+          "finalUrls": [
+            "https://monday.com/ap/comp/monday-vs-smartsheet"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/2068188708",
+        "name": "us-en-prm-workos-work_mgmt-calendar-h-search-desktop-core-aw",
+        "id": "2068188708"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/76350366636",
+        "id": "76350366636",
+        "name": "online calendar"
+      },
+      "metrics": {
+        "clicks": "2545",
+        "conversions": 159.833333,
+        "costMicros": "11284059359",
+        "impressions": "30254"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/76350366636~656972946205",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/656972946205",
+          "id": "656972946205",
+          "finalUrls": [
+            "https://monday.com/ap/calendar"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/14211332872",
+        "name": "us-en-prm-workos-project-project_management_free-h-search-desktop-core-aw",
+        "id": "14211332872"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/169556144049",
+        "id": "169556144049",
+        "name": "free project management software"
+      },
+      "metrics": {
+        "clicks": "244",
+        "conversions": 36.991727,
+        "costMicros": "10760447018",
+        "impressions": "1990"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/169556144049~720404324138",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/720404324138",
+          "id": "720404324138",
+          "finalUrls": [
+            "https://monday.com/ap/project-management/"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1031636135",
+        "name": "gb-en-prm-workos-work_mgmt-comp_trello-h-search-desktop-core-aw",
+        "id": "1031636135"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/52334579473",
+        "id": "52334579473",
+        "name": "trello"
+      },
+      "metrics": {
+        "clicks": "367",
+        "conversions": 33.826957,
+        "costMicros": "10533469947",
+        "impressions": "51329"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/52334579473~650207548737",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/650207548737",
+          "id": "650207548737",
+          "finalUrls": [
+            "https://monday.com/ap/comp/trello"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/16874163728",
+        "name": "us-en-prm-workos-project-project_management_lt-e-search-desktop-core-aw",
+        "id": "16874163728"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/134185656894",
+        "id": "134185656894",
+        "name": "project management google"
+      },
+      "metrics": {
+        "clicks": "519",
+        "conversions": 64.763195,
+        "costMicros": "10490306622",
+        "impressions": "19787"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/134185656894~793540493980",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/793540493980",
+          "id": "793540493980",
+          "finalUrls": [
+            "https://monday.com/ap/project-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/16874163728",
+        "name": "us-en-prm-workos-project-project_management_lt-e-search-desktop-core-aw",
+        "id": "16874163728"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/194470922532",
+        "id": "194470922532",
+        "name": "pmo software"
+      },
+      "metrics": {
+        "clicks": "720",
+        "conversions": 47,
+        "costMicros": "10324812406",
+        "impressions": "23117"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/194470922532~785890227031",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/785890227031",
+          "id": "785890227031",
+          "finalUrls": [
+            "https://monday.com/ap/project-management/"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1719809755",
+        "name": "us-en-prm-workos-work_mgmt-comp_slack-h-search-desktop-core-aw",
+        "id": "1719809755"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/70104353991",
+        "id": "70104353991",
+        "name": "slack exp"
+      },
+      "metrics": {
+        "clicks": "1735",
+        "conversions": 59,
+        "costMicros": "10107018188",
+        "impressions": "63125"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/70104353991~530125228053",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/530125228053",
+          "id": "530125228053",
+          "finalUrls": [
+            "https://monday.com/lp/integration/slack/"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/14211332872",
+        "name": "us-en-prm-workos-project-project_management_free-h-search-desktop-core-aw",
+        "id": "14211332872"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/169556144049",
+        "id": "169556144049",
+        "name": "free project management software"
+      },
+      "metrics": {
+        "clicks": "250",
+        "conversions": 44.482939,
+        "costMicros": "9919751203",
+        "impressions": "2450"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/169556144049~711817024998",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/711817024998",
+          "id": "711817024998",
+          "finalUrls": [
+            "https://monday.com/ap/project-management/"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1007550663",
+        "name": "us-en-prm-workos-work_mgmt-task_management-e-search-desktop-core-aw",
+        "id": "1007550663"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/176002754050",
+        "id": "176002754050",
+        "name": "google task management"
+      },
+      "metrics": {
+        "clicks": "429",
+        "conversions": 35.583333,
+        "costMicros": "9912018147",
+        "impressions": "52651"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/176002754050~757471033914",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/757471033914",
+          "id": "757471033914",
+          "finalUrls": [
+            "https://monday.com/ap/task-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/18580576797",
+        "name": "ww-en-prm-workos-work_mgmt-comp1-h-search-desktop-exp-aw",
+        "id": "18580576797"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/197903449571",
+        "id": "197903449571",
+        "name": "notion"
+      },
+      "metrics": {
+        "clicks": "2856",
+        "conversions": 143.5,
+        "costMicros": "9752535162",
+        "impressions": "120948"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/197903449571~794463704055",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/794463704055",
+          "id": "794463704055",
+          "finalUrls": [
+            "https://monday.com/ap/comp/monday-vs-notion"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1007550663",
+        "name": "us-en-prm-workos-work_mgmt-task_management-e-search-desktop-core-aw",
+        "id": "1007550663"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/55355493331",
+        "id": "55355493331",
+        "name": "task management app"
+      },
+      "metrics": {
+        "clicks": "185",
+        "conversions": 23,
+        "costMicros": "9500214148",
+        "impressions": "5916"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/55355493331~714607797554",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/714607797554",
+          "id": "714607797554",
+          "finalUrls": [
+            "https://monday.com/ap/task-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/15277878435",
+        "name": "ww-en-prm-workos-work_mgmt-comp_trello-h-search-desktop-exp-aw",
+        "id": "15277878435"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/132803274634",
+        "id": "132803274634",
+        "name": "trello"
+      },
+      "metrics": {
+        "clicks": "2219",
+        "conversions": 162.499741,
+        "costMicros": "9238007867",
+        "impressions": "83798"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/132803274634~562057894444",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/562057894444",
+          "id": "562057894444",
+          "finalUrls": [
+            "https://monday.com/ap/comp/trello"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1403932496",
+        "name": "us-en-prm-workos-project-project_templates-h-search-desktop-core-aw",
+        "id": "1403932496"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/54726627509",
+        "id": "54726627509",
+        "name": "project management template"
+      },
+      "metrics": {
+        "clicks": "1406",
+        "conversions": 93.429277,
+        "costMicros": "9120988833",
+        "impressions": "26355"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/54726627509~523616350691",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/523616350691",
+          "id": "523616350691",
+          "finalUrls": [
+            "https://monday.com/lp/templates"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1403932496",
+        "name": "us-en-prm-workos-project-project_templates-h-search-desktop-core-aw",
+        "id": "1403932496"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/58928504393",
+        "id": "58928504393",
+        "name": "project planning template"
+      },
+      "metrics": {
+        "clicks": "1449",
+        "conversions": 86,
+        "costMicros": "8874748149",
+        "impressions": "21616"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/58928504393~523616350694",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/523616350694",
+          "id": "523616350694",
+          "finalUrls": [
+            "https://monday.com/lp/templates"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1007550663",
+        "name": "us-en-prm-workos-work_mgmt-task_management-e-search-desktop-core-aw",
+        "id": "1007550663"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/55355494211",
+        "id": "55355494211",
+        "name": "task management software"
+      },
+      "metrics": {
+        "clicks": "177",
+        "conversions": 25.758938,
+        "costMicros": "8577289939",
+        "impressions": "9485"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/55355494211~757298531737",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/757298531737",
+          "id": "757298531737",
+          "finalUrls": [
+            "https://monday.com/ap/task-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1006742531",
+        "name": "us-en-prm-workos-project-project_management-e-search-desktop-core-aw",
+        "id": "1006742531"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/48384008103",
+        "id": "48384008103",
+        "name": "project management"
+      },
+      "metrics": {
+        "clicks": "241",
+        "conversions": 35.5,
+        "costMicros": "8521741206",
+        "impressions": "11641"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/48384008103~790383447520",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/790383447520",
+          "id": "790383447520",
+          "finalUrls": [
+            "https://monday.com/ap/project-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1007550663",
+        "name": "us-en-prm-workos-work_mgmt-task_management-e-search-desktop-core-aw",
+        "id": "1007550663"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/55355494291",
+        "id": "55355494291",
+        "name": "task management"
+      },
+      "metrics": {
+        "clicks": "255",
+        "conversions": 37.526378,
+        "costMicros": "8397801862",
+        "impressions": "10692"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/55355494291~714607797566",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/714607797566",
+          "id": "714607797566",
+          "finalUrls": [
+            "https://monday.com/ap/task-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/999425403",
+        "name": "au-en-prm-workos-project-project_management-e-search-desktop-core-aw",
+        "id": "999425403"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/48965206923",
+        "id": "48965206923",
+        "name": "online project management"
+      },
+      "metrics": {
+        "clicks": "562",
+        "conversions": 19,
+        "costMicros": "8253828311",
+        "impressions": "20844"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/48965206923~757091821605",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/757091821605",
+          "id": "757091821605",
+          "finalUrls": [
+            "https://monday.com/ap/project-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/16873830902",
+        "name": "us-en-prm-workos-project-projectgen-e-search-desktop-core-aw",
+        "id": "16873830902"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/138339390871",
+        "id": "138339390871",
+        "name": "project google"
+      },
+      "metrics": {
+        "clicks": "563",
+        "conversions": 41.926025,
+        "costMicros": "8117157337",
+        "impressions": "28868"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/138339390871~757620562733",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/757620562733",
+          "id": "757620562733",
+          "finalUrls": [
+            "https://monday.com/ap/project-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1403932496",
+        "name": "us-en-prm-workos-project-project_templates-h-search-desktop-core-aw",
+        "id": "1403932496"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/107742950282",
+        "id": "107742950282",
+        "name": "project tracking template"
+      },
+      "metrics": {
+        "clicks": "882",
+        "conversions": 79.666666,
+        "costMicros": "7825650761",
+        "impressions": "14162"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/107742950282~661073309024",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/661073309024",
+          "id": "661073309024",
+          "finalUrls": [
+            "https://monday.com/lp/templates"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/9516924429",
+        "name": "row-en-prm-workos-work_mgmt-comp_trello-h-search-desktop-core-aw",
+        "id": "9516924429"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/100694860001",
+        "id": "100694860001",
+        "name": "trello"
+      },
+      "metrics": {
+        "clicks": "1331",
+        "conversions": 96.5,
+        "costMicros": "7814736971",
+        "impressions": "77896"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/100694860001~533004530111",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/533004530111",
+          "id": "533004530111",
+          "finalUrls": [
+            "https://monday.com/ap/comp/trello"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/15407805515",
+        "name": "us-en-prm-workos-project-project_tracking-h-search-desktop-core-aw",
+        "id": "15407805515"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/128915523583",
+        "id": "128915523583",
+        "name": "project tracking tool"
+      },
+      "metrics": {
+        "clicks": "528",
+        "conversions": 33.333333,
+        "costMicros": "7762997074",
+        "impressions": "14657"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/128915523583~789009581408",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/789009581408",
+          "id": "789009581408",
+          "finalUrls": [
+            "https://monday.com/ap/project-management/project-tr"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/16873830902",
+        "name": "us-en-prm-workos-project-projectgen-e-search-desktop-core-aw",
+        "id": "16873830902"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/138536307034",
+        "id": "138536307034",
+        "name": "project planning"
+      },
+      "metrics": {
+        "clicks": "784",
+        "conversions": 62.128651,
+        "costMicros": "7687080895",
+        "impressions": "29654"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/138536307034~645136420506",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/645136420506",
+          "id": "645136420506",
+          "finalUrls": [
+            "https://monday.com/ap/project-management/"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/15407805515",
+        "name": "us-en-prm-workos-project-project_tracking-h-search-desktop-core-aw",
+        "id": "15407805515"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/171504781808",
+        "id": "171504781808",
+        "name": "project management tracking"
+      },
+      "metrics": {
+        "clicks": "401",
+        "conversions": 40.5,
+        "costMicros": "7679413442",
+        "impressions": "14343"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/171504781808~789009581417",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/789009581417",
+          "id": "789009581417",
+          "finalUrls": [
+            "https://monday.com/ap/project-management/project-tr"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/16874163728",
+        "name": "us-en-prm-workos-project-project_management_lt-e-search-desktop-core-aw",
+        "id": "16874163728"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/134185656454",
+        "id": "134185656454",
+        "name": "project management task"
+      },
+      "metrics": {
+        "clicks": "472",
+        "conversions": 40,
+        "costMicros": "7522957986",
+        "impressions": "15745"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/134185656454~592445328204",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/592445328204",
+          "id": "592445328204",
+          "finalUrls": [
+            "https://monday.com/ap/project-management/"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/999494601",
+        "name": "gb-en-prm-workos-work_mgmt-task_management-e-search-desktop-core-aw",
+        "id": "999494601"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/164506750975",
+        "id": "164506750975",
+        "name": "task management templates"
+      },
+      "metrics": {
+        "clicks": "967",
+        "conversions": 29.5,
+        "costMicros": "7460202600",
+        "impressions": "25365"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/164506750975~714607797491",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/714607797491",
+          "id": "714607797491",
+          "finalUrls": [
+            "https://monday.com/ap/task-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1006742531",
+        "name": "us-en-prm-workos-project-project_management-e-search-desktop-core-aw",
+        "id": "1006742531"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/74696037257",
+        "id": "74696037257",
+        "name": "project management platform"
+      },
+      "metrics": {
+        "clicks": "168",
+        "conversions": 20.5,
+        "costMicros": "7446149971",
+        "impressions": "6609"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/74696037257~790383447535",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/790383447535",
+          "id": "790383447535",
+          "finalUrls": [
+            "https://monday.com/ap/project-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/15407805515",
+        "name": "us-en-prm-workos-project-project_tracking-h-search-desktop-core-aw",
+        "id": "15407805515"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/128915523543",
+        "id": "128915523543",
+        "name": "project tracking software"
+      },
+      "metrics": {
+        "clicks": "358",
+        "conversions": 42.25,
+        "costMicros": "7416393615",
+        "impressions": "11326"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/128915523543~789009581405",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/789009581405",
+          "id": "789009581405",
+          "finalUrls": [
+            "https://monday.com/ap/project-management/project-tr"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/23201767388",
+        "name": "us-en-prm-workos-work_mgmt-comp_trello-e-search-desktop-core-aw vbb_test",
+        "id": "23201767388"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/186462211183",
+        "id": "186462211183",
+        "name": "trello"
+      },
+      "metrics": {
+        "clicks": "195",
+        "conversions": 27,
+        "costMicros": "7399141044",
+        "impressions": "18797"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/186462211183~650207548686",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/650207548686",
+          "id": "650207548686",
+          "finalUrls": [
+            "https://monday.com/ap/comp/trello"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1748362261",
+        "name": "us-en-prm-workos-work_mgmt-comp_asana-h-search-desktop-core-aw",
+        "id": "1748362261"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/68142614133",
+        "id": "68142614133",
+        "name": "asana project management theme"
+      },
+      "metrics": {
+        "clicks": "193",
+        "conversions": 18.5,
+        "costMicros": "7317979398",
+        "impressions": "18641"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/68142614133~533004522137",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/533004522137",
+          "id": "533004522137",
+          "finalUrls": [
+            "https://monday.com/ap/comp/asana"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1032855052",
+        "name": "eu1-en-prm-workos-work_mgmt-comp_trello-h-search-desktop-core-aw",
+        "id": "1032855052"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/51864867318",
+        "id": "51864867318",
+        "name": "trello"
+      },
+      "metrics": {
+        "clicks": "750",
+        "conversions": 39,
+        "costMicros": "7091548101",
+        "impressions": "33010"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/51864867318~533004521696",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/533004521696",
+          "id": "533004521696",
+          "finalUrls": [
+            "https://monday.com/ap/comp/trello"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1007550663",
+        "name": "us-en-prm-workos-work_mgmt-task_management-e-search-desktop-core-aw",
+        "id": "1007550663"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/55355494051",
+        "id": "55355494051",
+        "name": "task manager"
+      },
+      "metrics": {
+        "clicks": "213",
+        "conversions": 26.5,
+        "costMicros": "6970750368",
+        "impressions": "9543"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/55355494051~673674853419",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/673674853419",
+          "id": "673674853419",
+          "finalUrls": [
+            "https://monday.com/ap/task-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/12291029943",
+        "name": "us-en-prm-workos-work_mgmt-comp1-h-search-desktop-exp-aw",
+        "id": "12291029943"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/197903449411",
+        "id": "197903449411",
+        "name": "notion"
+      },
+      "metrics": {
+        "clicks": "342",
+        "conversions": 12.833333,
+        "costMicros": "6949806386",
+        "impressions": "71114"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/197903449411~794463703896",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/794463703896",
+          "id": "794463703896",
+          "finalUrls": [
+            "https://monday.com/ap/comp/monday-vs-notion"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1007550663",
+        "name": "us-en-prm-workos-work_mgmt-task_management-e-search-desktop-core-aw",
+        "id": "1007550663"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/124676563894",
+        "id": "124676563894",
+        "name": "online task management system"
+      },
+      "metrics": {
+        "clicks": "165",
+        "conversions": 23.333333,
+        "costMicros": "6763949503",
+        "impressions": "7960"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/124676563894~714607797542",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/714607797542",
+          "id": "714607797542",
+          "finalUrls": [
+            "https://monday.com/ap/task-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/12289054556",
+        "name": "gb-en-prm-workos-work_mgmt-comp1-h-search-desktop-exp-aw",
+        "id": "12289054556"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/197903449331",
+        "id": "197903449331",
+        "name": "notion"
+      },
+      "metrics": {
+        "clicks": "388",
+        "conversions": 24.833333,
+        "costMicros": "6763586085",
+        "impressions": "44888"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/197903449331~794463703881",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/794463703881",
+          "id": "794463703881",
+          "finalUrls": [
+            "https://monday.com/ap/comp/monday-vs-notion"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/6444148482",
+        "name": "us-en-prm-workos-work_mgmt-comp_comp2-h-search-desktop-core-aw",
+        "id": "6444148482"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/197871530568",
+        "id": "197871530568",
+        "name": "basecamp"
+      },
+      "metrics": {
+        "clicks": "267",
+        "conversions": 6.833334,
+        "costMicros": "6689726013",
+        "impressions": "26795"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/197871530568~794465635818",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/794465635818",
+          "id": "794465635818",
+          "finalUrls": [
+            "https://monday.com/ap/comp"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1748362261",
+        "name": "us-en-prm-workos-work_mgmt-comp_asana-h-search-desktop-core-aw",
+        "id": "1748362261"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/68142614133",
+        "id": "68142614133",
+        "name": "asana project management theme"
+      },
+      "metrics": {
+        "clicks": "185",
+        "conversions": 14.5,
+        "costMicros": "6688284706",
+        "impressions": "25145"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/68142614133~650242521982",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/650242521982",
+          "id": "650242521982",
+          "finalUrls": [
+            "https://monday.com/ap/comp/asana"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/15407805515",
+        "name": "us-en-prm-workos-project-project_tracking-h-search-desktop-core-aw",
+        "id": "15407805515"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/171504781808",
+        "id": "171504781808",
+        "name": "project management tracking"
+      },
+      "metrics": {
+        "clicks": "328",
+        "conversions": 31,
+        "costMicros": "6646921538",
+        "impressions": "12494"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/171504781808~708686548317",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/708686548317",
+          "id": "708686548317",
+          "finalUrls": [
+            "https://monday.com/ap/project-management/project-tr"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/999425403",
+        "name": "au-en-prm-workos-project-project_management-e-search-desktop-core-aw",
+        "id": "999425403"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/115839013333",
+        "id": "115839013333",
+        "name": "simple project management"
+      },
+      "metrics": {
+        "clicks": "338",
+        "conversions": 25.433922,
+        "costMicros": "6625254239",
+        "impressions": "15872"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/115839013333~757091821593",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/757091821593",
+          "id": "757091821593",
+          "finalUrls": [
+            "https://monday.com/ap/project-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1007550663",
+        "name": "us-en-prm-workos-work_mgmt-task_management-e-search-desktop-core-aw",
+        "id": "1007550663"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/176002754050",
+        "id": "176002754050",
+        "name": "google task management"
+      },
+      "metrics": {
+        "clicks": "293",
+        "conversions": 28.5,
+        "costMicros": "6554752508",
+        "impressions": "31535"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/176002754050~757471033911",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/757471033911",
+          "id": "757471033911",
+          "finalUrls": [
+            "https://monday.com/ap/task-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/15407805515",
+        "name": "us-en-prm-workos-project-project_tracking-h-search-desktop-core-aw",
+        "id": "15407805515"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/128915523583",
+        "id": "128915523583",
+        "name": "project tracking tool"
+      },
+      "metrics": {
+        "clicks": "454",
+        "conversions": 35.5,
+        "costMicros": "6438015006",
+        "impressions": "12293"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/128915523583~708348714640",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/708348714640",
+          "id": "708348714640",
+          "finalUrls": [
+            "https://monday.com/ap/project-management/project-tr"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1006742531",
+        "name": "us-en-prm-workos-project-project_management-e-search-desktop-core-aw",
+        "id": "1006742531"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/48384008343",
+        "id": "48384008343",
+        "name": "project management app"
+      },
+      "metrics": {
+        "clicks": "172",
+        "conversions": 30.5,
+        "costMicros": "6435886725",
+        "impressions": "6614"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/48384008343~790383447514",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/790383447514",
+          "id": "790383447514",
+          "finalUrls": [
+            "https://monday.com/ap/project-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/14073717091",
+        "name": "us-en-prm-workos-work_mgmt-gantt_template-h-search-desktop-exp-aw",
+        "id": "14073717091"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/169934199493",
+        "id": "169934199493",
+        "name": "gantt chart creator"
+      },
+      "metrics": {
+        "clicks": "818",
+        "conversions": 86.013153,
+        "costMicros": "6364833181",
+        "impressions": "7873"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/169934199493~720161252847",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/720161252847",
+          "id": "720161252847",
+          "finalUrls": [
+            "https://monday.com/ap/gantt"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1007550663",
+        "name": "us-en-prm-workos-work_mgmt-task_management-e-search-desktop-core-aw",
+        "id": "1007550663"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/55355493331",
+        "id": "55355493331",
+        "name": "task management app"
+      },
+      "metrics": {
+        "clicks": "132",
+        "conversions": 19.5,
+        "costMicros": "6274294113",
+        "impressions": "4709"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/55355493331~757298531734",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/757298531734",
+          "id": "757298531734",
+          "finalUrls": [
+            "https://monday.com/ap/task-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/999425403",
+        "name": "au-en-prm-workos-project-project_management-e-search-desktop-core-aw",
+        "id": "999425403"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/48965206283",
+        "id": "48965206283",
+        "name": "project management tools"
+      },
+      "metrics": {
+        "clicks": "321",
+        "conversions": 14.980133,
+        "costMicros": "6235627015",
+        "impressions": "12151"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/48965206283~757091821608",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/757091821608",
+          "id": "757091821608",
+          "finalUrls": [
+            "https://monday.com/ap/project-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/17582891016",
+        "name": "ww-en-prm-workos-work_mgmt-comp_clickup-h-search-desktop-exp-aw",
+        "id": "17582891016"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/138139163916",
+        "id": "138139163916",
+        "name": "clickup"
+      },
+      "metrics": {
+        "clicks": "1683",
+        "conversions": 90.119047,
+        "costMicros": "6185654881",
+        "impressions": "77454"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/138139163916~606387707431",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/606387707431",
+          "id": "606387707431",
+          "finalUrls": [
+            "https://monday.com/ap/comp/monday-vs-clickup"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/999494601",
+        "name": "gb-en-prm-workos-work_mgmt-task_management-e-search-desktop-core-aw",
+        "id": "999494601"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/121403046898",
+        "id": "121403046898",
+        "name": "task manager other-"
+      },
+      "metrics": {
+        "clicks": "405",
+        "conversions": 37.333333,
+        "costMicros": "6171116685",
+        "impressions": "13174"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/121403046898~708882959444",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/708882959444",
+          "id": "708882959444",
+          "finalUrls": [
+            "https://monday.com/ap/task-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/15983449605",
+        "name": "row-en-prm-workos-work_mgmt-comp1-h-search-desktop-exp-aw",
+        "id": "15983449605"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/197903449891",
+        "id": "197903449891",
+        "name": "airtable"
+      },
+      "metrics": {
+        "clicks": "1027",
+        "conversions": 82.333333,
+        "costMicros": "6052581007",
+        "impressions": "34454"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/197903449891~794463704046",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/794463704046",
+          "id": "794463704046",
+          "finalUrls": [
+            "https://monday.com/ap/comp"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/15407805515",
+        "name": "us-en-prm-workos-project-project_tracking-h-search-desktop-core-aw",
+        "id": "15407805515"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/128915523503",
+        "id": "128915523503",
+        "name": "project tracking app"
+      },
+      "metrics": {
+        "clicks": "270",
+        "conversions": 25.5,
+        "costMicros": "5976073616",
+        "impressions": "7357"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/128915523503~789009581420",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/789009581420",
+          "id": "789009581420",
+          "finalUrls": [
+            "https://monday.com/ap/project-management/project-tr"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/17102133061",
+        "name": "us-en-prm-workos-work_mgmt-gantt-h-search-desktop-core-aw",
+        "id": "17102133061"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/134925142526",
+        "id": "134925142526",
+        "name": "gantt chart"
+      },
+      "metrics": {
+        "clicks": "465",
+        "conversions": 69.414223,
+        "costMicros": "5909430797",
+        "impressions": "14326"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/134925142526~793398647273",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/793398647273",
+          "id": "793398647273",
+          "finalUrls": [
+            "https://monday.com/ap/gantt"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/998744618",
+        "name": "gb-en-prm-workos-project-project_management-p-search-desktop-core-aw",
+        "id": "998744618"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/118389940983",
+        "id": "118389940983",
+        "name": "project management platform"
+      },
+      "metrics": {
+        "clicks": "288",
+        "conversions": 12.833333,
+        "costMicros": "5756784316",
+        "impressions": "15740"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/118389940983~757091821392",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/757091821392",
+          "id": "757091821392",
+          "finalUrls": [
+            "https://monday.com/ap/project-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/16873830902",
+        "name": "us-en-prm-workos-project-projectgen-e-search-desktop-core-aw",
+        "id": "16873830902"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/183517139929",
+        "id": "183517139929",
+        "name": "project task"
+      },
+      "metrics": {
+        "clicks": "677",
+        "conversions": 59.833333,
+        "costMicros": "5752303014",
+        "impressions": "11672"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/183517139929~757620562748",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/757620562748",
+          "id": "757620562748",
+          "finalUrls": [
+            "https://monday.com/ap/project-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1748364394",
+        "name": "gb-en-prm-workos-work_mgmt-comp_asana-h-search-desktop-core-aw",
+        "id": "1748364394"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/68142681573",
+        "id": "68142681573",
+        "name": "asana"
+      },
+      "metrics": {
+        "clicks": "226",
+        "conversions": 14.666666,
+        "costMicros": "5747252812",
+        "impressions": "36807"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/68142681573~650242522456",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/650242522456",
+          "id": "650242522456",
+          "finalUrls": [
+            "https://monday.com/ap/comp/asana"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1032855043",
+        "name": "au-en-prm-workos-work_mgmt-comp_trello-h-search-desktop-core-aw",
+        "id": "1032855043"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/51492413980",
+        "id": "51492413980",
+        "name": "trello"
+      },
+      "metrics": {
+        "clicks": "350",
+        "conversions": 36.5,
+        "costMicros": "5737821472",
+        "impressions": "17105"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/51492413980~532878694281",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/532878694281",
+          "id": "532878694281",
+          "finalUrls": [
+            "https://monday.com/ap/comp/trello"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1006742531",
+        "name": "us-en-prm-workos-project-project_management-e-search-desktop-core-aw",
+        "id": "1006742531"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/48384009023",
+        "id": "48384009023",
+        "name": "best project management software"
+      },
+      "metrics": {
+        "clicks": "104",
+        "conversions": 15,
+        "costMicros": "5673832293",
+        "impressions": "3003"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/48384009023~790383447508",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/790383447508",
+          "id": "790383447508",
+          "finalUrls": [
+            "https://monday.com/ap/project-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/12289054553",
+        "name": "ca-en-prm-workos-work_mgmt-comp1-h-search-desktop-exp-aw",
+        "id": "12289054553"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/197903449131",
+        "id": "197903449131",
+        "name": "notion"
+      },
+      "metrics": {
+        "clicks": "336",
+        "conversions": 25.793269,
+        "costMicros": "5584641227",
+        "impressions": "29272"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/197903449131~794463703863",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/794463703863",
+          "id": "794463703863",
+          "finalUrls": [
+            "https://monday.com/ap/comp/monday-vs-notion"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1032549969",
+        "name": "us-en-prm-workos-work_mgmt-comp_trello-e-search-desktop-core-aw",
+        "id": "1032549969"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/56273183928",
+        "id": "56273183928",
+        "name": "trello"
+      },
+      "metrics": {
+        "clicks": "119",
+        "conversions": 14,
+        "costMicros": "5496796048",
+        "impressions": "9408"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/56273183928~713368123102",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/713368123102",
+          "id": "713368123102",
+          "finalUrls": [
+            "https://monday.com/ap/comp/trello"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/16874163728",
+        "name": "us-en-prm-workos-project-project_management_lt-e-search-desktop-core-aw",
+        "id": "16874163728"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/134185656454",
+        "id": "134185656454",
+        "name": "project management task"
+      },
+      "metrics": {
+        "clicks": "344",
+        "conversions": 35,
+        "costMicros": "5458570673",
+        "impressions": "10211"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/134185656454~793540493953",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/793540493953",
+          "id": "793540493953",
+          "finalUrls": [
+            "https://monday.com/ap/project-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/23161927340",
+        "name": "us-en-prm-work_mgmt-search-ai_main-h-desktop-core-aw",
+        "id": "23161927340"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/191006751007",
+        "id": "191006751007",
+        "name": "ai project management"
+      },
+      "metrics": {
+        "clicks": "223",
+        "conversions": 24.32126,
+        "costMicros": "5430685056",
+        "impressions": "5944"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/191006751007~780179378789",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/780179378789",
+          "id": "780179378789",
+          "finalUrls": [
+            "https://monday.com/ap/ai"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/17102133061",
+        "name": "us-en-prm-workos-work_mgmt-gantt-h-search-desktop-core-aw",
+        "id": "17102133061"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/166130678351",
+        "id": "166130678351",
+        "name": "simple gantt chart"
+      },
+      "metrics": {
+        "clicks": "615",
+        "conversions": 39,
+        "costMicros": "5386847558",
+        "impressions": "12703"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/166130678351~701577216639",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/701577216639",
+          "id": "701577216639",
+          "finalUrls": [
+            "https://monday.com/ap/gantt"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1403932496",
+        "name": "us-en-prm-workos-project-project_templates-h-search-desktop-core-aw",
+        "id": "1403932496"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/190683907588",
+        "id": "190683907588",
+        "name": "project template excel"
+      },
+      "metrics": {
+        "clicks": "671",
+        "conversions": 65.921445,
+        "costMicros": "5375987106",
+        "impressions": "10266"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/190683907588~762808027393",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/762808027393",
+          "id": "762808027393",
+          "finalUrls": [
+            "https://monday.com/lp/templates"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/14211332872",
+        "name": "us-en-prm-workos-project-project_management_free-h-search-desktop-core-aw",
+        "id": "14211332872"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/123526690737",
+        "id": "123526690737",
+        "name": "free project management tools"
+      },
+      "metrics": {
+        "clicks": "122",
+        "conversions": 31.5,
+        "costMicros": "5301453734",
+        "impressions": "1032"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/123526690737~647150661267",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/647150661267",
+          "id": "647150661267",
+          "finalUrls": [
+            "https://monday.com/ap/project-management/"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/18580576797",
+        "name": "ww-en-prm-workos-work_mgmt-comp1-h-search-desktop-exp-aw",
+        "id": "18580576797"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/197903450091",
+        "id": "197903450091",
+        "name": "airtable"
+      },
+      "metrics": {
+        "clicks": "1266",
+        "conversions": 78,
+        "costMicros": "5235420809",
+        "impressions": "28825"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/197903450091~794463704064",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/794463704064",
+          "id": "794463704064",
+          "finalUrls": [
+            "https://monday.com/ap/comp"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/14211332872",
+        "name": "us-en-prm-workos-project-project_management_free-h-search-desktop-core-aw",
+        "id": "14211332872"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/123526690697",
+        "id": "123526690697",
+        "name": "free project management"
+      },
+      "metrics": {
+        "clicks": "182",
+        "conversions": 33.833333,
+        "costMicros": "5152240896",
+        "impressions": "2958"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/123526690697~647150661264",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/647150661264",
+          "id": "647150661264",
+          "finalUrls": [
+            "https://monday.com/ap/project-management/"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1007550663",
+        "name": "us-en-prm-workos-work_mgmt-task_management-e-search-desktop-core-aw",
+        "id": "1007550663"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/115564790098",
+        "id": "115564790098",
+        "name": "task management tool"
+      },
+      "metrics": {
+        "clicks": "142",
+        "conversions": 15.583333,
+        "costMicros": "5056346115",
+        "impressions": "4731"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/115564790098~714607797560",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/714607797560",
+          "id": "714607797560",
+          "finalUrls": [
+            "https://monday.com/ap/task-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/12289054547",
+        "name": "au-en-prm-workos-work_mgmt-comp1-h-search-desktop-exp-aw",
+        "id": "12289054547"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/197903449091",
+        "id": "197903449091",
+        "name": "notion"
+      },
+      "metrics": {
+        "clicks": "285",
+        "conversions": 28.484543,
+        "costMicros": "5049323481",
+        "impressions": "23863"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/197903449091~794463703827",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/794463703827",
+          "id": "794463703827",
+          "finalUrls": [
+            "https://monday.com/ap/comp/monday-vs-notion"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/998703539",
+        "name": "au-en-prm-workos-work_mgmt-task_management-e-search-desktop-core-aw",
+        "id": "998703539"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/169435740452",
+        "id": "169435740452",
+        "name": "task management templates"
+      },
+      "metrics": {
+        "clicks": "624",
+        "conversions": 11.440002,
+        "costMicros": "5038162782",
+        "impressions": "13182"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/169435740452~714607797299",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/714607797299",
+          "id": "714607797299",
+          "finalUrls": [
+            "https://monday.com/ap/task-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/21333197261",
+        "name": "us-en-prm-work_mgmt-search-management-h-desktop-core-aw",
+        "id": "21333197261"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/178648856760",
+        "id": "178648856760",
+        "name": "management free"
+      },
+      "metrics": {
+        "clicks": "241",
+        "conversions": 25,
+        "costMicros": "5023831208",
+        "impressions": "6120"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/178648856760~737743823664",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/737743823664",
+          "id": "737743823664",
+          "finalUrls": [
+            "https://monday.com/ap/management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/17102133061",
+        "name": "us-en-prm-workos-work_mgmt-gantt-h-search-desktop-core-aw",
+        "id": "17102133061"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/134925142686",
+        "id": "134925142686",
+        "name": "gantt chart software"
+      },
+      "metrics": {
+        "clicks": "273",
+        "conversions": 21.5,
+        "costMicros": "4968731912",
+        "impressions": "6986"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/134925142686~694185191702",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/694185191702",
+          "id": "694185191702",
+          "finalUrls": [
+            "https://monday.com/ap/gantt"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/999494601",
+        "name": "gb-en-prm-workos-work_mgmt-task_management-e-search-desktop-core-aw",
+        "id": "999494601"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/180476898365",
+        "id": "180476898365",
+        "name": "task management excel"
+      },
+      "metrics": {
+        "clicks": "649",
+        "conversions": 21.993293,
+        "costMicros": "4948052338",
+        "impressions": "15999"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/180476898365~762576511825",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/762576511825",
+          "id": "762576511825",
+          "finalUrls": [
+            "https://monday.com/ap/task-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1065239999",
+        "name": "us-en-prm-workos-work_mgmt-shared_calendar-h-search-desktop-core-aw",
+        "id": "1065239999"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/53017631740",
+        "id": "53017631740",
+        "name": "shared calendar"
+      },
+      "metrics": {
+        "clicks": "416",
+        "conversions": 63,
+        "costMicros": "4854460707",
+        "impressions": "4822"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/53017631740~694243579666",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/694243579666",
+          "id": "694243579666",
+          "finalUrls": [
+            "https://monday.com/ap/calendar"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1007874937",
+        "name": "us-en-prm-workos-work_mgmt-taskgen-e-search-desktop-core-aw",
+        "id": "1007874937"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/180092093006",
+        "id": "180092093006",
+        "name": "task tracker"
+      },
+      "metrics": {
+        "clicks": "175",
+        "conversions": 21.984975,
+        "costMicros": "4818945745",
+        "impressions": "3833"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/180092093006~759897297518",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/759897297518",
+          "id": "759897297518",
+          "finalUrls": [
+            "https://monday.com/ap/task-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/999425403",
+        "name": "au-en-prm-workos-project-project_management-e-search-desktop-core-aw",
+        "id": "999425403"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/48965206923",
+        "id": "48965206923",
+        "name": "online project management"
+      },
+      "metrics": {
+        "clicks": "233",
+        "conversions": 10.979791,
+        "costMicros": "4810263210",
+        "impressions": "12062"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/48965206923~793540492021",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/793540492021",
+          "id": "793540492021",
+          "finalUrls": [
+            "https://monday.com/ap/project-management"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1748362261",
+        "name": "us-en-prm-workos-work_mgmt-comp_asana-h-search-desktop-core-aw",
+        "id": "1748362261"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/71319679819",
+        "id": "71319679819",
+        "name": "asana alternative"
+      },
+      "metrics": {
+        "clicks": "96",
+        "conversions": 11.75,
+        "costMicros": "4800147790",
+        "impressions": "3121"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/71319679819~533004522149",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/533004522149",
+          "id": "533004522149",
+          "finalUrls": [
+            "https://monday.com/ap/comp/asana"
+          ]
+        }
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/15504007883",
+        "name": "us-en-prm-workos-work_mgmt-comp_microsoft_pm-h-search-desktop-exp-aw",
+        "id": "15504007883"
+      },
+      "adGroup": {
+        "resourceName": "customers/3746504118/adGroups/129555370294",
+        "id": "129555370294",
+        "name": "microsoft project"
+      },
+      "metrics": {
+        "clicks": "122",
+        "conversions": 7,
+        "costMicros": "4719401907",
+        "impressions": "19515"
+      },
+      "adGroupAd": {
+        "resourceName": "customers/3746504118/adGroupAds/129555370294~567730888293",
+        "status": "ENABLED",
+        "ad": {
+          "type": "RESPONSIVE_SEARCH_AD",
+          "resourceName": "customers/3746504118/ads/567730888293",
+          "id": "567730888293",
+          "finalUrls": [
+            "https://monday.com/ap/comp"
+          ]
+        }
+      }
+    }
+  ],
+  "fieldMask": "adGroupAd.ad.id,adGroupAd.ad.name,adGroupAd.ad.finalUrls,adGroupAd.ad.type,adGroupAd.status,adGroup.name,adGroup.id,campaign.name,campaign.id,metrics.impressions,metrics.clicks,metrics.costMicros,metrics.conversions",
+  "requestId": "bhvnmGVTOf4FaKYRz6dTNw",
+  "queryResourceConsumption": "49893"
+}
+]

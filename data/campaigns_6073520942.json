@@ -1,0 +1,518 @@
+[{
+  "results": [
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/12662074050",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-brand-e-search-desktop-core-aw",
+        "id": "12662074050"
+      },
+      "metrics": {
+        "clicks": "102949",
+        "conversions": 4379.633636,
+        "costMicros": "168619554594",
+        "ctr": 0.45958554311530153,
+        "averageCpc": 1637894.0503938843,
+        "impressions": "224004"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/21006821231",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-brand_lt-e-search-desktop-core-aw",
+        "id": "21006821231"
+      },
+      "metrics": {
+        "clicks": "21232",
+        "conversions": 1206.689307,
+        "costMicros": "81909078518",
+        "ctr": 0.31018714663472075,
+        "averageCpc": 3857812.6656932933,
+        "impressions": "68449"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/14306043985",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-brand-p-search-desktop-core-aw",
+        "id": "14306043985"
+      },
+      "metrics": {
+        "clicks": "12866",
+        "conversions": 641.253225,
+        "costMicros": "65994809715",
+        "ctr": 0.14296508656132631,
+        "averageCpc": 5129396.0605471786,
+        "impressions": "89994"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/2079994741",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "gb-en-prm-workos-work_mgmt-brand-e-search-desktop-core-aw",
+        "id": "2079994741"
+      },
+      "metrics": {
+        "clicks": "36617",
+        "conversions": 856.201073,
+        "costMicros": "58907343685",
+        "ctr": 0.41152406747659559,
+        "averageCpc": 1608743.0342463884,
+        "impressions": "88979"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/2079864705",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "au-en-prm-workos-work_mgmt-brand-e-search-desktop-core-aw",
+        "id": "2079864705"
+      },
+      "metrics": {
+        "clicks": "31096",
+        "conversions": 1897.444019,
+        "costMicros": "50016702868",
+        "ctr": 0.36270747553450827,
+        "averageCpc": 1608460.987522511,
+        "impressions": "85733"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/12617515598",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "row-en-prm-workos-work_mgmt-brand-e-search-desktop-core-aw",
+        "id": "12617515598"
+      },
+      "metrics": {
+        "clicks": "29492",
+        "conversions": 5601.03931,
+        "costMicros": "40354702498",
+        "ctr": 0.347258854559156,
+        "averageCpc": 1368327.088634206,
+        "impressions": "84928"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/15169075187",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-brand-e-search-mobile-core-aw",
+        "id": "15169075187"
+      },
+      "metrics": {
+        "clicks": "10293",
+        "conversions": 2402.743785,
+        "costMicros": "39571308325",
+        "ctr": 0.12925059018534332,
+        "averageCpc": 3844487.3530554748,
+        "impressions": "79636"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/9861982464",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "eu1-en-prm-workos-work_mgmt-brand-e-search-desktop-core-aw",
+        "id": "9861982464"
+      },
+      "metrics": {
+        "clicks": "48345",
+        "conversions": 3339.516407,
+        "costMicros": "33230321285",
+        "ctr": 0.37940560181442912,
+        "averageCpc": 687357.97466128867,
+        "impressions": "127423"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/2079995029",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "ca-en-prm-workos-work_mgmt-brand-e-search-desktop-core-aw",
+        "id": "2079995029"
+      },
+      "metrics": {
+        "clicks": "17690",
+        "conversions": 1215.74196,
+        "costMicros": "23565335188",
+        "ctr": 0.39011158646848676,
+        "averageCpc": 1332127.4837761447,
+        "impressions": "45346"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/1667872279",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "dach-de-prm-workos-work_mgmt-brand-e-search-desktop-core-aw",
+        "id": "1667872279"
+      },
+      "metrics": {
+        "clicks": "15160",
+        "conversions": 573.356939,
+        "costMicros": "19361912734",
+        "ctr": 0.504140201523062,
+        "averageCpc": 1277171.0246701846,
+        "impressions": "30071"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/1667759930",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "fr-fr-prm-workos-work_mgmt-brand-e-search-desktop-core-aw",
+        "id": "1667759930"
+      },
+      "metrics": {
+        "clicks": "25526",
+        "conversions": 1056.853316,
+        "costMicros": "18390236807",
+        "ctr": 0.45168368340027959,
+        "averageCpc": 720451.17946407583,
+        "impressions": "56513"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/937129878",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "ww-en-prm-workos-work_mgmt-brand-e-search-desktop-core-aw",
+        "id": "937129878"
+      },
+      "metrics": {
+        "clicks": "22824",
+        "conversions": 4989.86294,
+        "costMicros": "17545525117",
+        "ctr": 0.33876066790352505,
+        "averageCpc": 768731.38437609538,
+        "impressions": "67375"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/7859484202",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "gb-en-prm-workos-work_mgmt-brand-p-search-desktop-core-aw",
+        "id": "7859484202"
+      },
+      "metrics": {
+        "clicks": "3313",
+        "conversions": 115.21716,
+        "costMicros": "13067919824",
+        "ctr": 0.12711994474714144,
+        "averageCpc": 3944437.0129791731,
+        "impressions": "26062"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/9860758972",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "au-en-prm-workos-work_mgmt-brand-p-search-desktop-core-aw",
+        "id": "9860758972"
+      },
+      "metrics": {
+        "clicks": "2203",
+        "conversions": 133.918181,
+        "costMicros": "9193348090",
+        "ctr": 0.14388348246358826,
+        "averageCpc": 4173103.990013618,
+        "impressions": "15311"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/1498088369",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "ww-en-prm-workos-work_mgmt-brand-e-search-mobile-core-aw",
+        "id": "1498088369"
+      },
+      "metrics": {
+        "clicks": "9275",
+        "conversions": 2189.734401,
+        "costMicros": "8825291889",
+        "ctr": 0.080808872857802527,
+        "averageCpc": 951513.95029649592,
+        "impressions": "114777"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/1667436389",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "latam-es-prm-workos-work_mgmt-brand-e-search-desktop-core-aw",
+        "id": "1667436389"
+      },
+      "metrics": {
+        "clicks": "55008",
+        "conversions": 3312.247328,
+        "costMicros": "8045273232",
+        "ctr": 0.40920350822379431,
+        "averageCpc": 146256.4214659686,
+        "impressions": "134427"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/8713328784",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "ca-en-prm-workos-work_mgmt-brand-p-search-desktop-core-aw",
+        "id": "8713328784"
+      },
+      "metrics": {
+        "clicks": "1697",
+        "conversions": 98.874371,
+        "costMicros": "7961028039",
+        "ctr": 0.146280493060943,
+        "averageCpc": 4691236.32233353,
+        "impressions": "11601"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/1677569250",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "br-pt-prm-workos-work_mgmt-brand-e-search-desktop-core-aw",
+        "id": "1677569250"
+      },
+      "metrics": {
+        "clicks": "27351",
+        "conversions": 7116.299291,
+        "costMicros": "5627258289",
+        "ctr": 0.4552278552644719,
+        "averageCpc": 205742.32346166502,
+        "impressions": "60082"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/8258552061",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "gb-en-prm-workos-work_mgmt-brand-e-search-mobile-core-aw",
+        "id": "8258552061"
+      },
+      "metrics": {
+        "clicks": "2285",
+        "conversions": 359.984948,
+        "costMicros": "5468934406",
+        "ctr": 0.13441176470588234,
+        "averageCpc": 2393406.7422319474,
+        "impressions": "17000"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/15166419571",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-brand-p-search-mobile-core-aw",
+        "id": "15166419571"
+      },
+      "metrics": {
+        "clicks": "1253",
+        "conversions": 234.888478,
+        "costMicros": "3910433710",
+        "ctr": 0.10013585870694477,
+        "averageCpc": 3120856.9114126097,
+        "impressions": "12513"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/9860758960",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "eu1-en-prm-workos-work_mgmt-brand-p-search-desktop-core-aw",
+        "id": "9860758960"
+      },
+      "metrics": {
+        "clicks": "2216",
+        "conversions": 151.941029,
+        "costMicros": "3797329711",
+        "ctr": 0.15400653276808673,
+        "averageCpc": 1713596.4399819495,
+        "impressions": "14389"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/16442088445",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "ca-en-prm-workos-work_mgmt-brand-e-search-mobile-core-aw",
+        "id": "16442088445"
+      },
+      "metrics": {
+        "clicks": "1426",
+        "conversions": 343.570096,
+        "costMicros": "3649643286",
+        "ctr": 0.12251911676260847,
+        "averageCpc": 2559357.1430575037,
+        "impressions": "11639"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/16442021506",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "au-en-prm-workos-work_mgmt-brand-e-search-mobile-core-aw",
+        "id": "16442021506"
+      },
+      "metrics": {
+        "clicks": "1687",
+        "conversions": 380.491602,
+        "costMicros": "3386861652",
+        "ctr": 0.1857315864802378,
+        "averageCpc": 2007623.9786603439,
+        "impressions": "9083"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/10217437167",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "kr-ko-prm-workos-work_mgmt-brand-e-search-desktop-core-aw",
+        "id": "10217437167"
+      },
+      "metrics": {
+        "clicks": "2962",
+        "conversions": 560.974372,
+        "costMicros": "3237076332",
+        "ctr": 0.28956887281259164,
+        "averageCpc": 1092868.4442943956,
+        "impressions": "10229"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/12618353206",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "row-en-prm-workos-work_mgmt-brand-p-search-desktop-core-aw",
+        "id": "12618353206"
+      },
+      "metrics": {
+        "clicks": "1764",
+        "conversions": 107.818432,
+        "costMicros": "2229540345",
+        "ctr": 0.13520349505633478,
+        "averageCpc": 1263911.7602040817,
+        "impressions": "13047"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/1667436392",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "latam-es-prm-workos-work_mgmt-brand-e-search-mobile-core-aw",
+        "id": "1667436392"
+      },
+      "metrics": {
+        "clicks": "4668",
+        "conversions": 1469.510244,
+        "costMicros": "2165799975",
+        "ctr": 0.10841442738695219,
+        "averageCpc": 463967.43251928018,
+        "impressions": "43057"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/1667759924",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "fr-fr-prm-workos-work_mgmt-brand-p-search-desktop-core-aw",
+        "id": "1667759924"
+      },
+      "metrics": {
+        "clicks": "1278",
+        "conversions": 236.061895,
+        "costMicros": "2148575362",
+        "ctr": 0.18285877807983975,
+        "averageCpc": 1681201.3787167449,
+        "impressions": "6989"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/1667872273",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "dach-de-prm-workos-work_mgmt-brand-p-search-desktop-core-aw",
+        "id": "1667872273"
+      },
+      "metrics": {
+        "clicks": "1227",
+        "conversions": 163.068177,
+        "costMicros": "1940953550",
+        "ctr": 0.1899969030659647,
+        "averageCpc": 1581869.2339038304,
+        "impressions": "6458"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/19601319351",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "ww-en-prm-workos-work_mgmt-brand_app_builders-p-search-desktop-core-aw",
+        "id": "19601319351"
+      },
+      "metrics": {
+        "clicks": "871",
+        "conversions": 31.979524,
+        "costMicros": "1710744942",
+        "ctr": 0.16948822728157228,
+        "averageCpc": 1964115.8920780711,
+        "impressions": "5139"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6073520942/campaigns/16442021509",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "au-en-prm-workos-work_mgmt-brand-p-search-mobile-core-aw",
+        "id": "16442021509"
+      },
+      "metrics": {
+        "clicks": "478",
+        "conversions": 89.102857,
+        "costMicros": "1657930699",
+        "ctr": 0.12464146023468058,
+        "averageCpc": 3468474.2656903765,
+        "impressions": "3835"
+      }
+    }
+  ],
+  "fieldMask": "campaign.id,campaign.name,campaign.status,campaign.advertisingChannelType,metrics.impressions,metrics.clicks,metrics.costMicros,metrics.conversions,metrics.ctr,metrics.averageCpc",
+  "requestId": "RLKNUhRzOBTkGabrlxj-gg",
+  "queryResourceConsumption": "1468"
+}
+]

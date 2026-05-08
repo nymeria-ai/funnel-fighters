@@ -1,0 +1,74 @@
+[{
+  "results": [
+    {
+      "campaign": {
+        "resourceName": "customers/9318044395/campaigns/23502449745",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-service-service-search-service-h-desktop-core-aw",
+        "id": "23502449745"
+      },
+      "metrics": {
+        "clicks": "3557",
+        "conversions": 279.141833,
+        "costMicros": "74536402329",
+        "ctr": 0.037493016833384282,
+        "averageCpc": 20954850.247118358,
+        "impressions": "94871"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9318044395/campaigns/23623054054",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "gb-en-service-service-search-service-h-desktop-core-aw",
+        "id": "23623054054"
+      },
+      "metrics": {
+        "clicks": "2271",
+        "conversions": 90.320917,
+        "costMicros": "36070711748",
+        "ctr": 0.030260633194755356,
+        "averageCpc": 15883184.389255835,
+        "impressions": "75048"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9318044395/campaigns/23629176933",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-service-service-search-comp_service-h-desktop-core-aw",
+        "id": "23629176933"
+      },
+      "metrics": {
+        "clicks": "405",
+        "conversions": 9.5,
+        "costMicros": "22991707796",
+        "ctr": 0.0051442942790366833,
+        "averageCpc": 56769648.879012346,
+        "impressions": "78728"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9318044395/campaigns/23516780122",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-service-search-service-h-desktop-core-aw",
+        "id": "23516780122"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    }
+  ],
+  "fieldMask": "campaign.id,campaign.name,campaign.status,campaign.advertisingChannelType,metrics.impressions,metrics.clicks,metrics.costMicros,metrics.conversions,metrics.ctr,metrics.averageCpc",
+  "requestId": "9xMx1Ptd3-uqkhmTyDetaw",
+  "queryResourceConsumption": "1046"
+}
+]

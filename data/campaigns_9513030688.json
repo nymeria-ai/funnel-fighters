@@ -1,0 +1,476 @@
+[{
+  "results": [
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/23047333651",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "05_jp_ja_google_Search_general_work management",
+        "id": "23047333651"
+      },
+      "metrics": {
+        "clicks": "8566",
+        "conversions": 226.5,
+        "costMicros": "34760508895",
+        "ctr": 0.041083538767014226,
+        "averageCpc": 4057962.7474900773,
+        "impressions": "208502"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/23047333327",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "01_jp_ja_google_Search_brand_monday.com",
+        "id": "23047333327"
+      },
+      "metrics": {
+        "clicks": "1878",
+        "conversions": 34.5,
+        "costMicros": "6158716991",
+        "ctr": 0.14467298359140282,
+        "averageCpc": 3279402.0186368478,
+        "impressions": "12981"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/23047333657",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "07_jp_ja_google_Search_general_service",
+        "id": "23047333657"
+      },
+      "metrics": {
+        "clicks": "157",
+        "conversions": 2,
+        "costMicros": "1020691259",
+        "ctr": 0.038537064310260188,
+        "averageCpc": 6501218.2101910831,
+        "impressions": "4074"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/23047333663",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "09_jp_ja_google_Search_general_dev",
+        "id": "23047333663"
+      },
+      "metrics": {
+        "clicks": "224",
+        "conversions": 1,
+        "costMicros": "1007720038",
+        "ctr": 0.038303693570451436,
+        "averageCpc": 4498750.1696428573,
+        "impressions": "5848"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/23047333333",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "03_jp_ja_google_Search_general_CRM",
+        "id": "23047333333"
+      },
+      "metrics": {
+        "clicks": "22",
+        "conversions": 1,
+        "costMicros": "466493230",
+        "ctr": 0.058355437665782495,
+        "averageCpc": 21204237.727272727,
+        "impressions": "377"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/23047333336",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "04_jp_ja_google_Search_brand_work management",
+        "id": "23047333336"
+      },
+      "metrics": {
+        "clicks": "120",
+        "conversions": 4,
+        "costMicros": "434672130",
+        "ctr": 0.11204481792717087,
+        "averageCpc": 3622267.75,
+        "impressions": "1071"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/23047333330",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "02_jp_ja_google_Search_brand_CRM",
+        "id": "23047333330"
+      },
+      "metrics": {
+        "clicks": "41",
+        "conversions": 1,
+        "costMicros": "141040162",
+        "ctr": 0.26282051282051283,
+        "averageCpc": 3440003.9512195121,
+        "impressions": "156"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/23047333660",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "08_jp_ja_google_Search_brand_dev",
+        "id": "23047333660"
+      },
+      "metrics": {
+        "clicks": "4",
+        "conversions": 0,
+        "costMicros": "21710000",
+        "ctr": 0.08,
+        "averageCpc": 5427500,
+        "impressions": "50"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/23047333654",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "06_jp_ja_google_Search_brand_service",
+        "id": "23047333654"
+      },
+      "metrics": {
+        "clicks": "3",
+        "conversions": 0,
+        "costMicros": "14550000",
+        "ctr": 0.075,
+        "averageCpc": 4850000,
+        "impressions": "40"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/12697810285",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "jp-ja-prm-workos-project-project_management-e-search-desktop-core-aw-old",
+        "id": "12697810285"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/13368540662",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "jp-ja-prm-workos-work_mgmt-task_management-e-search-desktop-core-aw-old",
+        "id": "13368540662"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/13368540665",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "jp-ja-prm-workos-work_mgmt-task_management-p-search-desktop-core-away-old",
+        "id": "13368540665"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/13368540668",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "jp-ja-prm-workos-crm-crm-e-search-desktop-core-aw-old",
+        "id": "13368540668"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/13368540932",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "jp-ja-prm-workos-crm-crm-p-search-desktop-core-aw-old",
+        "id": "13368540932"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/14219162530",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "jp-ja-prm-workos-work_mgmt-gantt-p-search-desktop-core-aw-old",
+        "id": "14219162530"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/14219162533",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "jp-ja-prm-workos-work_mgmt-gantt-e-search-desktop-core-aw-old",
+        "id": "14219162533"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/14219162536",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "jp-ja-prm-workos-marketer-marketing-p-search-desktop-core-aw-old",
+        "id": "14219162536"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/14219162539",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "jp-ja-prm-workos-work_mgmt-workflow-p-search-desktop-exp-aw-old",
+        "id": "14219162539"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/14219162542",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "jp-ja-prm-workos-work_mgmt-workflow-e-search-desktop-exp-aw-old",
+        "id": "14219162542"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/14831156048",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "jp-ja-prm-workos-marketer-marketing-e-search-desktop-core-aw-old",
+        "id": "14831156048"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/14831156051",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "jp-ja-prm-workos-project-project_management-p-search-desktop-core-aw-old",
+        "id": "14831156051"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/17699373335",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "jp-ja-lead_gen-workos-crm-crm-h-search-desktop-core-aw_old",
+        "id": "17699373335"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/17699373338",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "jp-ja-lead_gen-workos-project-project_management-h-search-desktop-core-aw",
+        "id": "17699373338"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/17699373341",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "jp-ja-lead_gen-workos-work_mgmt-task_management-h-search-desktop-core-aw",
+        "id": "17699373341"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/17699373344",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "jp-ja-prm-workos-work_mgmt-workflow-h-search-desktop-exp-aw",
+        "id": "17699373344"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/17699373347",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "jp-ja-lead_gen-workos-work_mgmt-comp1-h-search-desktop-exp-aw",
+        "id": "17699373347"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/18082675413",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "\ufeffjp-ja-prm-workos-work_mgmt-notion-h-search-desktop-exp-aw\ufeff",
+        "id": "18082675413"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/18493638679",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "jp-ja-lead_gen-workos-work_mgmt-comp_trello-h-search-desktop-core-aw",
+        "id": "18493638679"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/19019536690",
+        "status": "PAUSED",
+        "advertisingChannelType": "PERFORMANCE_MAX",
+        "name": "jp-ja-prm-workos-work_mgmt-pmax-h-search-desktop-exp-aw",
+        "id": "19019536690"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9513030688/campaigns/20545453180",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "jp-ja-lead_gen-workos-crm-crm-h-search-desktop-core-aw",
+        "id": "20545453180"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    }
+  ],
+  "fieldMask": "campaign.id,campaign.name,campaign.status,campaign.advertisingChannelType,metrics.impressions,metrics.clicks,metrics.costMicros,metrics.conversions,metrics.ctr,metrics.averageCpc",
+  "requestId": "4LRZI-meGGd_GgMGmFmRXQ",
+  "queryResourceConsumption": "1066"
+}
+]

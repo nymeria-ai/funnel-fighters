@@ -1,0 +1,68 @@
+[{
+  "results": [
+    {
+      "campaign": {
+        "resourceName": "customers/4201983517/campaigns/23357963430",
+        "status": "ENABLED",
+        "advertisingChannelType": "VIDEO",
+        "name": "intl-en-social-elevate-mobile-ron-t-1",
+        "id": "23357963430"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/4201983517/campaigns/23357971395",
+        "status": "PAUSED",
+        "advertisingChannelType": "VIDEO",
+        "name": "intl-en-social-elevate-mobile-ron-t-2",
+        "id": "23357971395"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/4201983517/campaigns/23357976441",
+        "status": "PAUSED",
+        "advertisingChannelType": "VIDEO",
+        "name": "intl-en-social-elevate-mobile-ron-t-3",
+        "id": "23357976441"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/4201983517/campaigns/23363065832",
+        "status": "PAUSED",
+        "advertisingChannelType": "VIDEO",
+        "name": "intl-en-social-elevate-mobile-ron-t-4",
+        "id": "23363065832"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    }
+  ],
+  "fieldMask": "campaign.id,campaign.name,campaign.status,campaign.advertisingChannelType,metrics.impressions,metrics.clicks,metrics.costMicros,metrics.conversions,metrics.ctr,metrics.averageCpc",
+  "requestId": "Ll5vd1gmryoI-OKRIXcozg",
+  "queryResourceConsumption": "972"
+}
+]

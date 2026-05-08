@@ -1,0 +1,518 @@
+[{
+  "results": [
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1007550663",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-task_management-e-search-desktop-core-aw",
+        "id": "1007550663"
+      },
+      "metrics": {
+        "clicks": "8363",
+        "conversions": 804.263798,
+        "costMicros": "201850252070",
+        "ctr": 0.023105656644913881,
+        "averageCpc": 24136105.712065049,
+        "impressions": "361946"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1032549969",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-comp_trello-e-search-desktop-core-aw",
+        "id": "1032549969"
+      },
+      "metrics": {
+        "clicks": "3462",
+        "conversions": 318.202439,
+        "costMicros": "138907690232",
+        "ctr": 0.016092595175010459,
+        "averageCpc": 40123538.484113231,
+        "impressions": "215130"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1748362261",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-comp_asana-h-search-desktop-core-aw",
+        "id": "1748362261"
+      },
+      "metrics": {
+        "clicks": "3837",
+        "conversions": 239.102466,
+        "costMicros": "128608127557",
+        "ctr": 0.0095905099691813954,
+        "averageCpc": 33517885.732864216,
+        "impressions": "400083"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1006742531",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-project-project_management-e-search-desktop-core-aw",
+        "id": "1006742531"
+      },
+      "metrics": {
+        "clicks": "2698",
+        "conversions": 343.602377,
+        "costMicros": "110325402566",
+        "ctr": 0.02574722296446158,
+        "averageCpc": 40891550.246849515,
+        "impressions": "104788"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/16874163728",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-project-project_management_lt-e-search-desktop-core-aw",
+        "id": "16874163728"
+      },
+      "metrics": {
+        "clicks": "5853",
+        "conversions": 508.581466,
+        "costMicros": "88731329447",
+        "ctr": 0.031344554466050091,
+        "averageCpc": 15159974.277635401,
+        "impressions": "186731"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/15407805515",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-project-project_tracking-h-search-desktop-core-aw",
+        "id": "15407805515"
+      },
+      "metrics": {
+        "clicks": "4744",
+        "conversions": 454.97968,
+        "costMicros": "88493860276",
+        "ctr": 0.033648492414194216,
+        "averageCpc": 18653849.130691398,
+        "impressions": "140987"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/17102133061",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-gantt-h-search-desktop-core-aw",
+        "id": "17102133061"
+      },
+      "metrics": {
+        "clicks": "6123",
+        "conversions": 510.639895,
+        "costMicros": "68631016338",
+        "ctr": 0.030259301906093865,
+        "averageCpc": 11208723.883390496,
+        "impressions": "202351"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/12291029943",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-comp1-h-search-desktop-exp-aw",
+        "id": "12291029943"
+      },
+      "metrics": {
+        "clicks": "3373",
+        "conversions": 162.575161,
+        "costMicros": "60877531153",
+        "ctr": 0.00995601995336344,
+        "averageCpc": 18048482.4052772,
+        "impressions": "338790"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/999425403",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "au-en-prm-workos-project-project_management-e-search-desktop-core-aw",
+        "id": "999425403"
+      },
+      "metrics": {
+        "clicks": "2827",
+        "conversions": 149.332718,
+        "costMicros": "57119060877",
+        "ctr": 0.022284583671635438,
+        "averageCpc": 20204832.287584011,
+        "impressions": "126859"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/13230499132",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-comp_clickup-h-search-desktop-core-aw",
+        "id": "13230499132"
+      },
+      "metrics": {
+        "clicks": "3142",
+        "conversions": 156.938687,
+        "costMicros": "56115583502",
+        "ctr": 0.012319974277838553,
+        "averageCpc": 17859829.249522597,
+        "impressions": "255033"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/14211332872",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-project-project_management_free-h-search-desktop-core-aw",
+        "id": "14211332872"
+      },
+      "metrics": {
+        "clicks": "1462",
+        "conversions": 254.307999,
+        "costMicros": "53878428133",
+        "ctr": 0.089124603755181664,
+        "averageCpc": 36852550.022571817,
+        "impressions": "16404"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1403932496",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-project-project_templates-h-search-desktop-core-aw",
+        "id": "1403932496"
+      },
+      "metrics": {
+        "clicks": "7472",
+        "conversions": 551.10072,
+        "costMicros": "52039588881",
+        "ctr": 0.063509332608030461,
+        "averageCpc": 6964613.0729389722,
+        "impressions": "117652"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/16873830902",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-project-projectgen-e-search-desktop-core-aw",
+        "id": "16873830902"
+      },
+      "metrics": {
+        "clicks": "3885",
+        "conversions": 299.388009,
+        "costMicros": "41528418247",
+        "ctr": 0.029375515111188404,
+        "averageCpc": 10689425.546203347,
+        "impressions": "132253"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/21333197261",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-work_mgmt-search-management-h-desktop-core-aw",
+        "id": "21333197261"
+      },
+      "metrics": {
+        "clicks": "2732",
+        "conversions": 223.09883,
+        "costMicros": "39955544390",
+        "ctr": 0.025820353848480266,
+        "averageCpc": 14625016.248169839,
+        "impressions": "105808"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1031636135",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "gb-en-prm-workos-work_mgmt-comp_trello-h-search-desktop-core-aw",
+        "id": "1031636135"
+      },
+      "metrics": {
+        "clicks": "1367",
+        "conversions": 140.653827,
+        "costMicros": "34477970133",
+        "ctr": 0.011939385999388619,
+        "averageCpc": 25221631.406730067,
+        "impressions": "114495"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/998744618",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "gb-en-prm-workos-project-project_management-p-search-desktop-core-aw",
+        "id": "998744618"
+      },
+      "metrics": {
+        "clicks": "1876",
+        "conversions": 94.230234,
+        "costMicros": "33513829969",
+        "ctr": 0.017131637824756862,
+        "averageCpc": 17864514.908848614,
+        "impressions": "109505"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/999494601",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "gb-en-prm-workos-work_mgmt-task_management-e-search-desktop-core-aw",
+        "id": "999494601"
+      },
+      "metrics": {
+        "clicks": "2968",
+        "conversions": 139.311216,
+        "costMicros": "31643634705",
+        "ctr": 0.029712089056180675,
+        "averageCpc": 10661601.989555256,
+        "impressions": "99892"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1065239999",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-shared_calendar-h-search-desktop-core-aw",
+        "id": "1065239999"
+      },
+      "metrics": {
+        "clicks": "2683",
+        "conversions": 385.284999,
+        "costMicros": "27582828313",
+        "ctr": 0.055931956054952159,
+        "averageCpc": 10280591.991427507,
+        "impressions": "47969"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/23201767388",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-comp_trello-e-search-desktop-core-aw vbb_test",
+        "id": "23201767388"
+      },
+      "metrics": {
+        "clicks": "865",
+        "conversions": 103.985992,
+        "costMicros": "27369563778",
+        "ctr": 0.015258692162500661,
+        "averageCpc": 31641114.194219653,
+        "impressions": "56689"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1007874937",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-taskgen-e-search-desktop-core-aw",
+        "id": "1007874937"
+      },
+      "metrics": {
+        "clicks": "1232",
+        "conversions": 130.456717,
+        "costMicros": "25985243912",
+        "ctr": 0.032178864336833306,
+        "averageCpc": 21091918.759740259,
+        "impressions": "38286"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/15504007883",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-comp_microsoft_pm-h-search-desktop-exp-aw",
+        "id": "15504007883"
+      },
+      "metrics": {
+        "clicks": "643",
+        "conversions": 42.494279,
+        "costMicros": "24782919323",
+        "ctr": 0.0079911513223304836,
+        "averageCpc": 38542642.804043546,
+        "impressions": "80464"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1762531643",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-comp_smartsheet-h-search-desktop-core-aw",
+        "id": "1762531643"
+      },
+      "metrics": {
+        "clicks": "887",
+        "conversions": 90.950187,
+        "costMicros": "23429425467",
+        "ctr": 0.010221013574243506,
+        "averageCpc": 26414233.897406992,
+        "impressions": "86782"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/15983449605",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "row-en-prm-workos-work_mgmt-comp1-h-search-desktop-exp-aw",
+        "id": "15983449605"
+      },
+      "metrics": {
+        "clicks": "4029",
+        "conversions": 304.96591,
+        "costMicros": "23022695893",
+        "ctr": 0.020329182392475831,
+        "averageCpc": 5714245.6919831224,
+        "impressions": "198188"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/1006739438",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-project-project_management-p-search-desktop-core-aw",
+        "id": "1006739438"
+      },
+      "metrics": {
+        "clicks": "386",
+        "conversions": 34.333333,
+        "costMicros": "20185917911",
+        "ctr": 0.019246110889509373,
+        "averageCpc": 52295124.121761657,
+        "impressions": "20056"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/23427665426",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-work_mgmt-search-ai_vibe_main-h-desktop-core-aw",
+        "id": "23427665426"
+      },
+      "metrics": {
+        "clicks": "707",
+        "conversions": 119.332608,
+        "costMicros": "19956778567",
+        "ctr": 0.047497480685253612,
+        "averageCpc": 28227409.571428571,
+        "impressions": "14885"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/14073717091",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-gantt_template-h-search-desktop-exp-aw",
+        "id": "14073717091"
+      },
+      "metrics": {
+        "clicks": "3630",
+        "conversions": 271.2092,
+        "costMicros": "19541203893",
+        "ctr": 0.079394588919752415,
+        "averageCpc": 5383251.7611570247,
+        "impressions": "45721"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/2068188708",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-calendar-h-search-desktop-core-aw",
+        "id": "2068188708"
+      },
+      "metrics": {
+        "clicks": "3944",
+        "conversions": 271.65236,
+        "costMicros": "18691993322",
+        "ctr": 0.075445711225036349,
+        "averageCpc": 4739349.2195740361,
+        "impressions": "52276"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/962732323",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "eu1-en-prm-workos-project-project_management-p-search-desktop-core-aw",
+        "id": "962732323"
+      },
+      "metrics": {
+        "clicks": "1292",
+        "conversions": 56.5,
+        "costMicros": "18524433182",
+        "ctr": 0.023775786238751588,
+        "averageCpc": 14337796.580495356,
+        "impressions": "54341"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/9517576695",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "row-en-prm-workos-work_mgmt-comp_asana-h-search-desktop-core-aw",
+        "id": "9517576695"
+      },
+      "metrics": {
+        "clicks": "1643",
+        "conversions": 97.478025,
+        "costMicros": "17821043257",
+        "ctr": 0.015299233641552831,
+        "averageCpc": 10846648.360925136,
+        "impressions": "107391"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3746504118/campaigns/18580576797",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "ww-en-prm-workos-work_mgmt-comp1-h-search-desktop-exp-aw",
+        "id": "18580576797"
+      },
+      "metrics": {
+        "clicks": "4828",
+        "conversions": 266.5,
+        "costMicros": "17790641315",
+        "ctr": 0.023350406020419514,
+        "averageCpc": 3684888.4248135872,
+        "impressions": "206763"
+      }
+    }
+  ],
+  "fieldMask": "campaign.id,campaign.name,campaign.status,campaign.advertisingChannelType,metrics.impressions,metrics.clicks,metrics.costMicros,metrics.conversions,metrics.ctr,metrics.averageCpc",
+  "requestId": "4UWKLycdXU_pm-iuvThpnQ",
+  "queryResourceConsumption": "1720"
+}
+]

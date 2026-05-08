@@ -1,0 +1,22 @@
+[{
+  "error": {
+    "code": 400,
+    "message": "Request contains an invalid argument.",
+    "status": "INVALID_ARGUMENT",
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.ads.googleads.v23.errors.GoogleAdsFailure",
+        "errors": [
+          {
+            "errorCode": {
+              "queryError": "REQUESTED_METRICS_FOR_MANAGER"
+            },
+            "message": "Metrics cannot be requested for a manager account. To retrieve metrics, issue separate requests against each client account under the manager account."
+          }
+        ],
+        "requestId": "tVveqGS6jz0YjnwVLevmkg"
+      }
+    ]
+  }
+}
+]

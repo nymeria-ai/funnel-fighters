@@ -1,0 +1,518 @@
+[{
+  "results": [
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/18386396629",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-crm-crm_main-e-search-desktop-core-aw",
+        "id": "18386396629"
+      },
+      "metrics": {
+        "clicks": "10088",
+        "conversions": 737.40457,
+        "costMicros": "402743640617",
+        "ctr": 0.01624139268976332,
+        "averageCpc": 39923041.29827518,
+        "impressions": "621129"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/1015291584",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-workflow-h-search-desktop-core-aw",
+        "id": "1015291584"
+      },
+      "metrics": {
+        "clicks": "12932",
+        "conversions": 1128.432429,
+        "costMicros": "204562122557",
+        "ctr": 0.037172242119726126,
+        "averageCpc": 15818289.712109495,
+        "impressions": "347894"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/22149530399",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-crm-crm_industries-h-search-desktop-core-aw",
+        "id": "22149530399"
+      },
+      "metrics": {
+        "clicks": "7287",
+        "conversions": 501.219817,
+        "costMicros": "197023404830",
+        "ctr": 0.023537734020698475,
+        "averageCpc": 27037656.762728147,
+        "impressions": "309588"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/22183978047",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-crm-comp_crm_hubspot-h-search-desktop-core-aw",
+        "id": "22183978047"
+      },
+      "metrics": {
+        "clicks": "1866",
+        "conversions": 125.401831,
+        "costMicros": "84660651963",
+        "ctr": 0.0046263009922002446,
+        "averageCpc": 45370124.31028939,
+        "impressions": "403346"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/18386396614",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "au-en-prm-workos-crm-crm_main-h-search-desktop-core-aw",
+        "id": "18386396614"
+      },
+      "metrics": {
+        "clicks": "2296",
+        "conversions": 154.851246,
+        "costMicros": "74083053012",
+        "ctr": 0.01574943580527222,
+        "averageCpc": 32266138.071428571,
+        "impressions": "145783"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/1848428111",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-marketer-marketing_templates-h-search-desktop-core-aw",
+        "id": "1848428111"
+      },
+      "metrics": {
+        "clicks": "11050",
+        "conversions": 590.605109,
+        "costMicros": "70965566260",
+        "ctr": 0.049409986630238913,
+        "averageCpc": 6422223.190950226,
+        "impressions": "223639"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/20421533231",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "gb-en-prm-workos-crm-crm_main-p-search-desktop-core-aw",
+        "id": "20421533231"
+      },
+      "metrics": {
+        "clicks": "2103",
+        "conversions": 113.5,
+        "costMicros": "64626440817",
+        "ctr": 0.013106805192862619,
+        "averageCpc": 30730594.777460769,
+        "impressions": "160451"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/15060021489",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-crm-crm_lt-h-search-desktop-core-aw",
+        "id": "15060021489"
+      },
+      "metrics": {
+        "clicks": "2443",
+        "conversions": 143.925989,
+        "costMicros": "63898907718",
+        "ctr": 0.017415169660678641,
+        "averageCpc": 26155918.018010642,
+        "impressions": "140280"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/22220525706",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-crm-crm_ai-h-search-desktop-core-aw",
+        "id": "22220525706"
+      },
+      "metrics": {
+        "clicks": "2126",
+        "conversions": 149.474162,
+        "costMicros": "57338588151",
+        "ctr": 0.026767390620081839,
+        "averageCpc": 26970173.166039512,
+        "impressions": "79425"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/22490639271",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-crm-comp_crm_zoho-h-search-desktop-core-aw",
+        "id": "22490639271"
+      },
+      "metrics": {
+        "clicks": "1747",
+        "conversions": 71.963759,
+        "costMicros": "46108891997",
+        "ctr": 0.018497734106984035,
+        "averageCpc": 26393183.74184316,
+        "impressions": "94444"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/1509258400",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-crm-comp_crm-h-search-desktop-exp-aw",
+        "id": "1509258400"
+      },
+      "metrics": {
+        "clicks": "1339",
+        "conversions": 78.733724,
+        "costMicros": "44877674194",
+        "ctr": 0.0099897789416355191,
+        "averageCpc": 33515813.438386858,
+        "impressions": "134037"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/23535667909",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-brand_crm-h-search-desktop-core-aw",
+        "id": "23535667909"
+      },
+      "metrics": {
+        "clicks": "5860",
+        "conversions": 513.912796,
+        "costMicros": "41062100435",
+        "ctr": 0.37322463537354311,
+        "averageCpc": 7007184.3745733788,
+        "impressions": "15701"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/1764286066",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-construction_management-h-search-desktop-exp-aw",
+        "id": "1764286066"
+      },
+      "metrics": {
+        "clicks": "1914",
+        "conversions": 171,
+        "costMicros": "39443410351",
+        "ctr": 0.040633491847826088,
+        "averageCpc": 20607842.39864159,
+        "impressions": "47104"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/1072988575",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-crm-lead_management-h-search-desktop-core-aw",
+        "id": "1072988575"
+      },
+      "metrics": {
+        "clicks": "1530",
+        "conversions": 100.334074,
+        "costMicros": "39190247307",
+        "ctr": 0.019572976499635405,
+        "averageCpc": 25614540.723529413,
+        "impressions": "78169"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/22803848636",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-monday_campaigns-email_marketing-h-search-desktop-core-aw",
+        "id": "22803848636"
+      },
+      "metrics": {
+        "clicks": "1093",
+        "conversions": 70,
+        "costMicros": "26153594774",
+        "ctr": 0.01573476908902453,
+        "averageCpc": 23928266.032936871,
+        "impressions": "69464"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/22220525673",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "ca-en-prm-workos-crm-crm_ai-h-search-desktop-core-aw",
+        "id": "22220525673"
+      },
+      "metrics": {
+        "clicks": "1082",
+        "conversions": 70.97816,
+        "costMicros": "23730027084",
+        "ctr": 0.024506806187855314,
+        "averageCpc": 21931633.164510168,
+        "impressions": "44151"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/18386396626",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "row-en-prm-workos-crm-crm_main-h-search-desktop-core-aw",
+        "id": "18386396626"
+      },
+      "metrics": {
+        "clicks": "2164",
+        "conversions": 174.217366,
+        "costMicros": "22744605237",
+        "ctr": 0.019196309766699192,
+        "averageCpc": 10510446.04297597,
+        "impressions": "112730"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/22149530522",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "gb-en-prm-workos-crm-crm_industries-h-search-desktop-core-aw",
+        "id": "22149530522"
+      },
+      "metrics": {
+        "clicks": "1303",
+        "conversions": 73.922919,
+        "costMicros": "22688854922",
+        "ctr": 0.019994475816351585,
+        "averageCpc": 17412781.981580965,
+        "impressions": "65168"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/13355603905",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-crm-comp_crm_salesforce-h-search-desktop-core-aw",
+        "id": "13355603905"
+      },
+      "metrics": {
+        "clicks": "817",
+        "conversions": 59.333333,
+        "costMicros": "22109266444",
+        "ctr": 0.0076738834358709438,
+        "averageCpc": 27061525.635250919,
+        "impressions": "106465"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/23044226584",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "gb-en-prm-workos-monday_campaigns-email_marketing-h-search-desktop-core-aw",
+        "id": "23044226584"
+      },
+      "metrics": {
+        "clicks": "688",
+        "conversions": 45,
+        "costMicros": "20623563942",
+        "ctr": 0.01514517797785458,
+        "averageCpc": 29976110.380813953,
+        "impressions": "45427"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/1041598276",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "gb-en-prm-workos-crm-crm_sales-h-search-desktop-core-aw",
+        "id": "1041598276"
+      },
+      "metrics": {
+        "clicks": "668",
+        "conversions": 48,
+        "costMicros": "19204907693",
+        "ctr": 0.013109606515552938,
+        "averageCpc": 28749861.815868262,
+        "impressions": "50955"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/1041598300",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-crm-crm_sales-h-search-desktop-core-aw",
+        "id": "1041598300"
+      },
+      "metrics": {
+        "clicks": "1031",
+        "conversions": 51.510808,
+        "costMicros": "18001162231",
+        "ctr": 0.022789566755083996,
+        "averageCpc": 17459905.170708049,
+        "impressions": "45240"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/22149530528",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "au-en-prm-workos-crm-crm_industries-h-search-desktop-core-aw",
+        "id": "22149530528"
+      },
+      "metrics": {
+        "clicks": "1019",
+        "conversions": 48,
+        "costMicros": "16823514642",
+        "ctr": 0.023203388286729212,
+        "averageCpc": 16509827.911678115,
+        "impressions": "43916"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/12124778616",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-production_gen-h-search-desktop-core-aw",
+        "id": "12124778616"
+      },
+      "metrics": {
+        "clicks": "836",
+        "conversions": 54.666666,
+        "costMicros": "16535938370",
+        "ctr": 0.040800390434358222,
+        "averageCpc": 19779830.5861244,
+        "impressions": "20490"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/15063971729",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-crm-crm_free-h-search-desktop-exp-aw",
+        "id": "15063971729"
+      },
+      "metrics": {
+        "clicks": "362",
+        "conversions": 73.666667,
+        "costMicros": "15194557261",
+        "ctr": 0.046885118507965291,
+        "averageCpc": 41973915.085635357,
+        "impressions": "7721"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/22495798256",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-crm-account_management-h-search-desktop-core-aw",
+        "id": "22495798256"
+      },
+      "metrics": {
+        "clicks": "642",
+        "conversions": 23.318159,
+        "costMicros": "14757678541",
+        "ctr": 0.026943092160483465,
+        "averageCpc": 22987038.2258567,
+        "impressions": "23828"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/22490639724",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-crm-comp_crm_pipedrive-h-search-desktop-core-aw",
+        "id": "22490639724"
+      },
+      "metrics": {
+        "clicks": "253",
+        "conversions": 33.5,
+        "costMicros": "14043407953",
+        "ctr": 0.0033779724154505519,
+        "averageCpc": 55507541.316205531,
+        "impressions": "74897"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/22309692230",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "row-en-prm-workos-crm-comp_crm_hubspot-h-search-desktop-core-aw",
+        "id": "22309692230"
+      },
+      "metrics": {
+        "clicks": "1087",
+        "conversions": 89.766204,
+        "costMicros": "13823791737",
+        "ctr": 0.014867397042933541,
+        "averageCpc": 12717379.702851886,
+        "impressions": "73113"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/1041893641",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-marketer-social_media-h-search-desktop-exp-aw",
+        "id": "1041893641"
+      },
+      "metrics": {
+        "clicks": "1274",
+        "conversions": 118.147946,
+        "costMicros": "13773014036",
+        "ctr": 0.057171064440854423,
+        "averageCpc": 10810843.042386185,
+        "impressions": "22284"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/6629846296/campaigns/22149530525",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "ca-en-prm-workos-crm-crm_industries-h-search-desktop-core-aw",
+        "id": "22149530525"
+      },
+      "metrics": {
+        "clicks": "865",
+        "conversions": 79.719034,
+        "costMicros": "13572918405",
+        "ctr": 0.028109056640561531,
+        "averageCpc": 15691235.150289018,
+        "impressions": "30773"
+      }
+    }
+  ],
+  "fieldMask": "campaign.id,campaign.name,campaign.status,campaign.advertisingChannelType,metrics.impressions,metrics.clicks,metrics.costMicros,metrics.conversions,metrics.ctr,metrics.averageCpc",
+  "requestId": "SZrCh55t5dM8INk8IQffng",
+  "queryResourceConsumption": "971"
+}
+]

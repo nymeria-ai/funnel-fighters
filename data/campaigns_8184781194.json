@@ -1,0 +1,217 @@
+[{
+  "results": [
+    {
+      "campaign": {
+        "resourceName": "customers/8184781194/campaigns/23609648562",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "harp_google_search_leadgen_us_uk_mar2026",
+        "id": "23609648562"
+      },
+      "metrics": {
+        "clicks": "775",
+        "conversions": 56,
+        "costMicros": "2188739825",
+        "ctr": 0.08630289532293986,
+        "averageCpc": 2824180.4193548388,
+        "impressions": "8980"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8184781194/campaigns/23615181293",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "harp_google_search_aisdr_us_uk_mar2026",
+        "id": "23615181293"
+      },
+      "metrics": {
+        "clicks": "386",
+        "conversions": 30,
+        "costMicros": "1449652213",
+        "ctr": 0.10203542162305049,
+        "averageCpc": 3755575.6813471504,
+        "impressions": "3783"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8184781194/campaigns/23636927450",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "harp_google_search_competitors_ai_crm_us_uk_mar2026",
+        "id": "23636927450"
+      },
+      "metrics": {
+        "clicks": "212",
+        "conversions": 13,
+        "costMicros": "1069895385",
+        "ctr": 0.058002735978112174,
+        "averageCpc": 5046676.3443396222,
+        "impressions": "3655"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8184781194/campaigns/23629311729",
+        "status": "PAUSED",
+        "advertisingChannelType": "PERFORMANCE_MAX",
+        "name": "harp_google_pmax_future_crm_us_uk_au_mar2026",
+        "id": "23629311729"
+      },
+      "metrics": {
+        "clicks": "499",
+        "conversions": 9,
+        "costMicros": "821945932",
+        "ctr": 0.00925119116038488,
+        "averageCpc": 1647186.2364729459,
+        "impressions": "53939"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8184781194/campaigns/23616349434",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "harp_google_search_industries_startups_us_uk_mar2026",
+        "id": "23616349434"
+      },
+      "metrics": {
+        "clicks": "31",
+        "conversions": 2,
+        "costMicros": "804010845",
+        "ctr": 0.017494356659142212,
+        "averageCpc": 25935833.709677421,
+        "impressions": "1772"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8184781194/campaigns/23663925290",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "harp_google_search_gtm_us_uk_mar2026",
+        "id": "23663925290"
+      },
+      "metrics": {
+        "clicks": "75",
+        "conversions": 5,
+        "costMicros": "756118104",
+        "ctr": 0.026223776223776224,
+        "averageCpc": 10081574.72,
+        "impressions": "2860"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8184781194/campaigns/23609649594",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "harp_google_search_prospecting_us_uk_mar2026",
+        "id": "23609649594"
+      },
+      "metrics": {
+        "clicks": "58",
+        "conversions": 8,
+        "costMicros": "681283172",
+        "ctr": 0.01734968591085851,
+        "averageCpc": 11746261.586206896,
+        "impressions": "3343"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8184781194/campaigns/23616351516",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "harp_google_search_industries_creative_agency_us_uk_mar2026",
+        "id": "23616351516"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8184781194/campaigns/23620501602",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "harp_google_search_howto_us_uk_mar2026",
+        "id": "23620501602"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8184781194/campaigns/23621808368",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "harp_google_search_industries_marketing_agency_us_uk_mar2026",
+        "id": "23621808368"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8184781194/campaigns/23621808851",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "harp_google_search_industries_real_estate_us_uk_mar2026",
+        "id": "23621808851"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8184781194/campaigns/23625926770",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "harp_google_search_competitors_us_uk_mar2026",
+        "id": "23625926770"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8184781194/campaigns/23626426072",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "harp_google_search_industries_consulting_us_uk_mar2026",
+        "id": "23626426072"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    }
+  ],
+  "fieldMask": "campaign.id,campaign.name,campaign.status,campaign.advertisingChannelType,metrics.impressions,metrics.clicks,metrics.costMicros,metrics.conversions,metrics.ctr,metrics.averageCpc",
+  "requestId": "bFP2CuwWqow2bz5wyZCgEg",
+  "queryResourceConsumption": "1268"
+}
+]

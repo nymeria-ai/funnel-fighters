@@ -1,0 +1,140 @@
+[{
+  "results": [
+    {
+      "campaign": {
+        "resourceName": "customers/7212046956/campaigns/23386551281",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "Brand",
+        "id": "23386551281"
+      },
+      "metrics": {
+        "clicks": "588",
+        "conversions": 23,
+        "costMicros": "2532489499",
+        "ctr": 0.13397129186602871,
+        "averageCpc": 4306954.9302721089,
+        "impressions": "4389"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7212046956/campaigns/23386551296",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "Business Model Focus",
+        "id": "23386551296"
+      },
+      "metrics": {
+        "clicks": "377",
+        "conversions": 12,
+        "costMicros": "2486199484",
+        "ctr": 0.063510781671159033,
+        "averageCpc": 6594693.5915119359,
+        "impressions": "5936"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7212046956/campaigns/23386551290",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "Direct Intent",
+        "id": "23386551290"
+      },
+      "metrics": {
+        "clicks": "135",
+        "conversions": 3,
+        "costMicros": "1677448922",
+        "ctr": 0.038461538461538464,
+        "averageCpc": 12425547.570370371,
+        "impressions": "3510"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7212046956/campaigns/23386551287",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "Competitor Hunting",
+        "id": "23386551287"
+      },
+      "metrics": {
+        "clicks": "13",
+        "conversions": 0,
+        "costMicros": "574645627",
+        "ctr": 0.0066906845084920225,
+        "averageCpc": 44203509.769230768,
+        "impressions": "1943"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7212046956/campaigns/23669568645",
+        "status": "PAUSED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "remarketing",
+        "id": "23669568645"
+      },
+      "metrics": {
+        "clicks": "4",
+        "conversions": 0,
+        "costMicros": "250653605",
+        "ctr": 0.0097087378640776691,
+        "averageCpc": 62663401.25,
+        "impressions": "412"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7212046956/campaigns/23386551293",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "Vertical Expert",
+        "id": "23386551293"
+      },
+      "metrics": {
+        "clicks": "2",
+        "conversions": 0,
+        "costMicros": "170580000",
+        "ctr": 0.0047961630695443642,
+        "averageCpc": 85290000,
+        "impressions": "417"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7212046956/campaigns/23329286069",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "service_partners",
+        "id": "23329286069"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7212046956/campaigns/23386551284",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "Competitor Displacement - Alternative",
+        "id": "23386551284"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    }
+  ],
+  "fieldMask": "campaign.id,campaign.name,campaign.status,campaign.advertisingChannelType,metrics.impressions,metrics.clicks,metrics.costMicros,metrics.conversions,metrics.ctr,metrics.averageCpc",
+  "requestId": "9gZXCRJ4_znChmMg_HW03g",
+  "queryResourceConsumption": "951"
+}
+]

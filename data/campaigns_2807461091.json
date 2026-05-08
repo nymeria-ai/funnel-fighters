@@ -1,0 +1,149 @@
+[{
+  "results": [
+    {
+      "campaign": {
+        "resourceName": "customers/2807461091/campaigns/23623582270",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-search-agentfactory-voiceagent-desktop",
+        "id": "23623582270"
+      },
+      "metrics": {
+        "clicks": "1167",
+        "conversions": 13.5,
+        "costMicros": "2847912941",
+        "ctr": 0.10167276529012023,
+        "averageCpc": 2440370.9862896316,
+        "impressions": "11478"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2807461091/campaigns/23437130870",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-other-agentfactory-receptionist-desktop",
+        "id": "23437130870"
+      },
+      "metrics": {
+        "clicks": "251",
+        "conversions": 17.482694,
+        "costMicros": "2321862923",
+        "ctr": 0.053540955631399316,
+        "averageCpc": 9250449.89243028,
+        "impressions": "4688"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2807461091/campaigns/23064717300",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-other-agentfactory-brand-desktop",
+        "id": "23064717300"
+      },
+      "metrics": {
+        "clicks": "173",
+        "conversions": 28.650824,
+        "costMicros": "1387495441",
+        "ctr": 0.083817829457364337,
+        "averageCpc": 8020204.8612716766,
+        "impressions": "2064"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2807461091/campaigns/23064717303",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-other-agentfactory-comp-desktop",
+        "id": "23064717303"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2807461091/campaigns/23070633302",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-other-agentfactory-main-desktop",
+        "id": "23070633302"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2807461091/campaigns/23293375418",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-other-agentfactory-rsvp-desktop",
+        "id": "23293375418"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2807461091/campaigns/23338982138",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-other-agentfactory-feedback-desktop",
+        "id": "23338982138"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2807461091/campaigns/23402521918",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-other-agentfactory-dach-desktop",
+        "id": "23402521918"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2807461091/campaigns/23437561103",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-other-agentfactory-phone-generic-desktop",
+        "id": "23437561103"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    }
+  ],
+  "fieldMask": "campaign.id,campaign.name,campaign.status,campaign.advertisingChannelType,metrics.impressions,metrics.clicks,metrics.costMicros,metrics.conversions,metrics.ctr,metrics.averageCpc",
+  "requestId": "zlLoewmHNyhym2p53SEp8w",
+  "queryResourceConsumption": "1291"
+}
+]

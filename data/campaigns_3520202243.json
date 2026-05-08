@@ -1,0 +1,458 @@
+[{
+  "results": [
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/13059243781",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-project-project_management-h-search-mobile-exp-aw",
+        "id": "13059243781"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/13059243784",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-project-project_management-e-search-mobile-exp-aw",
+        "id": "13059243784"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/13311207553",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-task_management-h-search-mobile-exp-aw",
+        "id": "13311207553"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/13311207559",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-task_management-e-search-mobile-exp-aw",
+        "id": "13311207559"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/15233006043",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "ca-en-prm-workos-project-projectgen-h-search-mobile-exp-aw",
+        "id": "15233006043"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/15233006052",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "ca-en-prm-workos-project-projectgen-e-search-mobile-exp-aw",
+        "id": "15233006052"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/15233006319",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "gb-en-prm-workos-project-projectgen-e-search-mobile-exp-aw",
+        "id": "15233006319"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/15236304712",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-project-projectgen-e-search-mobile-exp-aw",
+        "id": "15236304712"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/15236489935",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "au-en-prm-workos-project-project_management-h-search-mobile-exp-aw",
+        "id": "15236489935"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/15236490124",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "ca-en-prm-workos-project-project_management-e-search-mobile-exp-aw",
+        "id": "15236490124"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/15236490196",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "gb-en-prm-workos-project-project_management-e-search-mobile-exp-aw",
+        "id": "15236490196"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/15236490211",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "gb-en-prm-workos-project-projectgen-h-search-mobile-exp-aw",
+        "id": "15236490211"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/15238563320",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-project-projectgen-h-search-mobile-exp-aw",
+        "id": "15238563320"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/15238717094",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "au-en-prm-workos-project-project_management-e-search-mobile-exp-aw",
+        "id": "15238717094"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/15238717145",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "au-en-prm-workos-project-projectgen-h-search-mobile-exp-aw",
+        "id": "15238717145"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/15238717172",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "ca-en-prm-workos-project-project_management-h-search-mobile-exp-aw",
+        "id": "15238717172"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/15238717187",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "au-en-prm-workos-project-projectgen-e-search-mobile-exp-aw",
+        "id": "15238717187"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/15238717349",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "gb-en-prm-workos-project-project_management-h-search-mobile-exp-aw",
+        "id": "15238717349"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/15269948145",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-comp_asana-h-search-mobile-exp-aw",
+        "id": "15269948145"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/15269948280",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-comp_asana-h-search-mobile-core-aw",
+        "id": "15269948280"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/15859366693",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-crm-crm-h-search-mobile-exp-aw",
+        "id": "15859366693"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/15922107529",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-comp_trello-h-search-mobile-core-aw",
+        "id": "15922107529"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/15922108024",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-comp_smartsheet-h-search-mobile-exp-aw",
+        "id": "15922108024"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/16071976716",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "gb-en-prm-workos-work_mgmt-workflow-p-search-mobile-exp-aw",
+        "id": "16071976716"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/16071976722",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-workflow-h-search-mobile-exp-aw",
+        "id": "16071976722"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/16071976758",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "gb-en-prm-workos-work_mgmt-workflow-h-search-mobile-exp-aw",
+        "id": "16071976758"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/16077588856",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "ca-en-prm-workos-work_mgmt-workflow-h-search-mobile-exp-aw",
+        "id": "16077588856"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/16077588871",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-workflow-p-search-mobile-exp-aw",
+        "id": "16077588871"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/16083727385",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "au-en-prm-workos-work_mgmt-workflow-h-search-mobile-exp-aw",
+        "id": "16083727385"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/3520202243/campaigns/16361804394",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "gb-en-prm-workos-work_mgmt-comp_asana-h-search-mobile-core-aw",
+        "id": "16361804394"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    }
+  ],
+  "fieldMask": "campaign.id,campaign.name,campaign.status,campaign.advertisingChannelType,metrics.impressions,metrics.clicks,metrics.costMicros,metrics.conversions,metrics.ctr,metrics.averageCpc",
+  "requestId": "6T4EWkQzNex-2uoZaRYltg",
+  "queryResourceConsumption": "1158"
+}
+]

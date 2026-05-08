@@ -1,0 +1,458 @@
+[{
+  "results": [
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/16812286051",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "\ufeffus-en-prm-workos-work_management-brand-multi-search-multi-aw\ufeff",
+        "id": "16812286051"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/16861927848",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "NGO - Search - Non Profit Competitors - Signups - US - EN",
+        "id": "16861927848"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/16866710629",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "NGO - Search - Donor Management & Fundraising Software - Signups - US - EN",
+        "id": "16866710629"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/16986541158",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "Canada - Search - Generic",
+        "id": "16986541158"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/17000138072",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "NGO - Search - Brand - Signups - CA - EN",
+        "id": "17000138072"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/17001195560",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "NGO - Search - Competitors - Signups - CA - EN",
+        "id": "17001195560"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/17412276700",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "NGO - Search - Generic - Signups - AU - EN",
+        "id": "17412276700"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/17412286552",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "NGO - Search - Brand - Signups - AU - EN",
+        "id": "17412286552"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/17412299926",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "NGO - Search - Brand - Signups - UK - EN",
+        "id": "17412299926"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/17412300178",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "UK - Search - Competitors",
+        "id": "17412300178"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/17419838631",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "USA - Search - Competitors - Gofundme",
+        "id": "17419838631"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/17420361029",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "Australia - Search - Competitors",
+        "id": "17420361029"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/17420367554",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "NGO - Search - Generic - Signups - UK - EN",
+        "id": "17420367554"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/17755138250",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "NGO - Search - Volunteer Management - Signups - US - EN",
+        "id": "17755138250"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/17798933449",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "NGO - Search - CRM & Monday Alternatives - Signups - US - EN",
+        "id": "17798933449"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/17851818161",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "NGO - Search - Business Planning - Signups - US - EN",
+        "id": "17851818161"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/17940364479",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "USA - Search - Project Management - Signups - US - EN",
+        "id": "17940364479"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/18003847436",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "NGO - Search - Volunteer Management - Competitors - Signups - US - EN",
+        "id": "18003847436"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/18007458213",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "USA - Search - Project Management",
+        "id": "18007458213"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/18173591007",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "NGO - Search - Donor Management & Fundraising Software - Competitors - Signups - US - EN",
+        "id": "18173591007"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/18194649590",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "NGO - Search - Non Profit Software & Misc. Features - Signups - US - EN",
+        "id": "18194649590"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/18274309813",
+        "status": "PAUSED",
+        "advertisingChannelType": "DISPLAY",
+        "name": "Display - Remarketing - USA",
+        "id": "18274309813"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/18298846200",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "NGO - Search - Donor Management & Fundraising Software - Signups - Tier3 - EN",
+        "id": "18298846200"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/18299340435",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "NGO - Search - Business Planning - Signups - Tier3 - EN",
+        "id": "18299340435"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/18299375178",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "NGO - Search - Volunteer Management - Competitors - Signups - Tier3 - EN",
+        "id": "18299375178"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/18299756850",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "NGO - Search - Non Profit Competitors - Signups - Tier3 - EN",
+        "id": "18299756850"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/18299785365",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "NGO - Search - Business Planning - Signups - Tier1 - EN",
+        "id": "18299785365"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/18299785368",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "NGO - Search - Donor Management & Fundraising Software - Competitors - Signups - Tier1 - EN",
+        "id": "18299785368"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/18299785590",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "NGO - Search - Volunteer Management - Competitors - Signups - Tier1 - EN",
+        "id": "18299785590"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/2678872027/campaigns/18299786100",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "NGO - Search - Non Profit Competitors - Signups - Tier1 - EN",
+        "id": "18299786100"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    }
+  ],
+  "fieldMask": "campaign.id,campaign.name,campaign.status,campaign.advertisingChannelType,metrics.impressions,metrics.clicks,metrics.costMicros,metrics.conversions,metrics.ctr,metrics.averageCpc",
+  "requestId": "_iWZdJoQ3YbE6RdLwm6ecQ",
+  "queryResourceConsumption": "972"
+}
+]

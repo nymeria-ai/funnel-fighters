@@ -1,0 +1,516 @@
+[{
+  "results": [
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/16947342398",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-dev-kanban-h-search-desktop-core-aw",
+        "id": "16947342398"
+      },
+      "metrics": {
+        "clicks": "1106",
+        "conversions": 29.833333,
+        "costMicros": "11112027572",
+        "ctr": 0.029185908431191451,
+        "averageCpc": 10047041.204339964,
+        "impressions": "37895"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/10895029906",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-comp_microsoft_teams-h-search-desktop-core-aw",
+        "id": "10895029906"
+      },
+      "metrics": {
+        "clicks": "626",
+        "conversions": 29.002736,
+        "costMicros": "10486337433",
+        "ctr": 0.030690787860959946,
+        "averageCpc": 16751337.752396166,
+        "impressions": "20397"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/17917263321",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-dev-product_management-h-search-desktop-core-aw",
+        "id": "17917263321"
+      },
+      "metrics": {
+        "clicks": "1313",
+        "conversions": 39,
+        "costMicros": "10460462403",
+        "ctr": 0.034817427275861151,
+        "averageCpc": 7966841.1294744862,
+        "impressions": "37711"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/15353191321",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-dashboards-h-search-desktop-core-aw",
+        "id": "15353191321"
+      },
+      "metrics": {
+        "clicks": "1023",
+        "conversions": 67,
+        "costMicros": "4672521500",
+        "ctr": 0.049657783602737732,
+        "averageCpc": 4567469.6969696973,
+        "impressions": "20601"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/18084143032",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-en-prm-workos-work_mgmt-wide_terms-h-search-desktop-core-aw",
+        "id": "18084143032"
+      },
+      "metrics": {
+        "clicks": "747",
+        "conversions": 28.982204,
+        "costMicros": "3056609984",
+        "ctr": 0.049362320755963786,
+        "averageCpc": 4091847.3681392237,
+        "impressions": "15133"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/15289884642",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "eu1-en-prm-workos-work_mgmt-comp_microsoft_teams-h-search-desktop-core-aw",
+        "id": "15289884642"
+      },
+      "metrics": {
+        "clicks": "208",
+        "conversions": 9.499999,
+        "costMicros": "3018813842",
+        "ctr": 0.017001798267124408,
+        "averageCpc": 14513528.086538462,
+        "impressions": "12234"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/16977946693",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "au-en-prm-workos-work_mgmt-wide_terms-h-search-desktop-core-aw",
+        "id": "16977946693"
+      },
+      "metrics": {
+        "clicks": "510",
+        "conversions": 28.767123,
+        "costMicros": "2688343352",
+        "ctr": 0.045184725790732704,
+        "averageCpc": 5271261.4745098036,
+        "impressions": "11287"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/15289882311",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "ca-en-prm-workos-work_mgmt-comp_microsoft_teams-h-search-desktop-core-aw",
+        "id": "15289882311"
+      },
+      "metrics": {
+        "clicks": "114",
+        "conversions": 7.5,
+        "costMicros": "2469656666",
+        "ctr": 0.018272158999839718,
+        "averageCpc": 21663654.96491228,
+        "impressions": "6239"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/10895029888",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "gb-en-prm-workos-work_mgmt-comp_microsoft_teams-h-search-desktop-core-aw",
+        "id": "10895029888"
+      },
+      "metrics": {
+        "clicks": "161",
+        "conversions": 7,
+        "costMicros": "2209033434",
+        "ctr": 0.021973522587689368,
+        "averageCpc": 13720704.55900621,
+        "impressions": "7327"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/15851680779",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "ww-en-prm-workos-work_mgmt-comp_microsoft_teams-h-search-desktop-exp-aw",
+        "id": "15851680779"
+      },
+      "metrics": {
+        "clicks": "240",
+        "conversions": 9.666666,
+        "costMicros": "2156739185",
+        "ctr": 0.024502297090352222,
+        "averageCpc": 8986413.270833334,
+        "impressions": "9795"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/15859981640",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "row-en-prm-workos-work_mgmt-comp_microsoft_teams-h-search-desktop-core-aw",
+        "id": "15859981640"
+      },
+      "metrics": {
+        "clicks": "231",
+        "conversions": 13,
+        "costMicros": "1991575860",
+        "ctr": 0.02858910891089109,
+        "averageCpc": 8621540.519480519,
+        "impressions": "8080"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/18614576349",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "eu1-en-prm-workos-work_mgmt-wide_terms-h-search-desktop-core-aw",
+        "id": "18614576349"
+      },
+      "metrics": {
+        "clicks": "571",
+        "conversions": 36,
+        "costMicros": "1837342397",
+        "ctr": 0.046377517868745936,
+        "averageCpc": 3217762.516637478,
+        "impressions": "12312"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/16977946303",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "ca-en-prm-workos-work_mgmt-wide_terms-h-search-desktop-core-aw",
+        "id": "16977946303"
+      },
+      "metrics": {
+        "clicks": "423",
+        "conversions": 29,
+        "costMicros": "1822673074",
+        "ctr": 0.042338104293864476,
+        "averageCpc": 4308919.7966903076,
+        "impressions": "9991"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/16896206864",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "gb-en-prm-workos-dev-kanban-h-search-desktop-core-aw",
+        "id": "16896206864"
+      },
+      "metrics": {
+        "clicks": "339",
+        "conversions": 16.4,
+        "costMicros": "1812845481",
+        "ctr": 0.027061547058353955,
+        "averageCpc": 5347626.7876106193,
+        "impressions": "12527"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/16883241345",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "ca-en-prm-workos-dev-kanban-h-search-desktop-core-aw",
+        "id": "16883241345"
+      },
+      "metrics": {
+        "clicks": "231",
+        "conversions": 13.833336,
+        "costMicros": "1574822923",
+        "ctr": 0.03233935321293574,
+        "averageCpc": 6817415.2510822508,
+        "impressions": "7143"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/15295498538",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "au-en-prm-workos-work_mgmt-comp_microsoft_teams-h-search-desktop-core-aw",
+        "id": "15295498538"
+      },
+      "metrics": {
+        "clicks": "97",
+        "conversions": 7.25,
+        "costMicros": "1459141490",
+        "ctr": 0.023956532477154853,
+        "averageCpc": 15042695.773195876,
+        "impressions": "4049"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/16337214609",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "ww-en-prm-workos-work_mgmt-dashboards-h-search-desktop-exp-aw",
+        "id": "16337214609"
+      },
+      "metrics": {
+        "clicks": "2419",
+        "conversions": 208.992591,
+        "costMicros": "1335049266",
+        "ctr": 0.0770455776029557,
+        "averageCpc": 551901.30880529142,
+        "impressions": "31397"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/16915086640",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "au-en-prm-workos-dev-kanban-h-search-desktop-core-aw",
+        "id": "16915086640"
+      },
+      "metrics": {
+        "clicks": "193",
+        "conversions": 9.983336,
+        "costMicros": "1300953329",
+        "ctr": 0.03792493613676557,
+        "averageCpc": 6740690.8238341967,
+        "impressions": "5089"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/16972369821",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "gb-en-prm-workos-work_mgmt-wide_terms-h-search-desktop-core-aw",
+        "id": "16972369821"
+      },
+      "metrics": {
+        "clicks": "344",
+        "conversions": 29,
+        "costMicros": "1191543448",
+        "ctr": 0.040243331773514274,
+        "averageCpc": 3463789.0930232559,
+        "impressions": "8548"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/16888417606",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "gb-en-prm-workos-dev-product_management-h-search-desktop-core-aw",
+        "id": "16888417606"
+      },
+      "metrics": {
+        "clicks": "256",
+        "conversions": 8,
+        "costMicros": "1004313127",
+        "ctr": 0.0335473725592976,
+        "averageCpc": 3923098.15234375,
+        "impressions": "7631"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/16977946456",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "row-en-prm-workos-work_mgmt-wide_terms-h-search-desktop-core-aw",
+        "id": "16977946456"
+      },
+      "metrics": {
+        "clicks": "554",
+        "conversions": 27,
+        "costMicros": "877150400",
+        "ctr": 0.056978298878946829,
+        "averageCpc": 1583303.9711191335,
+        "impressions": "9723"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/18614576778",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "ww-en-prm-workos-work_mgmt-wide_terms-h-search-desktop-core-aw",
+        "id": "18614576778"
+      },
+      "metrics": {
+        "clicks": "806",
+        "conversions": 30.5,
+        "costMicros": "768272744",
+        "ctr": 0.071510957324106117,
+        "averageCpc": 953191.99007444165,
+        "impressions": "11271"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/15896720323",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "row-en-prm-workos-work_mgmt-dashboards-h-search-desktop-core-aw",
+        "id": "15896720323"
+      },
+      "metrics": {
+        "clicks": "726",
+        "conversions": 87.660252,
+        "costMicros": "749922786",
+        "ctr": 0.076268515600378187,
+        "averageCpc": 1032951.4958677687,
+        "impressions": "9519"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/16888417609",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "ca-en-prm-workos-dev-product_management-h-search-desktop-core-aw",
+        "id": "16888417609"
+      },
+      "metrics": {
+        "clicks": "161",
+        "conversions": 5.993766,
+        "costMicros": "720992257",
+        "ctr": 0.037669630322882543,
+        "averageCpc": 4478212.7763975151,
+        "impressions": "4274"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/16915167802",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "au-en-prm-workos-dev-product_management-h-search-desktop-core-aw",
+        "id": "16915167802"
+      },
+      "metrics": {
+        "clicks": "105",
+        "conversions": 0,
+        "costMicros": "487737434",
+        "ctr": 0.034642032332563508,
+        "averageCpc": 4645118.4190476192,
+        "impressions": "3031"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/15896720317",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "eu1-en-prm-workos-work_mgmt-dashboards-h-search-desktop-core-aw",
+        "id": "15896720317"
+      },
+      "metrics": {
+        "clicks": "258",
+        "conversions": 19,
+        "costMicros": "380752506",
+        "ctr": 0.05788647072021539,
+        "averageCpc": 1475784.9069767443,
+        "impressions": "4457"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/15353191339",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "au-en-prm-workos-work_mgmt-dashboards-h-search-desktop-core-aw",
+        "id": "15353191339"
+      },
+      "metrics": {
+        "clicks": "66",
+        "conversions": 6.5,
+        "costMicros": "163403395",
+        "ctr": 0.053965658217497957,
+        "averageCpc": 2475809.0151515151,
+        "impressions": "1223"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/15353191333",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "ca-en-prm-workos-work_mgmt-dashboards-h-search-desktop-core-aw",
+        "id": "15353191333"
+      },
+      "metrics": {
+        "clicks": "69",
+        "conversions": 7,
+        "costMicros": "148286073",
+        "ctr": 0.069908814589665649,
+        "averageCpc": 2149073.5217391304,
+        "impressions": "987"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/15353191327",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "gb-en-prm-workos-work_mgmt-dashboards-h-search-desktop-core-aw",
+        "id": "15353191327"
+      },
+      "metrics": {
+        "clicks": "37",
+        "conversions": 2,
+        "costMicros": "54405188",
+        "ctr": 0.0334841628959276,
+        "averageCpc": 1470410.4864864864,
+        "impressions": "1105"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/9194503735/campaigns/2014164135",
+        "status": "PAUSED",
+        "advertisingChannelType": "DISPLAY",
+        "name": "us-remarketing-refunneling_team25_14days-desk-monday",
+        "id": "2014164135"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    }
+  ],
+  "fieldMask": "campaign.id,campaign.name,campaign.status,campaign.advertisingChannelType,metrics.impressions,metrics.clicks,metrics.costMicros,metrics.conversions,metrics.ctr,metrics.averageCpc",
+  "requestId": "3LzYcvnxxIatoIWmG9ZJ8A",
+  "queryResourceConsumption": "1002"
+}
+]

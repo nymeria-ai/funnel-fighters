@@ -1,0 +1,102 @@
+[{
+  "results": [
+    {
+      "campaign": {
+        "resourceName": "customers/1127580146/campaigns/23526185264",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "mailee_google_search_conversions_us_feb2026",
+        "id": "23526185264"
+      },
+      "metrics": {
+        "clicks": "1835",
+        "conversions": 35,
+        "costMicros": "14980301033",
+        "ctr": 0.053590724569959988,
+        "averageCpc": 8163651.7891008174,
+        "impressions": "34241"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/1127580146/campaigns/23697570162",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "taka_scheduling_google_search_conversions_us_mar2026",
+        "id": "23697570162"
+      },
+      "metrics": {
+        "clicks": "286",
+        "conversions": 4,
+        "costMicros": "1310886101",
+        "ctr": 0.03674675574971091,
+        "averageCpc": 4583517.8356643356,
+        "impressions": "7783"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/1127580146/campaigns/23278692636",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "taka_builder_desktop",
+        "id": "23278692636"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/1127580146/campaigns/23330312879",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "04.12.25-smb",
+        "id": "23330312879"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/1127580146/campaigns/23330404928",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "4.12.25-calo",
+        "id": "23330404928"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/1127580146/campaigns/23370803420",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "taka_social_media_manager",
+        "id": "23370803420"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    }
+  ],
+  "fieldMask": "campaign.id,campaign.name,campaign.status,campaign.advertisingChannelType,metrics.impressions,metrics.clicks,metrics.costMicros,metrics.conversions,metrics.ctr,metrics.averageCpc",
+  "requestId": "d5L7XK1SfDrsIRDbh6KtQg",
+  "queryResourceConsumption": "994"
+}
+]

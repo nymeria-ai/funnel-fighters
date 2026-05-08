@@ -1,0 +1,468 @@
+[{
+  "results": [
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/23548960296",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-s-workassets-e-desk-presentations-deepconv",
+        "id": "23548960296"
+      },
+      "metrics": {
+        "clicks": "9942",
+        "conversions": 960.664912,
+        "costMicros": "28288141304",
+        "ctr": 0.097481100903038562,
+        "averageCpc": 2845316.9688191512,
+        "impressions": "101989"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/23674171182",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-s-workassets-e-desk-competitors_gamma-deepconv",
+        "id": "23674171182"
+      },
+      "metrics": {
+        "clicks": "6657",
+        "conversions": 901.369283,
+        "costMicros": "18242465302",
+        "ctr": 0.17495400788436269,
+        "averageCpc": 2740343.2930749585,
+        "impressions": "38050"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/23571139156",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-s-workassets-e-desk-competitors_gamma",
+        "id": "23571139156"
+      },
+      "metrics": {
+        "clicks": "4453",
+        "conversions": 1831.999999,
+        "costMicros": "11922290157",
+        "ctr": 0.17247656673638548,
+        "averageCpc": 2677361.3646979565,
+        "impressions": "25818"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/21137107435",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-s-workassets-e-desk-competitors",
+        "id": "21137107435"
+      },
+      "metrics": {
+        "clicks": "2910",
+        "conversions": 451.75,
+        "costMicros": "11419018573",
+        "ctr": 0.0589462596471327,
+        "averageCpc": 3924061.365292096,
+        "impressions": "49367"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/18380957241",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "ww-s-brand-b-desk",
+        "id": "18380957241"
+      },
+      "metrics": {
+        "clicks": "89",
+        "conversions": 11.225,
+        "costMicros": "152478071",
+        "ctr": 0.15110356536502548,
+        "averageCpc": 1713236.7528089888,
+        "impressions": "589"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/16695692610",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-s-canvas-e-desk",
+        "id": "16695692610"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/17391917657",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-s-canvas-e-desk Target CPA",
+        "id": "17391917657"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/17482450736",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-s-canvas-e-desk Target CPA V2",
+        "id": "17482450736"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/17593479592",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-s-canvas-e-desk canvas target cpa new item placed",
+        "id": "17593479592"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/17708909005",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-s-canvas-e-desk target CPA invite",
+        "id": "17708909005"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/17815236452",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "eu-s-canvas-e-desk",
+        "id": "17815236452"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/17929744314",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "eu-s-canvas-e-desk target cpa upgrade cta",
+        "id": "17929744314"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/17949552144",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-s-canvas-b-desk",
+        "id": "17949552144"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/17997312466",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-s-workassets-e-desk-presentations",
+        "id": "17997312466"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/18003152603",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-s-canvas-e-desk #2",
+        "id": "18003152603"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/18263269135",
+        "status": "ENABLED",
+        "advertisingChannelType": "SEARCH",
+        "name": "eu-s-canvas-e-desk upgrade cta only",
+        "id": "18263269135"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/18384568249",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "eu-s-canvas-e-desk #3",
+        "id": "18384568249"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/18384945754",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "mixed-s-canvas-e-desk-upgrade-only",
+        "id": "18384945754"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/18387708473",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-s-brand-b-desk",
+        "id": "18387708473"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/18806030604",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "eu-s-canvas-e-desk-upgrade-only",
+        "id": "18806030604"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/18948947958",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "mixed-s-canvas-e-desk-paid-plans-only",
+        "id": "18948947958"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/18956440042",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "mixed-s-canvas-e-desk-upgrade-only #3",
+        "id": "18956440042"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/19408884849",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-s-canvas-e-desk-paid-plans-only",
+        "id": "19408884849"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/19451321222",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "row-s-canvas-e-desk-cpc",
+        "id": "19451321222"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/19809626809",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-s-canvas-e-desk-team-signup",
+        "id": "19809626809"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/20217913640",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-s-canvas-e-desk-paid-plans-only-2",
+        "id": "20217913640"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/20217949433",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-s-canvas-e-desk-paid-plans-only-3",
+        "id": "20217949433"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/21126689493",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "uk-s-canvas-e-desk-paid-plans-only",
+        "id": "21126689493"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/21137090584",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "us-s-canvas-e-desk-competitors",
+        "id": "21137090584"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/8411756705/campaigns/21312076078",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "au-s-canvas-e-desk-paid-plans-only",
+        "id": "21312076078"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    }
+  ],
+  "fieldMask": "campaign.id,campaign.name,campaign.status,campaign.advertisingChannelType,metrics.impressions,metrics.clicks,metrics.costMicros,metrics.conversions,metrics.ctr,metrics.averageCpc",
+  "requestId": "lGPwek8U5f8RwzsJpb54ew",
+  "queryResourceConsumption": "1085"
+}
+]

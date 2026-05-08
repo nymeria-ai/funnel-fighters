@@ -1,0 +1,518 @@
+[{
+  "results": [
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/23454953468",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "us-en-prm-crm-desktop-main2-dg",
+        "id": "23454953468"
+      },
+      "metrics": {
+        "clicks": "10637",
+        "conversions": 293.924087,
+        "costMicros": "114249482683",
+        "ctr": 0.0053464996185020952,
+        "averageCpc": 10740761.745134907,
+        "impressions": "1989526"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/23524581062",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "us-en-prm-work_mgmt-desktop-topics_m-dg",
+        "id": "23524581062"
+      },
+      "metrics": {
+        "clicks": "4866",
+        "conversions": 371,
+        "costMicros": "98546760378",
+        "ctr": 0.0030718669135439279,
+        "averageCpc": 20252108.585696671,
+        "impressions": "1584053"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/22738027197",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "us-en-prm-work_mgmt-desktop-trgt1-dg",
+        "id": "22738027197"
+      },
+      "metrics": {
+        "clicks": "8199",
+        "conversions": 205.143433,
+        "costMicros": "89378304764",
+        "ctr": 0.0015881523332318987,
+        "averageCpc": 10901122.669105988,
+        "impressions": "5162603"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/22738027194",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "us-en-prm-work_mgmt-desktop-trgt2-dg",
+        "id": "22738027194"
+      },
+      "metrics": {
+        "clicks": "2035",
+        "conversions": 332.520547,
+        "costMicros": "67639168445",
+        "ctr": 0.0014385976818429885,
+        "averageCpc": 33237920.611793611,
+        "impressions": "1414572"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/23488482137",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "us-en-prm-work_mgmt-desktop-lookalike2-dg",
+        "id": "23488482137"
+      },
+      "metrics": {
+        "clicks": "5138",
+        "conversions": 425.363009,
+        "costMicros": "65721851446",
+        "ctr": 0.0012306660518925264,
+        "averageCpc": 12791329.592448423,
+        "impressions": "4174975"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/23468520657",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "us-en-prm-work_mgmt-desktop-personas-dg",
+        "id": "23468520657"
+      },
+      "metrics": {
+        "clicks": "3736",
+        "conversions": 426.37644,
+        "costMicros": "62969831431",
+        "ctr": 0.0010820244631365907,
+        "averageCpc": 16854879.933351178,
+        "impressions": "3452787"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/23418568023",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "ca-en-prm-crm-desktop-main-dg",
+        "id": "23418568023"
+      },
+      "metrics": {
+        "clicks": "9286",
+        "conversions": 166.606138,
+        "costMicros": "58609266168",
+        "ctr": 0.0026088520039781763,
+        "averageCpc": 6311572.9235408138,
+        "impressions": "3559420"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/22735407010",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "br-pt-prm-work_mgmt-desktop-trgt2-dg",
+        "id": "22735407010"
+      },
+      "metrics": {
+        "clicks": "38959",
+        "conversions": 677.92034,
+        "costMicros": "58041352574",
+        "ctr": 0.0020389086722883585,
+        "averageCpc": 1489806.0159141661,
+        "impressions": "19107771"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/23591951693",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "fr-fr-prm-work_mgmt-desktop-main2-dg",
+        "id": "23591951693"
+      },
+      "metrics": {
+        "clicks": "9714",
+        "conversions": 306.499586,
+        "costMicros": "57645838423",
+        "ctr": 0.0013867962266122685,
+        "averageCpc": 5934304.9642783608,
+        "impressions": "7004634"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/23597407171",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "de-de-prm-work_mgmt-desktop-main3-dg",
+        "id": "23597407171"
+      },
+      "metrics": {
+        "clicks": "7026",
+        "conversions": 240.552673,
+        "costMicros": "56923202988",
+        "ctr": 0.00097783136876350668,
+        "averageCpc": 8101793.7643040139,
+        "impressions": "7185288"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/23454994778",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "gb-en-prm-crm-desktop-main2-dg",
+        "id": "23454994778"
+      },
+      "metrics": {
+        "clicks": "8375",
+        "conversions": 108.588968,
+        "costMicros": "50843872383",
+        "ctr": 0.002521370686348712,
+        "averageCpc": 6070910.1352835819,
+        "impressions": "3321606"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/22718889985",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "au-en-prm-work_mgmt-desktop-competitors-dg",
+        "id": "22718889985"
+      },
+      "metrics": {
+        "clicks": "7357",
+        "conversions": 316.846419,
+        "costMicros": "38772398707",
+        "ctr": 0.0013075515053904286,
+        "averageCpc": 5270137.1084681256,
+        "impressions": "5626547"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/22657102032",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "ca-en-prm-work_mgmt-desktop-topics-dg",
+        "id": "22657102032"
+      },
+      "metrics": {
+        "clicks": "3168",
+        "conversions": 152.538546,
+        "costMicros": "38292860624",
+        "ctr": 0.0016465191555976194,
+        "averageCpc": 12087392.873737374,
+        "impressions": "1924059"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/23432500744",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "mx-es-prm-work_mgmt-desktop-ron_instream-dg",
+        "id": "23432500744"
+      },
+      "metrics": {
+        "clicks": "17526",
+        "conversions": 369.243238,
+        "costMicros": "38014716426",
+        "ctr": 0.0011483358172663946,
+        "averageCpc": 2169046.9260527217,
+        "impressions": "15262086"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/22475117741",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "us-en-prm-work_mgmt-desktop-topics-dg",
+        "id": "22475117741"
+      },
+      "metrics": {
+        "clicks": "3104",
+        "conversions": 106.276082,
+        "costMicros": "35281295841",
+        "ctr": 0.0037133050927548681,
+        "averageCpc": 11366396.855992269,
+        "impressions": "835913"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/22697796141",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "gb-en-prm-work_mgmt-desktop-topics-dg",
+        "id": "22697796141"
+      },
+      "metrics": {
+        "clicks": "3239",
+        "conversions": 186.795502,
+        "costMicros": "31782464608",
+        "ctr": 0.0026438140139283862,
+        "averageCpc": 9812431.1849336214,
+        "impressions": "1225124"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/22896154799",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "br-pt-prm-work_mgmt-desktop-lookalike_instream-dg",
+        "id": "22896154799"
+      },
+      "metrics": {
+        "clicks": "13372",
+        "conversions": 623.691429,
+        "costMicros": "30113676756",
+        "ctr": 0.001575600485594131,
+        "averageCpc": 2251994.9712832784,
+        "impressions": "8486923"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/23471952708",
+        "status": "PAUSED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "ca-en-prm-work_mgmt-desktop-personas-dg",
+        "id": "23471952708"
+      },
+      "metrics": {
+        "clicks": "2660",
+        "conversions": 190.012235,
+        "costMicros": "28205647708",
+        "ctr": 0.0014491198231420077,
+        "averageCpc": 10603626.957894737,
+        "impressions": "1835597"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/23421722761",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "int3_4-en-prm-work_mgmt-desktop-main-dg",
+        "id": "23421722761"
+      },
+      "metrics": {
+        "clicks": "12089",
+        "conversions": 388.142087,
+        "costMicros": "27460430020",
+        "ctr": 0.0011237256417664159,
+        "averageCpc": 2271522.0464885435,
+        "impressions": "10757964"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/23481642160",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "au-en-prm-work_mgmt-desktop-personas-dg",
+        "id": "23481642160"
+      },
+      "metrics": {
+        "clicks": "2372",
+        "conversions": 177.083909,
+        "costMicros": "26286977399",
+        "ctr": 0.0014532710852969647,
+        "averageCpc": 11082199.577993255,
+        "impressions": "1632180"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/23493358464",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "gb-en-prm-work_mgmt-desktop-lookalike-dg",
+        "id": "23493358464"
+      },
+      "metrics": {
+        "clicks": "5126",
+        "conversions": 132.241636,
+        "costMicros": "26079997183",
+        "ctr": 0.0014930703012996061,
+        "averageCpc": 5087787.1991806477,
+        "impressions": "3433194"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/23477044748",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "gb-en-prm-work_mgmt-desktop-personas-dg",
+        "id": "23477044748"
+      },
+      "metrics": {
+        "clicks": "2574",
+        "conversions": 145.96173,
+        "costMicros": "25518235846",
+        "ctr": 0.0012784465533349128,
+        "averageCpc": 9913844.54001554,
+        "impressions": "2013381"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/23427997606",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "au-en-prm-crm-desktop-main-dg",
+        "id": "23427997606"
+      },
+      "metrics": {
+        "clicks": "4493",
+        "conversions": 46.998602,
+        "costMicros": "24074831529",
+        "ctr": 0.0023848739647454797,
+        "averageCpc": 5358297.6917427108,
+        "impressions": "1883957"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/22898372066",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "mx-es-prm-work_mgmt-desktop-lookalike_regular-dg",
+        "id": "22898372066"
+      },
+      "metrics": {
+        "clicks": "18206",
+        "conversions": 474.059997,
+        "costMicros": "23668589984",
+        "ctr": 0.0014311983955736145,
+        "averageCpc": 1300043.3914094255,
+        "impressions": "12720808"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/23673598927",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "au-en-prm-work_mgmt-desktop-topics2-dg",
+        "id": "23673598927"
+      },
+      "metrics": {
+        "clicks": "1693",
+        "conversions": 101.706969,
+        "costMicros": "20409123986",
+        "ctr": 0.0024249455712157674,
+        "averageCpc": 12055005.307737743,
+        "impressions": "698160"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/22652433525",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "int5_6-en-prm-work_mgmt-desktop-ron-dg",
+        "id": "22652433525"
+      },
+      "metrics": {
+        "clicks": "23126",
+        "conversions": 459.623357,
+        "costMicros": "18970118742",
+        "ctr": 0.0012009706435226132,
+        "averageCpc": 820293.98694110522,
+        "impressions": "19256091"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/22738027320",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "mx-es-prm-work_mgmt-desktop-inmarket-dg",
+        "id": "22738027320"
+      },
+      "metrics": {
+        "clicks": "8790",
+        "conversions": 122.523264,
+        "costMicros": "18445218571",
+        "ctr": 0.0013923371717909638,
+        "averageCpc": 2098432.1468714448,
+        "impressions": "6313126"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/23422129379",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "int1_2-en-prm-work_mgmt-desktop-main-dg",
+        "id": "23422129379"
+      },
+      "metrics": {
+        "clicks": "4295",
+        "conversions": 90.15642,
+        "costMicros": "14881501409",
+        "ctr": 0.0018548092461485178,
+        "averageCpc": 3464843.1685681026,
+        "impressions": "2315602"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/21706438214",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "gb-en-prm-work_mgmt-desktop-demandgen-v",
+        "id": "21706438214"
+      },
+      "metrics": {
+        "clicks": "2412",
+        "conversions": 29.284653,
+        "costMicros": "14255741958",
+        "ctr": 0.0020907300565849328,
+        "averageCpc": 5910340.7786069652,
+        "impressions": "1153664"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7193445013/campaigns/22541020758",
+        "status": "ENABLED",
+        "advertisingChannelType": "DEMAND_GEN",
+        "name": "int1_2-en-prm-work_mgmt-desktop-ron-dg",
+        "id": "22541020758"
+      },
+      "metrics": {
+        "clicks": "2915",
+        "conversions": 60.037145,
+        "costMicros": "13871746967",
+        "ctr": 0.0020584806223885015,
+        "averageCpc": 4758746.8154373923,
+        "impressions": "1416093"
+      }
+    }
+  ],
+  "fieldMask": "campaign.id,campaign.name,campaign.status,campaign.advertisingChannelType,metrics.impressions,metrics.clicks,metrics.costMicros,metrics.conversions,metrics.ctr,metrics.averageCpc",
+  "requestId": "ypa_vlw1j_vr17UuTgfGBA",
+  "queryResourceConsumption": "1421"
+}
+]

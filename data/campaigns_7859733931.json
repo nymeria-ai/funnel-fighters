@@ -1,0 +1,40 @@
+[{
+  "results": [
+    {
+      "campaign": {
+        "resourceName": "customers/7859733931/campaigns/22924497749",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "service_partners",
+        "id": "22924497749"
+      },
+      "metrics": {
+        "clicks": "71",
+        "conversions": 7.981598,
+        "costMicros": "2401486096",
+        "ctr": 0.072375127420998983,
+        "averageCpc": 33823747.830985919,
+        "impressions": "981"
+      }
+    },
+    {
+      "campaign": {
+        "resourceName": "customers/7859733931/campaigns/22079025051",
+        "status": "PAUSED",
+        "advertisingChannelType": "SEARCH",
+        "name": "crm_partners",
+        "id": "22079025051"
+      },
+      "metrics": {
+        "clicks": "0",
+        "conversions": 0,
+        "costMicros": "0",
+        "impressions": "0"
+      }
+    }
+  ],
+  "fieldMask": "campaign.id,campaign.name,campaign.status,campaign.advertisingChannelType,metrics.impressions,metrics.clicks,metrics.costMicros,metrics.conversions,metrics.ctr,metrics.averageCpc",
+  "requestId": "c2GVxcQloD--yzwbCpV5HA",
+  "queryResourceConsumption": "920"
+}
+]

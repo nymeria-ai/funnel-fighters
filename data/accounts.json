@@ -1,0 +1,188 @@
+[{
+  "results": [
+    {
+      "customerClient": {
+        "resourceName": "customers/7645779471/customerClients/3520202243",
+        "manager": false,
+        "descriptiveName": "AW mobile",
+        "id": "3520202243",
+        "status": "ENABLED"
+      }
+    },
+    {
+      "customerClient": {
+        "resourceName": "customers/7645779471/customerClients/8411756705",
+        "manager": false,
+        "descriptiveName": "Canvas by monday.com",
+        "id": "8411756705",
+        "status": "ENABLED"
+      }
+    },
+    {
+      "customerClient": {
+        "resourceName": "customers/7645779471/customerClients/9513030688",
+        "manager": false,
+        "descriptiveName": "External agencies - Japan",
+        "id": "9513030688",
+        "status": "ENABLED"
+      }
+    },
+    {
+      "customerClient": {
+        "resourceName": "customers/7645779471/customerClients/9441310809",
+        "manager": false,
+        "descriptiveName": "Locals",
+        "id": "9441310809",
+        "status": "ENABLED"
+      }
+    },
+    {
+      "customerClient": {
+        "resourceName": "customers/7645779471/customerClients/3746504118",
+        "manager": false,
+        "descriptiveName": "Main",
+        "id": "3746504118",
+        "status": "ENABLED"
+      }
+    },
+    {
+      "customerClient": {
+        "resourceName": "customers/7645779471/customerClients/2678872027",
+        "manager": false,
+        "descriptiveName": "NGO",
+        "id": "2678872027",
+        "status": "ENABLED"
+      }
+    },
+    {
+      "customerClient": {
+        "resourceName": "customers/7645779471/customerClients/6730192460",
+        "manager": true,
+        "descriptiveName": "Products by monday.com",
+        "id": "6730192460",
+        "status": "ENABLED"
+      }
+    },
+    {
+      "customerClient": {
+        "resourceName": "customers/7645779471/customerClients/1127580146",
+        "manager": false,
+        "descriptiveName": "Taka",
+        "id": "1127580146",
+        "status": "ENABLED"
+      }
+    },
+    {
+      "customerClient": {
+        "resourceName": "customers/7645779471/customerClients/6629846296",
+        "manager": false,
+        "descriptiveName": "Verticals",
+        "id": "6629846296",
+        "status": "ENABLED"
+      }
+    },
+    {
+      "customerClient": {
+        "resourceName": "customers/7645779471/customerClients/9194503735",
+        "manager": false,
+        "descriptiveName": "Verticals2",
+        "id": "9194503735",
+        "status": "ENABLED"
+      }
+    },
+    {
+      "customerClient": {
+        "resourceName": "customers/7645779471/customerClients/2807461091",
+        "manager": false,
+        "descriptiveName": "agent factory",
+        "id": "2807461091",
+        "status": "ENABLED"
+      }
+    },
+    {
+      "customerClient": {
+        "resourceName": "customers/7645779471/customerClients/7645779471",
+        "manager": true,
+        "descriptiveName": "dapulse",
+        "id": "7645779471",
+        "status": "ENABLED"
+      }
+    },
+    {
+      "customerClient": {
+        "resourceName": "customers/7645779471/customerClients/8184781194",
+        "manager": false,
+        "descriptiveName": "harp AI",
+        "id": "8184781194",
+        "status": "ENABLED"
+      }
+    },
+    {
+      "customerClient": {
+        "resourceName": "customers/7645779471/customerClients/2067543450",
+        "manager": false,
+        "descriptiveName": "monday mansion",
+        "id": "2067543450",
+        "status": "ENABLED"
+      }
+    },
+    {
+      "customerClient": {
+        "resourceName": "customers/7645779471/customerClients/9318044395",
+        "manager": false,
+        "descriptiveName": "monday service",
+        "id": "9318044395",
+        "status": "ENABLED"
+      }
+    },
+    {
+      "customerClient": {
+        "resourceName": "customers/7645779471/customerClients/7859733931",
+        "manager": false,
+        "descriptiveName": "monday.com CRM - Product Growth",
+        "id": "7859733931",
+        "status": "ENABLED"
+      }
+    },
+    {
+      "customerClient": {
+        "resourceName": "customers/7645779471/customerClients/4201983517",
+        "manager": false,
+        "descriptiveName": "monday.com YT social",
+        "id": "4201983517",
+        "status": "ENABLED"
+      }
+    },
+    {
+      "customerClient": {
+        "resourceName": "customers/7645779471/customerClients/6073520942",
+        "manager": false,
+        "descriptiveName": "monday.com brand",
+        "id": "6073520942",
+        "status": "ENABLED"
+      }
+    },
+    {
+      "customerClient": {
+        "resourceName": "customers/7645779471/customerClients/7193445013",
+        "manager": false,
+        "descriptiveName": "monday.com youtube",
+        "id": "7193445013",
+        "status": "ENABLED"
+      }
+    },
+    {
+      "customerClient": {
+        "resourceName": "customers/7645779471/customerClients/7212046956",
+        "manager": false,
+        "descriptiveName": "service partners",
+        "id": "7212046956",
+        "status": "ENABLED"
+      }
+    }
+  ],
+  "fieldMask": "customerClient.id,customerClient.descriptiveName,customerClient.status,customerClient.manager",
+  "requestId": "Mdil6r81FNxGSCku4KqPDA",
+  "queryResourceConsumption": "208"
+}
+]
