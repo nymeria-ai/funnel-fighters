@@ -1,4 +1,4 @@
-# Multi-Agent Orchestration for 11 Marketing Agents
+# Multi-Agent Orchestration for 12 Marketing Agents
 ## Deep Research & Architecture Recommendations
 
 **Author:** Nymeria | **Date:** 2026-05-09 | **For:** Guy Regev, Director of Engineering @ monday.com
@@ -7,7 +7,7 @@
 
 ## Executive Summary
 
-You have 11 specialized AI agents across marketing (content, ads, data, social, etc.) using monday.com as the communication hub. The question isn't "should we orchestrate?" — it's "what topology and tooling lets 11 agents coordinate without becoming a debugging nightmare?"
+You have 12 specialized AI agents across marketing (content, ads, data, social, creative, etc.) using monday.com as the communication hub. The question isn't "should we orchestrate?" — it's "what topology and tooling lets 12 agents coordinate without becoming a debugging nightmare?"
 
 **My recommendation:** A **hybrid hierarchical + event-driven architecture** using **LangGraph** as the orchestration backbone, **monday.com boards as the shared state/blackboard**, and **Langfuse** for observability. Skip the heavyweight frameworks for now — your agents already exist and have their own runtimes. You need a coordination layer, not a rewrite.
 
@@ -15,7 +15,7 @@ You have 11 specialized AI agents across marketing (content, ads, data, social, 
 1. **LangGraph** is the production standard for deterministic, stateful multi-agent orchestration (62% of enterprise agentic deployments in 2026)
 2. **CrewAI** is great for prototyping but lacks fine-grained state control needed at your scale
 3. **monday.com's own agent infrastructure** (announced 2026) is a natural fit as the blackboard/shared state layer
-4. **3-layer hierarchy is overkill** for 11 agents — a **2-layer hub-and-spoke with domain supervisors** is the sweet spot
+4. **3-layer hierarchy is overkill** for 12 agents — a **2-layer hub-and-spoke with domain supervisors** is the sweet spot
 5. **A2A + MCP protocols** are the emerging interoperability standard — design for them now
 
 ---
@@ -99,7 +99,7 @@ The classic 3-layer pattern (Orchestrator → Supervisors → Workers) introduce
 - **Debugging hell**: "Why did the orchestrator tell the content supervisor to tell the blog writer to use that headline?" — good luck tracing that
 - **Single point of failure**: If the orchestrator goes down, everything stops
 
-**For 11 agents, 3 layers is overengineering.** You'd have ~3-4 agents per supervisor and ~3 supervisors. That's barely worth the indirection.
+**For 12 agents, 3 layers is overengineering.** You'd have ~3-4 agents per supervisor and ~3 supervisors. That's barely worth the indirection.
 
 ### Recommended: 2-Layer Hub-and-Spoke with Domain Clusters
 
@@ -129,9 +129,14 @@ graph TB
         RE[Research Agent]
     end
 
+    subgraph "Creative Domain"
+        CR[Creative Agent<br/>DESIGN.md + LP Generation]
+    end
+
     ORCH --> CL
     ORCH --> AL
     ORCH --> DL
+    ORCH --> CR
 
     CL --> BW
     CL --> SW
@@ -152,6 +157,9 @@ graph TB
     CL <--> BB
     AL <--> BB
     DL <--> BB
+    CR <--> BB
+    AL -.->|"LP needed"| CR
+    CL -.->|"Copy/messaging"| CR
 ```
 
 ### Architecture Details
@@ -170,8 +178,8 @@ graph TB
 - Workers execute specific tasks
 - Leads report status back to orchestrator via monday.com board updates
 
-**Why this works for 11 agents:**
-- **3 domain leads** handle local coordination (content, ads, data)
+**Why this works for 12 agents:**
+- **3 domain leads + 1 creative agent** handle local coordination (content, ads, data, creative)
 - **Orchestrator** only talks to 3 agents, not 11
 - **Workers** can communicate peer-to-peer within their domain via board updates
 - **Flat enough** to debug, **structured enough** to scale
@@ -191,6 +199,7 @@ graph TB
 | 9 | Paid Analytics Agent | Ads | ROAS, attribution, optimization | Ads Dashboard |
 | 10 | Analytics Agent | Data | Website analytics, funnel analysis | Analytics Hub |
 | 11 | Research Agent | Data | Market research, competitor intel | Research Board |
+| 12 | **Creative Agent** | **Creative** | **Generate/modify landing pages & ad creatives using DESIGN.md tokens** | **Creative Pipeline** |
 
 ---
 
@@ -476,6 +485,52 @@ This gives the marketing team visibility in a tool they already use, without req
 ### Toyota — Multi-Agent Production Planning
 - Not marketing, but relevant: Multi-agent system for production planning optimization
 - **Key lesson:** Hierarchical orchestration works at scale when agent responsibilities are clearly bounded
+
+---
+
+## 7.5 Creative Agent — DESIGN.md-Powered LP & Ad Generation
+
+**The 12th agent** bridges the gap between campaign optimization insights and actual creative execution.
+
+### Why It Exists
+When an ad campaign needs a new or modified landing page, today that's a manual handoff to design → dev → deploy (days/weeks). The Creative Agent makes this instant: campaign brief → on-brand LP → deployed → wired to campaign.
+
+### Core Technology: Google's DESIGN.md Spec
+[DESIGN.md](https://github.com/google-labs-code/design.md) is an open-source format from Google Labs that gives coding agents a structured understanding of a design system:
+
+- **YAML front matter** — Machine-readable tokens (colors, typography, spacing, components)
+- **Markdown body** — Human-readable rationale (why values exist, how to apply them)
+- **CLI tooling** — `npx @google/design.md lint` for WCAG accessibility, `diff` for regression detection, `export` to Tailwind CSS
+
+### Workflow
+```
+Ads Agent detects: "campaign needs LP" or "LP underperforming"
+    → Sends brief to Creative Agent
+    → Creative Agent reads DESIGN.md tokens (monday.com design system)
+    → Pulls audience/keyword context from Content + Data agents
+    → Generates LP (React + Tailwind, exported from DESIGN.md)
+    → Lints for WCAG accessibility compliance
+    → Deploys to preview URL (Vercel)
+    → Human review (optional gate)
+    → Wires LP to campaign
+    → Monitors conversion performance → iterates
+```
+
+### Integration Points
+| Agent | Interaction |
+|-------|------------|
+| **Ads Lead** | Requests LP for new campaign → Creative generates + deploys |
+| **Content Lead** | Supplies messaging, keywords, value props for LP copy |
+| **Analytics Agent** | Feeds conversion data → Creative iterates on underperformers |
+| **Orchestrator** | Routes campaign creation flow through Creative when LP needed |
+
+### What We Need to Build This
+1. **DESIGN.md file** — Extract monday.com's actual design tokens from Figma/brand guidelines
+2. **Template library** — 3-5 LP templates (product feature, comparison, use case, trial, webinar)
+3. **Deploy pipeline** — Brief → Generate → Lint → Deploy → Wire
+4. **Performance loop** — Track conversions → flag underperformers → auto-generate variants
+
+**Full spec:** See `creative-agent-spec.md`
 
 ---
 

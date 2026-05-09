@@ -236,15 +236,42 @@ Agent ←→ Tool   =  MCP Protocol (Anthropic, Linux Foundation)
 
 ---
 
+## Slide 11.5: Creative Agent — The 12th Agent
+
+### DESIGN.md-Powered LP & Ad Generation
+
+**Key Point:** When a campaign needs a landing page, today it's days/weeks of design → dev → deploy. The Creative Agent makes this instant.
+
+**How:** [Google's DESIGN.md spec](https://github.com/google-labs-code/design.md) gives AI agents structured design tokens (colors, typography, spacing, components) + rationale. The Creative Agent reads these tokens and generates on-brand landing pages.
+
+**Flow:**
+- Ads Agent detects LP needed → sends brief to Creative Agent
+- Creative reads DESIGN.md + pulls audience context
+- Generates React + Tailwind LP (exported from design tokens)
+- Lints for WCAG accessibility → deploys to preview → wires to campaign
+- Monitors conversions → iterates
+
+**What DESIGN.md gives us:**
+- Machine-readable YAML tokens = exact hex codes, font sizes, spacing
+- Built-in CLI linter = catches accessibility issues before deploy
+- Tailwind CSS export = `npx @google/design.md export --format css-tailwind`
+- Diffable = track design system changes in Git
+
+**To build this we need:** monday.com's actual design tokens extracted into a DESIGN.md file from Figma/brand guidelines.
+
+**Full spec:** `creative-agent-spec.md`
+
+---
+
 ## Slide 12: Implementation Roadmap
 
 ### 12 Weeks to Production
 
 | Phase | Weeks | Deliverables |
 |-------|-------|-------------|
-| **🏗️ Foundation** | 1-4 | Agent Cards for all 11 agents, monday.com board structure, Langfuse deployed, agents instrumented |
+| **🏗️ Foundation** | 1-4 | Agent Cards for all 12 agents, monday.com board structure, Langfuse deployed, agents instrumented, DESIGN.md created |
 | **🔧 Orchestration** | 5-8 | LangGraph orchestrator, domain lead agents, state machine, Redis setup, Grafana dashboards |
-| **🧪 Integration** | 9-12 | All 11 agents connected, E2E testing, load testing, HITL approval flows, cost monitoring |
+| **🧪 Integration** | 9-12 | All 12 agents connected (incl. Creative Agent LP flow), E2E testing, load testing, HITL approval flows, cost monitoring |
 | **🚀 Production** | 13+ | Gradual rollout, A/B testing vs manual, iteration, A2A protocol support |
 
 **Key Milestones:**
