@@ -7,6 +7,7 @@ const ALLOWED_EMAILS = [
   "roy@monday.com",
   "idokirshenboim@gmail.com",
   "diego.malamute.1@gmail.com", // Nymeria
+  "idoki-ext@monday.com", // Ido
 ];
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
