@@ -1,0 +1,402 @@
+[
+  {
+    "campaign": "ca-en-prm-workos-work_mgmt-comp_notion-h-search-desktop-exp-aw",
+    "country": "CA",
+    "signups": 556,
+    "totalPredictedArr": 1095.62,
+    "avgPredictedArr": 547.81,
+    "stddevArr": 79.2,
+    "historicalSpend": 31195.75,
+    "arrPerDollar": 0.0351
+  },
+  {
+    "campaign": "ww2-en-prm-crm-search-crm_templates-h-desktop-core-aw",
+    "country": "WW2",
+    "signups": 3181,
+    "totalPredictedArr": 2712.32,
+    "avgPredictedArr": 678.08,
+    "stddevArr": 524.16,
+    "historicalSpend": 75917.88,
+    "arrPerDollar": 0.0357
+  },
+  {
+    "campaign": "eu1-en-prm-workos-work_mgmt-comp_basecamp-h-search-desktop-core-aw",
+    "country": "EU1",
+    "signups": 230,
+    "totalPredictedArr": 2009.35,
+    "avgPredictedArr": 502.34,
+    "stddevArr": 133.69,
+    "historicalSpend": 47575.71,
+    "arrPerDollar": 0.0422
+  },
+  {
+    "campaign": "us-en-prm-workos-crm-comp_crm_ms_dynamics-h-search-desktop-core-aw",
+    "country": "US",
+    "signups": 143,
+    "totalPredictedArr": 1945.56,
+    "avgPredictedArr": 648.52,
+    "stddevArr": 244.84,
+    "historicalSpend": 44533.43,
+    "arrPerDollar": 0.0437
+  },
+  {
+    "campaign": "ww2-en-prm-workos-crm-crm_main-h-search-desktop-core-aw",
+    "country": "WW2",
+    "signups": 29,
+    "totalPredictedArr": 3836.41,
+    "avgPredictedArr": 959.1,
+    "stddevArr": 413.5,
+    "historicalSpend": 86142.62,
+    "arrPerDollar": 0.0445
+  },
+  {
+    "campaign": "us-en-prm-workos-project-project_tracking-h-search-desktop-core-aw",
+    "country": "US",
+    "signups": 23,
+    "totalPredictedArr": 7710.48,
+    "avgPredictedArr": 1285.08,
+    "stddevArr": 1260.22,
+    "historicalSpend": 169925.56,
+    "arrPerDollar": 0.0454
+  },
+  {
+    "campaign": "gb-en-prm-workos-work_mgmt-comp_wrike-h-search-desktop-core-aw",
+    "country": "GB",
+    "signups": 293,
+    "totalPredictedArr": 6387.72,
+    "avgPredictedArr": 1064.62,
+    "stddevArr": 675.73,
+    "historicalSpend": 140161.17,
+    "arrPerDollar": 0.0456
+  },
+  {
+    "campaign": "ca-en-prm-workos-work_mgmt-comp_clickup-h-search-desktop-core-aw",
+    "country": "CA",
+    "signups": 1019,
+    "totalPredictedArr": 7527.48,
+    "avgPredictedArr": 752.75,
+    "stddevArr": 384.65,
+    "historicalSpend": 147250.47,
+    "arrPerDollar": 0.0511
+  },
+  {
+    "campaign": "ca-en-prm-workos-dev-comp_jira-h-search-desktop-core-aw",
+    "country": "CA",
+    "signups": 308,
+    "totalPredictedArr": 4710.34,
+    "avgPredictedArr": 942.07,
+    "stddevArr": 688.27,
+    "historicalSpend": 89280.45,
+    "arrPerDollar": 0.0528
+  },
+  {
+    "campaign": "ca-en-prm-workos-dev-product_management-h-search-desktop-core-aw",
+    "country": "CA",
+    "signups": 871,
+    "totalPredictedArr": 4143.64,
+    "avgPredictedArr": 828.73,
+    "stddevArr": 516.89,
+    "historicalSpend": 72812.06,
+    "arrPerDollar": 0.0569
+  },
+  {
+    "campaign": "au-en-prm-workos-work_mgmt-comp_microsoft_teams-h-search-desktop-core-aw",
+    "country": "AU",
+    "signups": 132,
+    "totalPredictedArr": 5529.87,
+    "avgPredictedArr": 691.23,
+    "stddevArr": 193.86,
+    "historicalSpend": 96444.79,
+    "arrPerDollar": 0.0573
+  },
+  {
+    "campaign": "ca-en-prm-workos-work_mgmt-checklist-h-search-desktop-core-aw",
+    "country": "CA",
+    "signups": 1622,
+    "totalPredictedArr": 3496.93,
+    "avgPredictedArr": 874.23,
+    "stddevArr": 497.22,
+    "historicalSpend": 59846.02,
+    "arrPerDollar": 0.0584
+  },
+  {
+    "campaign": "ca-en-prm-workos-project-projectgen-p-search-desktop-core-aw",
+    "country": "CA",
+    "signups": 925,
+    "totalPredictedArr": 4504.04,
+    "avgPredictedArr": 1126.01,
+    "stddevArr": 598.76,
+    "historicalSpend": 76172.25,
+    "arrPerDollar": 0.0591
+  },
+  {
+    "campaign": "eu1-en-prm-workos-work_mgmt-comp_airtable-h-search-desktop-exp-aw",
+    "country": "EU1",
+    "signups": 1324,
+    "totalPredictedArr": 7579.7,
+    "avgPredictedArr": 842.19,
+    "stddevArr": 415.51,
+    "historicalSpend": 124232.32,
+    "arrPerDollar": 0.061
+  },
+  {
+    "campaign": "eu1-en-prm-workos-work_mgmt-comp_wrike-h-search-desktop-core-aw",
+    "country": "EU1",
+    "signups": 327,
+    "totalPredictedArr": 9390.29,
+    "avgPredictedArr": 2347.57,
+    "stddevArr": 2517.71,
+    "historicalSpend": 151286.79,
+    "arrPerDollar": 0.0621
+  },
+  {
+    "campaign": "gb-en-prm-service-search-service-h-desktop-core-aw",
+    "country": "GB",
+    "signups": 105,
+    "totalPredictedArr": 2080.03,
+    "avgPredictedArr": 2080.03,
+    "stddevArr": null,
+    "historicalSpend": 32068.92,
+    "arrPerDollar": 0.0649
+  },
+  {
+    "campaign": "eu1-en-prm-workos-dev-kanban-h-search-desktop-core-aw",
+    "country": "EU1",
+    "signups": 1760,
+    "totalPredictedArr": 5026.55,
+    "avgPredictedArr": 1005.31,
+    "stddevArr": 388.07,
+    "historicalSpend": 75007.34,
+    "arrPerDollar": 0.067
+  },
+  {
+    "campaign": "ww2-en-prm-workos-crm-crm_main-p-search-desktop-core-aw",
+    "country": "WW2",
+    "signups": 2313,
+    "totalPredictedArr": 6433.27,
+    "avgPredictedArr": 1072.21,
+    "stddevArr": 1014.48,
+    "historicalSpend": 94814.21,
+    "arrPerDollar": 0.0679
+  },
+  {
+    "campaign": "ww2-en-prm-crm-search-lead_management-h-desktop-core-aw",
+    "country": "WW2",
+    "signups": 524,
+    "totalPredictedArr": 2708.84,
+    "avgPredictedArr": 677.21,
+    "stddevArr": 364.59,
+    "historicalSpend": 39405.7,
+    "arrPerDollar": 0.0687
+  },
+  {
+    "campaign": "gb-en-prm-workos-work_mgmt-comp1-h-search-desktop-exp-aw",
+    "country": "GB",
+    "signups": 560,
+    "totalPredictedArr": 8062.82,
+    "avgPredictedArr": 671.9,
+    "stddevArr": 350.17,
+    "historicalSpend": 116656.75,
+    "arrPerDollar": 0.0691
+  },
+  {
+    "campaign": "au-en-prm-workos-work_mgmt-comp_wrike-h-search-desktop-core-aw",
+    "country": "AU",
+    "signups": 157,
+    "totalPredictedArr": 5147.67,
+    "avgPredictedArr": 1286.92,
+    "stddevArr": 769.16,
+    "historicalSpend": 74051.13,
+    "arrPerDollar": 0.0695
+  },
+  {
+    "campaign": "row-en-prm-workos-work_mgmt-comp_microsoft_teams-h-search-desktop-core-aw",
+    "country": "ROW",
+    "signups": 185,
+    "totalPredictedArr": 6501.41,
+    "avgPredictedArr": 1625.35,
+    "stddevArr": 979.56,
+    "historicalSpend": 93101.02,
+    "arrPerDollar": 0.0698
+  },
+  {
+    "campaign": "eu1-en-prm-workos-work_mgmt-comp_microsoft_teams-h-search-desktop-core-aw",
+    "country": "EU1",
+    "signups": 126,
+    "totalPredictedArr": 6755.35,
+    "avgPredictedArr": 1125.89,
+    "stddevArr": 570.7,
+    "historicalSpend": 93313.96,
+    "arrPerDollar": 0.0724
+  },
+  {
+    "campaign": "eu1-en-prm-workos-crm-comp_crm-h-search-desktop-exp-aw",
+    "country": "EU1",
+    "signups": 1014,
+    "totalPredictedArr": 7458.85,
+    "avgPredictedArr": 932.36,
+    "stddevArr": 667.22,
+    "historicalSpend": 99181.81,
+    "arrPerDollar": 0.0752
+  },
+  {
+    "campaign": "us-en-prm-crm-search-crm_remarketing-p-desktop-rmkt-aw",
+    "country": "US",
+    "signups": 92,
+    "totalPredictedArr": 6245.62,
+    "avgPredictedArr": 780.7,
+    "stddevArr": 297.34,
+    "historicalSpend": 82439.2,
+    "arrPerDollar": 0.0758
+  },
+  {
+    "campaign": "us-en-prm-workos-project-project_templates-h-search-desktop-core-aw",
+    "country": "US",
+    "signups": 195,
+    "totalPredictedArr": 31065.78,
+    "avgPredictedArr": 1071.23,
+    "stddevArr": 800.68,
+    "historicalSpend": 408098.57,
+    "arrPerDollar": 0.0761
+  },
+  {
+    "campaign": "ww-en-prm-workos-dev-comp_jira-h-search-desktop-exp-aw",
+    "country": "WW",
+    "signups": 1860,
+    "totalPredictedArr": 5814.31,
+    "avgPredictedArr": 1162.86,
+    "stddevArr": 831.75,
+    "historicalSpend": 76002.98,
+    "arrPerDollar": 0.0765
+  },
+  {
+    "campaign": "ca-en-prm-workos-dev-kanban-h-search-desktop-core-aw",
+    "country": "CA",
+    "signups": 790,
+    "totalPredictedArr": 5855.89,
+    "avgPredictedArr": 731.99,
+    "stddevArr": 408.45,
+    "historicalSpend": 75052.71,
+    "arrPerDollar": 0.078
+  },
+  {
+    "campaign": "row-en-prm-work_mgmt-search-management-h-desktop-core-aw",
+    "country": "ROW",
+    "signups": 3132,
+    "totalPredictedArr": 8231.47,
+    "avgPredictedArr": 748.32,
+    "stddevArr": 537.98,
+    "historicalSpend": 104526.16,
+    "arrPerDollar": 0.0788
+  },
+  {
+    "campaign": "eu1-en-prm-service-search-service-h-desktop-core-aw",
+    "country": "EU1",
+    "signups": 200,
+    "totalPredictedArr": 2797.45,
+    "avgPredictedArr": 1398.72,
+    "stddevArr": 533.22,
+    "historicalSpend": 35221.43,
+    "arrPerDollar": 0.0794
+  },
+  {
+    "campaign": "ww-en-prm-workos-crm-crm_main-p-search-desktop-core-aw",
+    "country": "WW",
+    "signups": 2778,
+    "totalPredictedArr": 11993.34,
+    "avgPredictedArr": 1090.3,
+    "stddevArr": 681.83,
+    "historicalSpend": 143408.64,
+    "arrPerDollar": 0.0836
+  },
+  {
+    "campaign": "au-en-prm-workos-dev-comp_jira-h-search-desktop-core-aw",
+    "country": "AU",
+    "signups": 254,
+    "totalPredictedArr": 9712.98,
+    "avgPredictedArr": 747.15,
+    "stddevArr": 749.63,
+    "historicalSpend": 110238.79,
+    "arrPerDollar": 0.0881
+  },
+  {
+    "campaign": "au-en-prm-workos-dev-product_management-h-search-desktop-core-aw",
+    "country": "AU",
+    "signups": 823,
+    "totalPredictedArr": 6580.14,
+    "avgPredictedArr": 658.01,
+    "stddevArr": 283.58,
+    "historicalSpend": 74277.5,
+    "arrPerDollar": 0.0886
+  },
+  {
+    "campaign": "us-en-prm-workos-work_mgmt-comp_smartsheet-h-search-desktop-core-aw",
+    "country": "US",
+    "signups": 951,
+    "totalPredictedArr": 89589.88,
+    "avgPredictedArr": 1006.63,
+    "stddevArr": 1083.71,
+    "historicalSpend": 1009326.69,
+    "arrPerDollar": 0.0888
+  },
+  {
+    "campaign": "eu1-en-prm-workos-crm-crm_free-h-search-desktop-exp-aw",
+    "country": "EU1",
+    "signups": 663,
+    "totalPredictedArr": 6075.25,
+    "avgPredictedArr": 607.52,
+    "stddevArr": 195.68,
+    "historicalSpend": 68399.01,
+    "arrPerDollar": 0.0888
+  },
+  {
+    "campaign": "ww-en-prm-workos-crm-crm_templates-h-search-desktop-core-aw",
+    "country": "WW",
+    "signups": 3231,
+    "totalPredictedArr": 8528.87,
+    "avgPredictedArr": 852.89,
+    "stddevArr": 743.13,
+    "historicalSpend": 95277.54,
+    "arrPerDollar": 0.0895
+  },
+  {
+    "campaign": "ca-en-prm-workos-project-projectgen-h-search-desktop-core-aw",
+    "country": "CA",
+    "signups": 463,
+    "totalPredictedArr": 14498.45,
+    "avgPredictedArr": 852.85,
+    "stddevArr": 627.29,
+    "historicalSpend": 161071.29,
+    "arrPerDollar": 0.09
+  },
+  {
+    "campaign": "ca-en-prm-workos-work_mgmt-comp_basecamp-h-search-desktop-core-aw",
+    "country": "CA",
+    "signups": 152,
+    "totalPredictedArr": 2872.58,
+    "avgPredictedArr": 1436.29,
+    "stddevArr": 1054.73,
+    "historicalSpend": 31767.57,
+    "arrPerDollar": 0.0904
+  },
+  {
+    "campaign": "row-en-prm-workos-project-project_tracking-h-search-desktop-core-aw",
+    "country": "ROW",
+    "signups": 1739,
+    "totalPredictedArr": 2883.85,
+    "avgPredictedArr": 576.77,
+    "stddevArr": 230.52,
+    "historicalSpend": 31390.31,
+    "arrPerDollar": 0.0919
+  },
+  {
+    "campaign": "ca-en-prm-workos-work_mgmt-comp_airtable-h-search-desktop-exp-aw",
+    "country": "CA",
+    "signups": 443,
+    "totalPredictedArr": 4855.43,
+    "avgPredictedArr": 809.24,
+    "stddevArr": 363.39,
+    "historicalSpend": 52200.49,
+    "arrPerDollar": 0.093
+  }
+]

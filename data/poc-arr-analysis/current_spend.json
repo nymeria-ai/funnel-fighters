@@ -1,0 +1,362 @@
+[
+  {
+    "campaign": "us-en-prm-workos-crm-crm_main-e-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 397132.147787,
+    "clicks30D": 9372
+  },
+  {
+    "campaign": "us-en-prm-workos-work_mgmt-task_management-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 239588.846449,
+    "clicks30D": 11028
+  },
+  {
+    "campaign": "us-en-prm-workos-work_mgmt-workflow-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 222087.285782,
+    "clicks30D": 15986
+  },
+  {
+    "campaign": "us-en-prm-workos-work_mgmt-comp_trello-e-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 203917.018896,
+    "clicks30D": 4548
+  },
+  {
+    "campaign": "us-en-prm-workos-work_mgmt-comp_asana-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 167259.171259,
+    "clicks30D": 4145
+  },
+  {
+    "campaign": "us-en-prm-workos-crm-comp_crm_hubspot-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 135117.905721,
+    "clicks30D": 3164
+  },
+  {
+    "campaign": "us-en-prm-workos-project-project_management-e-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 132682.161724,
+    "clicks30D": 3051
+  },
+  {
+    "campaign": "us-en-prm-workos-crm-crm_industries-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 119711.166624,
+    "clicks30D": 4805
+  },
+  {
+    "campaign": "us-en-prm-workos-crm-crm_lt-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 102573.203765,
+    "clicks30D": 3839
+  },
+  {
+    "campaign": "us-en-prm-work_mgmt-search-management-h-desktop-core-aw",
+    "country": "US",
+    "spend30D": 92898.402765,
+    "clicks30D": 5248
+  },
+  {
+    "campaign": "us-en-prm-workos-project-projectgen-e-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 83156.114284,
+    "clicks30D": 3434
+  },
+  {
+    "campaign": "us-en-prm-workos-work_mgmt-construction_management-h-search-desktop-exp-aw",
+    "country": "US",
+    "spend30D": 83151.811194,
+    "clicks30D": 4339
+  },
+  {
+    "campaign": "us-en-prm-workos-marketer-social_media-h-search-desktop-exp-aw",
+    "country": "US",
+    "spend30D": 82238.713475,
+    "clicks30D": 8280
+  },
+  {
+    "campaign": "us-en-prm-workos-work_mgmt-comp1-h-search-desktop-exp-aw",
+    "country": "US",
+    "spend30D": 79409.550258,
+    "clicks30D": 3712
+  },
+  {
+    "campaign": "us-en-prm-workos-work_mgmt-to_do_list-h-search-desktop-exp-aw",
+    "country": "US",
+    "spend30D": 78177.372884,
+    "clicks30D": 6420
+  },
+  {
+    "campaign": "us-en-prm-workos-project-project_templates-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 74028.966468,
+    "clicks30D": 9507
+  },
+  {
+    "campaign": "us-en-prm-workos-work_mgmt-gantt-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 71890.54838,
+    "clicks30D": 6209
+  },
+  {
+    "campaign": "gb-en-prm-workos-crm-crm_main-p-search-desktop-core-aw",
+    "country": "GB",
+    "spend30D": 65839.726959,
+    "clicks30D": 2179
+  },
+  {
+    "campaign": "us-en-prm-workos-work_mgmt-comp_clickup-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 65459.918828,
+    "clicks30D": 2968
+  },
+  {
+    "campaign": "us-en-prm-workos-project-project_management_free-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 62763.325766,
+    "clicks30D": 1543
+  },
+  {
+    "campaign": "us-en-prm-workos-work_mgmt-shared_calendar-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 58935.839327,
+    "clicks30D": 7575
+  },
+  {
+    "campaign": "au-en-prm-workos-crm-crm_main-h-search-desktop-core-aw",
+    "country": "AU",
+    "spend30D": 58750.081574,
+    "clicks30D": 1848
+  },
+  {
+    "campaign": "us-en-prm-workos-project-project_tracking-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 53805.100308,
+    "clicks30D": 1790
+  },
+  {
+    "campaign": "us-en-prm-workos-marketer-marketing_templates-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 53695.695012,
+    "clicks30D": 8434
+  },
+  {
+    "campaign": "au-en-prm-workos-work_mgmt-workflow-h-search-desktop-core-aw",
+    "country": "AU",
+    "spend30D": 51992.822784,
+    "clicks30D": 942
+  },
+  {
+    "campaign": "us-en-prm-workos-work_mgmt-brand_crm-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 48531.529678,
+    "clicks30D": 5449
+  },
+  {
+    "campaign": "us-en-prm-workos-crm-comp_crm_zoho-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 48098.239458,
+    "clicks30D": 2006
+  },
+  {
+    "campaign": "us-en-prm-workos-project-project_management_lt-e-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 47932.697969,
+    "clicks30D": 3825
+  },
+  {
+    "campaign": "us-en-prm-workos-work_mgmt-taskgen-e-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 47026.439829,
+    "clicks30D": 2294
+  },
+  {
+    "campaign": "us-en-prm-workos-crm-comp_crm-h-search-desktop-exp-aw",
+    "country": "US",
+    "spend30D": 44541.298142,
+    "clicks30D": 1274
+  },
+  {
+    "campaign": "us-en-prm-work_mgmt-search-agent_aicomp-h-desktop-core-aw",
+    "country": "US",
+    "spend30D": 42864.661403,
+    "clicks30D": 2233
+  },
+  {
+    "campaign": "gb-en-prm-workos-work_mgmt-comp_trello-h-search-desktop-core-aw",
+    "country": "GB",
+    "spend30D": 37349.071683,
+    "clicks30D": 1381
+  },
+  {
+    "campaign": "row-en-prm-workos-work_mgmt-comp1-h-search-desktop-exp-aw",
+    "country": "ROW",
+    "spend30D": 35202.74423,
+    "clicks30D": 5459
+  },
+  {
+    "campaign": "us-en-prm-workos-crm-lead_management-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 34392.367601,
+    "clicks30D": 1326
+  },
+  {
+    "campaign": "au-en-prm-workos-project-project_management-e-search-desktop-core-aw",
+    "country": "AU",
+    "spend30D": 33179.061799,
+    "clicks30D": 1931
+  },
+  {
+    "campaign": "us-en-prm-workos-work_mgmt-comp_smartsheet-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 33032.401152,
+    "clicks30D": 1109
+  },
+  {
+    "campaign": "us-en-prm-workos-crm-comp_crm_salesforce-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 31875.825453,
+    "clicks30D": 1017
+  },
+  {
+    "campaign": "us-en-prm-workos-work_mgmt-gantt_template-h-search-desktop-exp-aw",
+    "country": "US",
+    "spend30D": 29962.182248,
+    "clicks30D": 4955
+  },
+  {
+    "campaign": "us-en-prm-workos-work_mgmt-comp_microsoft_pm-h-search-desktop-exp-aw",
+    "country": "US",
+    "spend30D": 27483.499738,
+    "clicks30D": 651
+  },
+  {
+    "campaign": "us-en-prm-workos-marketer-agent_aimarketing-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 27381.599869,
+    "clicks30D": 1611
+  },
+  {
+    "campaign": "ww-en-prm-workos-work_mgmt-comp1-h-search-desktop-exp-aw",
+    "country": "WW",
+    "spend30D": 25180.124182,
+    "clicks30D": 5735
+  },
+  {
+    "campaign": "us-en-prm-workos-work_mgmt-comp_slack-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 24957.700147,
+    "clicks30D": 4451
+  },
+  {
+    "campaign": "us-en-prm-workos-work_mgmt-comp_comp2-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 24457.491652,
+    "clicks30D": 553
+  },
+  {
+    "campaign": "gb-en-prm-workos-work_mgmt-task_management-e-search-desktop-core-aw",
+    "country": "GB",
+    "spend30D": 22687.149079,
+    "clicks30D": 2289
+  },
+  {
+    "campaign": "row-en-prm-workos-crm-crm_main-h-search-desktop-core-aw",
+    "country": "ROW",
+    "spend30D": 22372.82426,
+    "clicks30D": 2205
+  },
+  {
+    "campaign": "ca-en-prm-workos-work_mgmt-all_categories-h-search-desktop-exp-aw",
+    "country": "CA",
+    "spend30D": 21413.379158,
+    "clicks30D": 2414
+  },
+  {
+    "campaign": "row-en-prm-workos-work_mgmt-comp_asana-h-search-desktop-core-aw",
+    "country": "ROW",
+    "spend30D": 20972.30939,
+    "clicks30D": 1829
+  },
+  {
+    "campaign": "us-en-prm-workos-crm-crm_free-h-search-desktop-exp-aw",
+    "country": "US",
+    "spend30D": 20474.002507,
+    "clicks30D": 395
+  },
+  {
+    "campaign": "row-en-prm-workos-crm-comp_crm_hubspot-h-search-desktop-core-aw",
+    "country": "ROW",
+    "spend30D": 20388.167314,
+    "clicks30D": 1510
+  },
+  {
+    "campaign": "row-en-prm-workos-work_mgmt-comp_clickup-h-search-desktop-core-aw",
+    "country": "ROW",
+    "spend30D": 19541.954282,
+    "clicks30D": 2750
+  },
+  {
+    "campaign": "us-en-prm-workos-crm-comp_crm_pipedrive-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 19028.423373,
+    "clicks30D": 317
+  },
+  {
+    "campaign": "row-en-prm-workos-crm-comp_crm_zoho-h-search-desktop-core-aw",
+    "country": "ROW",
+    "spend30D": 18863.729555,
+    "clicks30D": 2034
+  },
+  {
+    "campaign": "au-en-prm-workos-crm-crm_lt-h-search-desktop-core-aw",
+    "country": "AU",
+    "spend30D": 18576.014821,
+    "clicks30D": 1004
+  },
+  {
+    "campaign": "gb-en-prm-workos-work_mgmt-comp_asana-h-search-desktop-core-aw",
+    "country": "GB",
+    "spend30D": 18359.177604,
+    "clicks30D": 665
+  },
+  {
+    "campaign": "gb-en-prm-workos-work_mgmt-gantt-h-search-desktop-core-aw",
+    "country": "GB",
+    "spend30D": 18346.759735,
+    "clicks30D": 2815
+  },
+  {
+    "campaign": "gb-en-prm-workos-crm-crm_sales-h-search-desktop-core-aw",
+    "country": "GB",
+    "spend30D": 18120.289906,
+    "clicks30D": 610
+  },
+  {
+    "campaign": "us-en-prm-workos-monday_campaigns-email_marketing-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 17658.230256,
+    "clicks30D": 804
+  },
+  {
+    "campaign": "us-en-prm-workos-crm-crm_sales-h-search-desktop-core-aw",
+    "country": "US",
+    "spend30D": 17434.613087,
+    "clicks30D": 1066
+  },
+  {
+    "campaign": "gb-en-prm-workos-project-project_management-p-search-desktop-core-aw",
+    "country": "GB",
+    "spend30D": 17211.150761,
+    "clicks30D": 1301
+  },
+  {
+    "campaign": "ww-en-prm-workos-work_mgmt-comp_trello-h-search-desktop-exp-aw",
+    "country": "WW",
+    "spend30D": 16971.909856,
+    "clicks30D": 3353
+  }
+]
