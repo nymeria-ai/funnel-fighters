@@ -318,14 +318,24 @@ competitive_pressure = df_competitive[
 - gclid-to-keyword attribution with DEP_7 flag
 - User-level journey data for deep dives
 
+**Ahrefs (Organic/Paid Overlap Analysis):**
+- Organic keyword rankings for monday.com UK: identify keywords where we rank #1-3 organically
+- Paid/organic overlap detection: flag keywords where we're paying CPC but already dominate organically
+- Incremental lift analysis: for overlap keywords, test pausing paid to measure if organic absorbs the traffic
+- Competitor keyword gaps: keywords competitors bid on that we don't (new opportunities)
+- Access: Ahrefs API via MCP (subscription: Advanced 2022, 500K units/month)
+- **Key value:** Stop wasting budget on keywords organic already owns; redirect spend to keywords where paid is the only path
+
 **Analysis Scripts:**
 - Python pandas for merge and aggregation
 - Statistical correlation tests (Pearson r for QS × DEP)
+- Ahrefs organic position data merged with Google Ads keyword report
 - Automated weekly report generation
 
 **Dashboard:**
 - Tableau/Looker visualization of QS × DEP scatter plots
 - Keyword performance heatmap (QS on X-axis, DEP on Y-axis, bubble size = spend)
+- Organic/paid overlap view: keywords where both channels are active (potential waste)
 
 ## Success Criteria
 - **QS improvement:** Increase % of spend on QS ≥7 keywords from 70% → 85%

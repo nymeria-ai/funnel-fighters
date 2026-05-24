@@ -364,16 +364,27 @@ def evaluate_lp_variant(variant_name, control_metrics):
 - dataLayer events pushed to BigBrain on signup
 
 **BigBrain Attribution:**
-- UTM parameters stored with user_id on signup
-- 7-day post-signup DEP calculation joined back to LP variant
+- UTM parameters stored with user_id on signup (confirmed columns: SOURCE, MEDIUM, CONTENT, CAMPAIGN, LANDING_PAGE, LANDING_PAGE_PRODUCT)
+- Table: `BIGBRAIN.L3.FACT_CAMPAIGN_MONITORING_DWH` (type = 'attribution')
+- 7-day post-signup DEP calculation joined back to LP variant via CONTENT + LANDING_PAGE
+
+**GA4 (Behavioral Diagnostic Layer):**
+- On-page engagement per LP variant: scroll depth, time on page, bounce rate
+- Form interaction events: field focus, abandonment point, completion rate
+- Session quality signals: pages/session, engagement rate by traffic source
+- Post-signup onboarding flow: first-session feature adoption (if tracked)
+- **Join path:** GA4 session data linked via UTM parameters (source/medium/campaign/content) to BigBrain attribution
+- **Key insight:** BigBrain tells us WHICH LP wins on DEP; GA4 explains WHY (behavioral diagnostics)
 
 **Analytics:**
 - Python/SQL for LP variant → DEP correlation analysis
+- GA4 Data API for behavioral metrics extraction
 - Statistical significance testing (t-tests, chi-square)
 - Semantic similarity scoring for message match (sentence transformers)
 
 **Dashboard:**
 - Real-time LP variant performance (signup volume, conversion rate)
+- GA4 behavioral overlay: scroll depth, bounce rate, time on page per variant
 - 7-day lagged DEP metrics overlay
 - Message match heatmap by campaign
 

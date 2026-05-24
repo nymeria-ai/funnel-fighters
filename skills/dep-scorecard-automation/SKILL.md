@@ -180,6 +180,13 @@ When anomalies are detected, automatically generate hypotheses:
 **Meta API:**
 - Spend and conversion data (in-platform attribution only)
 
+**GA4 (Early Warning Signals):**
+- On-site engagement metrics as leading indicators (available same-day, no 7-day DEP lag)
+- Session quality by campaign: bounce rate, engagement rate, avg session duration
+- If GA4 session quality drops for a campaign, flag it as a DEP risk 7 days before BigBrain confirms
+- Join path: UTM parameters (source/medium/campaign) → GA4 session metrics
+- **Key value:** Reduces effective detection lag from 8 days (7-day cohort + 1 day processing) to ~1 day for leading indicators
+
 **Automation:**
 - Scheduled daily BigBrain query at 8:00 AM GMT (after 7-day cohort completes)
 - Anomaly detection script runs immediately after data pull

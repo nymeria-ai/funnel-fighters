@@ -286,10 +286,18 @@ format_performance['cpa_vs_avg'] = (format_performance['cpa'] / format_performan
 - Video engagement breakdowns (3s, 10s, p25, p50, p75, p100)
 - Creative asset metadata (format, length, UTM parameters)
 
+**GA4 (Post-Click Quality Layer):**
+- Session quality by creative: bounce rate, time on site, pages/session per ad_id
+- Join path: UTM parameters (utm_content = creative variant ID) → GA4 session data
+- Post-click engagement scoring: ads that drive high CTR but high bounce = false positive
+- Feature adoption signals: which creatives drive signups that activate key features in first session
+- **Key value:** Separates "good clickers" from "good users" — a creative with 2% CTR and 60s avg session > 4% CTR with 10s avg session
+
 **Automation:**
 - Weekly creative health scan (every Monday 8:00 AM GMT)
 - Automated fatigue alerts posted to Slack when fatigue_score ≥4
 - Creative performance dashboard updated daily
+- GA4 post-click quality report layered on top of Meta in-platform metrics
 
 **Creative Library Management:**
 - Tag creatives by theme, format, hook type, value prop angle
