@@ -11,6 +11,28 @@ Data-driven weekly budget reallocation system that identifies opportunities to s
 - **Plateau detection:** Campaign hitting diminishing returns → shift budget elsewhere
 - **New campaign launches:** Determine initial budget split when launching new campaigns
 
+## BigBrain Schema Reference
+
+> **Full schema docs:** `skills/kremer-analyst/references/data-cookbook-campaign-monitoring.md`
+>
+> **Spend data:** `type = 'adn_data'` in `BIGBRAIN.L3.FACT_CAMPAIGN_MONITORING_DWH`
+> - Filter: `BUSINESS_GOAL_DTR = 'performance_marketing'`
+> - Key columns: `COST`, `CAMPAIGN`, `SOURCE`, `COUNTRY`, `CREATED_AT`
+> - `PRODUCT_DTR` for per-product budget pool segmentation
+>
+> **DEP data:** `type = 'attribution'` in same table
+> - `PREDICTED_FIRST_ARR_7_DAYS_LOCK`, `PREDICTED_FIRST_ARR_NO_USAGE_DEP`
+> - `COUNT(DISTINCT pulse_account_id)` for signup counts
+>
+> **⚠️ GOTCHAS:**
+> - Spend (adn_data) and attribution are DIFFERENT rows with DIFFERENT `type` values — don't mix
+> - adn_data has spend, attribution has DEP — JOIN on campaign + date + country
+> - adn_data spend ($3.88M) vs spend_by_country ($4.02M) measure SAME spend differently — NOT additive. Use adn_data only.
+> - `type` values are LOWERCASE
+> - `IS_INTERNAL_ACCOUNT_ID = FALSE` on attribution side
+> - ETL full replace 4x/day — numbers can shift retroactively
+> - Not all SLG spend is in this table; PLG spend IS complete
+
 ## Core Methodology
 
 ### 1. Diminishing Returns Detection

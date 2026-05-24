@@ -26,11 +26,28 @@ Automated daily monitoring and analysis of Deep Engagement Percentage (DEP_7) me
 - Cost / SUM(predicted_arr) is the true efficiency metric, not just CPA
 
 ### 2. Data Sources & Inputs
-**BigBrain Attribution Data:**
+
+> **Schema Reference:** `skills/kremer-analyst/references/data-cookbook-campaign-monitoring.md`
+> Read this before writing queries. Key gotchas below.
+
+**BigBrain Attribution Data (`BIGBRAIN.L3.FACT_CAMPAIGN_MONITORING_DWH`):**
 - DEP_7 by cohort (daily signup cohorts tracked for 7 days)
 - no_usage_DEP by cohort
 - Signup timestamp, campaign attribution, country
 - User journey signals: first value action, feature adoption depth
+
+**⚠️ CRITICAL COOKBOOK GOTCHAS (inline — do not skip):**
+- `type` values are LOWERCASE: `'attribution'` not `'Attribution'`
+- Always use `COUNT(DISTINCT pulse_account_id)` — never `COUNT(1)` (VISITORS + ATTRIBUTION overlap = double-counting)
+- Leading timestamp: `CREATED_AT` (not SIGNUP_DATE for spend queries)
+- Filter `IS_INTERNAL_ACCOUNT_ID = FALSE` always
+- Filter `BUSINESS_GOAL_DTR = 'performance_marketing'` for spend (adn_data)
+- ETL runs 4x/day full replace — attribution can change retroactively
+- `PRODUCT_DTR` = product the campaign TARGETS (not what user installed)
+- `COUNTRY` combines TP_COUNTRY_DTR + TARGET_COUNTRY_DTR logic
+- For spend: use `type = 'adn_data'` not attribution
+- For signups: use `type = 'attribution'`
+- QE (Qualified Entities) available via `IS_QUALIFIED_SIGNUP` column — use for quality filtering
 
 **Paid Media Cost Data:**
 - Google Ads: Campaign spend by day/country (from Google Ads API via BigBrain attribution)

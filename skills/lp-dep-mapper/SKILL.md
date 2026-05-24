@@ -11,6 +11,26 @@ Landing page variant performance tracking system that connects UTM-tagged traffi
 - **Conversion vs. quality trade-offs:** Decide if a high-converting LP variant is actually worth it (DEP lens)
 - **Personalization decisions:** Test if dynamic LP content based on UTM params improves DEP
 
+## BigBrain Schema Reference
+
+> **Full schema docs:** `skills/kremer-analyst/references/data-cookbook-campaign-monitoring.md`
+>
+> **Key columns for LP mapping in `BIGBRAIN.L3.FACT_CAMPAIGN_MONITORING_DWH`:**
+> - `LANDING_PAGE` — the actual LP URL visited (direct mapping!)
+> - `LANDING_PAGE_PRODUCT` — product associated with that LP
+> - `CONTENT` — utm_content value (use for variant tagging)
+> - `SOURCE`, `MEDIUM`, `CAMPAIGN` — full UTM decomposition
+> - `PREDICTED_FIRST_ARR_7_DAYS_LOCK` — DEP_7 metric
+> - `PREDICTED_FIRST_ARR_NO_USAGE_DEP` — no-usage DEP metric
+> - `PRODUCT_DTR` — campaign's target product
+>
+> **⚠️ GOTCHAS:**
+> - `type = 'attribution'` (lowercase!) for signup-level data
+> - Always `COUNT(DISTINCT pulse_account_id)` — never COUNT(1)
+> - `IS_INTERNAL_ACCOUNT_ID = FALSE` filter mandatory
+> - `LANDING_PAGE` gives us LP→DEP correlation WITHOUT needing a UTM bridge — it's already there!
+> - ETL runs 4x/day full replace — attribution can shift retroactively
+
 ## Core Methodology
 
 ### 1. UTM → LP Variant Mapping Architecture

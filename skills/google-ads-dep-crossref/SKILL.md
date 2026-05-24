@@ -60,21 +60,36 @@ WHERE segments.date DURING LAST_30_DAYS
 ```
 
 **Step 2: Pull BigBrain Attributed Signups by Keyword**
+
+> **Schema Reference:** `skills/kremer-analyst/references/data-cookbook-campaign-monitoring.md`
+> **⚠️ COOKBOOK GOTCHAS (inline):**
+> - `type` values LOWERCASE: `'attribution'` not `'Attribution'`
+> - Use `COUNT(DISTINCT pulse_account_id)` — never COUNT(1)
+> - `KEYWORD` column exists in FACT_CAMPAIGN_MONITORING_DWH for join
+> - `CONTENT` = utm_content, `SOURCE` = utm_source
+> - Campaign metadata: `CAMPAIGN`, `AD_GROUP`, `BANNER`, `KEYWORD`, `MARKETING_ID`
+> - Filter: `IS_INTERNAL_ACCOUNT_ID = FALSE`, `BUSINESS_GOAL_DTR = 'performance_marketing'`
+> - `PRODUCT_DTR` = product campaign targets (use for per-product splits)
+> - Leading timestamp: `CREATED_AT`
+
 ```sql
--- BigBrain query to get keyword-level DEP data
+-- BigBrain query: keyword-level DEP from FACT_CAMPAIGN_MONITORING_DWH
 SELECT 
-  gclid,
-  keyword_id,
-  keyword_text,
-  signup_timestamp,
-  dep_7,
-  no_usage,
-  first_value_timestamp,
-  retention_30d
-FROM bigbrain.attributed_signups_uk
-WHERE signup_date >= CURRENT_DATE - 37  -- 30 days of signups + 7 days for DEP_7 measurement
-  AND traffic_source = 'google_search'
-  AND country = 'GB'
+  KEYWORD,
+  AD_GROUP,
+  CAMPAIGN,
+  COUNT(DISTINCT PULSE_ACCOUNT_ID) as signups,
+  SUM(PREDICTED_FIRST_ARR_7_DAYS_LOCK) as total_dep7_arr,
+  SUM(PREDICTED_FIRST_ARR_NO_USAGE_DEP) as total_no_usage_dep_arr,
+  PRODUCT_DTR
+FROM BIGBRAIN.L3.FACT_CAMPAIGN_MONITORING_DWH
+WHERE TYPE = 'attribution'
+  AND COUNTRY IN ('UK', 'United Kingdom', 'GB')
+  AND SOURCE = 'adwordssearch'
+  AND CREATED_AT >= DATEADD('day', -37, CURRENT_DATE())
+  AND IS_INTERNAL_ACCOUNT_ID = FALSE
+  AND BUSINESS_GOAL_DTR = 'performance_marketing'
+GROUP BY KEYWORD, AD_GROUP, CAMPAIGN, PRODUCT_DTR
 ```
 
 **Step 3: Merge Datasets**
