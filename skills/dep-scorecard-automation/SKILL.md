@@ -1,0 +1,214 @@
+# DEP Scorecard Automation
+
+## Purpose
+Automated daily monitoring and analysis of Deep Engagement Percentage (DEP_7) metrics from BigBrain, cross-referenced with paid media cost data to identify performance anomalies, cost efficiency trends, and signup quality signals by campaign and country. Use when you need to track the health of user acquisition quality, detect performance degradation early, or report on cost-per-DEP trends across the UK POC funnel.
+
+## When to Use
+- **Daily monitoring:** Automated check of DEP_7 health by campaign/country
+- **Anomaly detection:** Sudden drops in DEP or spikes in cost/DEP ratio
+- **Reporting:** Weekly/monthly scorecards for stakeholders on signup quality
+- **Optimization triggers:** Identifying campaigns that are acquiring low-quality signups (high no_usage_DEP)
+- **Budget reallocation signals:** Campaigns with rising cost/DEP deserve attention
+
+## Core Methodology
+
+### 1. DEP Metric Framework
+**DEP (Deep Engagement Percentage)** measures the proportion of signups who achieve meaningful engagement with the monday.com product. In the UK POC context:
+
+- **DEP_7**: Percentage of signups who demonstrate deep engagement within 7 days of signup
+- **no_usage_DEP**: Percentage of signups who never used the product (inverse quality metric)
+- **Target benchmark**: Healthy DEP_7 typically ranges from 35-60% for SaaS products (varies by vertical)
+- **Quality signal**: DEP_7 correlates strongly with 30-day retention and trial-to-paid conversion
+
+**Why DEP matters more than raw signup volume:**
+- A campaign with 100 signups at 45% DEP_7 delivers more value than 200 signups at 20% DEP_7
+- DEP is a leading indicator of retention — users who hit deep engagement early rarely churn
+- Cost/DEP is the true efficiency metric, not just CPA
+
+### 2. Data Sources & Inputs
+**BigBrain Attribution Data:**
+- DEP_7 by cohort (daily signup cohorts tracked for 7 days)
+- no_usage_DEP by cohort
+- Signup timestamp, campaign attribution, country
+- User journey signals: first value action, feature adoption depth
+
+**Paid Media Cost Data:**
+- Google Ads: Campaign spend by day/country (from Google Ads API via BigBrain attribution)
+- Meta: In-platform spend data (view-through not measured, direct attribution only)
+- YouTube: In-platform spend data (view-through not measurable)
+
+**UK POC Constraint:** 
+- Google Search uses BigBrain attributed data + in-platform signals
+- Meta & YouTube are in-platform only (no view-through tracking)
+- All optimizations stay within product-level budgets (no cross-product reallocation)
+
+### 3. Daily Scorecard Workflow
+**Step 1: Pull DEP_7 Data (7-day lag required)**
+```sql
+-- Example BigBrain query pattern (pseudocode)
+SELECT 
+  signup_date,
+  campaign_id,
+  country,
+  COUNT(DISTINCT user_id) as signups,
+  SUM(CASE WHEN dep_7 = 1 THEN 1 ELSE 0 END) as deep_engaged_users,
+  (SUM(CASE WHEN dep_7 = 1 THEN 1 ELSE 0 END) / COUNT(DISTINCT user_id)) * 100 as dep_7_pct,
+  (SUM(CASE WHEN no_usage = 1 THEN 1 ELSE 0 END) / COUNT(DISTINCT user_id)) * 100 as no_usage_pct
+FROM bigbrain.user_signups_attributed
+WHERE signup_date = CURRENT_DATE - 7  -- 7-day lookback for DEP_7 measurement
+  AND country = 'GB'
+  AND product_budget_pool IN ('work_management', 'crm', 'dev')
+GROUP BY signup_date, campaign_id, country
+```
+
+**Step 2: Merge with Paid Media Spend**
+```python
+# Pseudocode: Join DEP data with cost data
+df_dep = pull_bigbrain_dep_data(date=today - 7)
+df_cost = pull_google_ads_spend(date=today - 7) + pull_meta_spend(date=today - 7)
+
+df_scorecard = df_dep.merge(df_cost, on=['campaign_id', 'date', 'country'])
+df_scorecard['cost_per_dep'] = df_scorecard['spend'] / df_scorecard['deep_engaged_users']
+df_scorecard['cost_per_signup'] = df_scorecard['spend'] / df_scorecard['signups']
+df_scorecard['dep_efficiency_ratio'] = df_scorecard['cost_per_dep'] / df_scorecard['cost_per_signup']
+```
+
+**Step 3: Anomaly Detection Rules**
+Flag campaigns that meet any of these conditions:
+
+| Condition | Threshold | Severity | Action |
+|-----------|-----------|----------|--------|
+| DEP_7 drop week-over-week | > -15% | 🔴 High | Immediate review |
+| Cost/DEP increase | > +25% week-over-week | 🟠 Medium | Budget review |
+| no_usage_DEP spike | > 30% absolute | 🔴 High | Pause & investigate |
+| DEP_7 below baseline | < 25% for 3+ consecutive days | 🟠 Medium | Creative/landing page audit |
+| Cost/DEP above product avg | > 1.5x product pool average | 🟡 Low | Optimization opportunity |
+
+**Step 4: Anomaly Explanation Hypotheses**
+When anomalies are detected, automatically generate hypotheses:
+
+**If DEP_7 drops:**
+- Landing page change detection (check UTM → LP mapping)
+- Targeting expansion (broad match queries, new audience segments)
+- Creative fatigue (check ad frequency, CTR decay)
+- External factors (holiday, competitor action, news event)
+
+**If cost/DEP spikes:**
+- Rising CPCs without quality improvement (auction pressure)
+- Audience oversaturation (frequency too high on retargeting)
+- Budget increase without corresponding quality gains
+
+**If no_usage_DEP spikes:**
+- Misleading ad copy (value prop mismatch)
+- Broken onboarding flow
+- Poor traffic source (bot traffic, incentivized clicks)
+
+### 4. Output Format
+**Daily Automated Report (Slack/Email):**
+```markdown
+## UK POC DEP Scorecard — [Date]
+**Cohort:** Signups from [Date - 7 days] (7-day lookback complete)
+
+### 🟢 Healthy Campaigns
+| Campaign | Country | Signups | DEP_7% | Cost/DEP | vs. Product Avg |
+|----------|---------|---------|--------|----------|-----------------|
+| Campaign A | GB | 120 | 48% | £12.50 | -15% ✅ |
+
+### 🔴 Anomalies Detected
+**Campaign B — Work Management — GB**
+- DEP_7 dropped from 42% → 29% (-31% WoW) 🔴
+- Cost/DEP increased £11 → £18 (+64%) 🔴
+- Hypothesis: Landing page change on May 20 + broad match expansion
+- Action: Revert LP, tighten match types, review search term report
+
+### 📊 Product Pool Benchmarks (7-day rolling avg)
+- Work Management: DEP_7 38%, Cost/DEP £14.20
+- CRM: DEP_7 35%, Cost/DEP £16.80
+- Dev: DEP_7 41%, Cost/DEP £13.10
+
+### 💡 Recommendations
+1. **Shift £500/day from Campaign C → Campaign A** (higher DEP efficiency)
+2. **Pause Campaign D until creative refresh** (3-day DEP below 20%)
+```
+
+**Weekly Executive Summary:**
+- DEP_7 trend chart (campaign-level, 4-week view)
+- Cost/DEP distribution histogram (identify outliers)
+- Product pool health scores
+- Top 3 optimization opportunities with projected impact
+
+## Key Metrics & KPIs
+- **DEP_7%**: Primary quality metric (target: maintain product baseline ± 5%)
+- **Cost per DEP**: Efficiency metric (target: <20% variance from product pool avg)
+- **no_usage_DEP%**: Inverse quality signal (target: <15% of signups)
+- **Week-over-week DEP stability**: Variance metric (target: <10% weekly swing)
+- **Anomaly response time**: Speed to detection → action (target: <24 hours)
+
+## Decision Framework
+**When DEP_7 is strong (>40%) but cost/DEP is high:**
+- Negotiate: Worth paying premium for quality if LTV supports it
+- Scale cautiously: Monitor retention before aggressive scaling
+
+**When DEP_7 is weak (<30%) regardless of cost:**
+- Red flag: Something is broken in acquisition or onboarding
+- Immediate action: Audit creative → landing page → onboarding flow
+- Do not scale until DEP recovers
+
+**When cost/DEP spikes but DEP_7 stable:**
+- Auction pressure: Competitor activity or market shift
+- Test: Shift budget to alternative channels temporarily
+
+**When no_usage_DEP spikes:**
+- Traffic quality issue: Check for fraud, bot traffic, or poor targeting
+- Message mismatch: Ad promise vs. product reality gap
+
+## Constraints (UK POC Specific)
+- **Product-level budgets only:** No cross-product reallocation without approval
+- **Google Search:** BigBrain attribution + in-platform signals available
+- **Meta & YouTube:** In-platform data only, view-through conversions unmeasurable
+- **7-day reporting lag:** DEP_7 data not actionable until 7 days post-signup
+- **Attribution window:** Standard 7-day click, 1-day view (where measurable)
+
+## Tooling & Automation
+**BigBrain API/SQL:**
+- Daily pull of DEP_7 cohort data with campaign attribution
+- User-level event stream for hypothesis validation
+
+**Google Ads API:**
+- Campaign spend by day/geo via BigBrain integration
+- In-platform quality signals (Quality Score, IS, CTR)
+
+**Meta API:**
+- Spend and conversion data (in-platform attribution only)
+
+**Automation:**
+- Scheduled daily BigBrain query at 8:00 AM GMT (after 7-day cohort completes)
+- Anomaly detection script runs immediately after data pull
+- Slack alert posted to #funnel-fighters-uk channel with flagged campaigns
+- Weekly summary emailed to stakeholders every Monday 9:00 AM
+
+**Monitoring Dashboard:**
+- Real-time DEP_7 heatmap by campaign/country
+- Cost/DEP trend lines with product pool benchmarks
+- Anomaly alert log with resolution status tracking
+
+## Success Criteria
+- **Early detection:** Flag DEP degradation within 1 day of 7-day cohort completing (8-day total lag)
+- **False positive rate:** <10% of alerts are noise (maintain signal quality)
+- **Action rate:** 80%+ of flagged anomalies result in optimization action within 48 hours
+- **DEP stability:** Reduce week-over-week DEP variance by 30% through proactive monitoring
+- **Cost efficiency:** Identify 3-5 cost/DEP optimization opportunities per week
+
+## Related Skills
+- **Google Ads API × DEP:** Keyword-level quality scoring for deeper diagnosis
+- **LP → DEP Mapper:** Landing page variant performance tracking
+- **Budget Allocation Recommender:** Use DEP efficiency as primary reallocation signal
+
+---
+
+**Inspired by:** Product Manager agent (outcome-focused metrics) + Paid Media Auditor (systematic checkpoints)
+
+**Research additions:**
+- DEP metric framework from SaaS product analytics best practices (activation, retention correlation)
+- Anomaly detection thresholds based on statistical control charts (2-sigma rules)
+- Behavioral nudge principles: DEP as a leading indicator of habit formation
