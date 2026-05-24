@@ -13,17 +13,17 @@ Automated daily monitoring and analysis of Deep Engagement Percentage (DEP_7) me
 ## Core Methodology
 
 ### 1. DEP Metric Framework
-**DEP (Deep Engagement Percentage)** measures the proportion of signups who achieve meaningful engagement with the monday.com product. In the UK POC context:
+**DEP metrics** are predicted ARR (Annual Recurring Revenue) values from BigBrain's ML models — NOT percentages. They predict the revenue potential of signups based on engagement signals.
 
-- **DEP_7**: Percentage of signups who demonstrate deep engagement within 7 days of signup
-- **no_usage_DEP**: Percentage of signups who never used the product (inverse quality metric)
-- **Target benchmark**: Healthy DEP_7 typically ranges from 35-60% for SaaS products (varies by vertical)
-- **Quality signal**: DEP_7 correlates strongly with 30-day retention and trial-to-paid conversion
+- **DEP_7 (PREDICTED_FIRST_ARR_7_DAYS_LOCK)**: Predicted first-year ARR based on engagement within 7 days of signup (dollar value)
+- **no_usage_DEP (PREDICTED_FIRST_ARR_NO_USAGE_DEP)**: Predicted first-year ARR for zero-usage signups (dollar value, quality baseline)
+- **Source table**: `BIGBRAIN.L3.FACT_CAMPAIGN_MONITORING_DWH` (type = 'attribution')
+- **Granularity**: Daily, by campaign and country
 
-**Why DEP matters more than raw signup volume:**
-- A campaign with 100 signups at 45% DEP_7 delivers more value than 200 signups at 20% DEP_7
-- DEP is a leading indicator of retention — users who hit deep engagement early rarely churn
-- Cost/DEP is the true efficiency metric, not just CPA
+**Why predicted ARR matters more than raw signup volume:**
+- A campaign with 100 signups and $5K total predicted ARR delivers more value than 200 signups with $3K predicted ARR
+- DEP_7 is a leading indicator of retention — higher predicted ARR correlates with trial-to-paid conversion
+- Cost / SUM(predicted_arr) is the true efficiency metric, not just CPA
 
 ### 2. Data Sources & Inputs
 **BigBrain Attribution Data:**
@@ -43,34 +43,33 @@ Automated daily monitoring and analysis of Deep Engagement Percentage (DEP_7) me
 - All optimizations stay within product-level budgets (no cross-product reallocation)
 
 ### 3. Daily Scorecard Workflow
-**Step 1: Pull DEP_7 Data (7-day lag required)**
+**Step 1: Pull DEP Predicted ARR Data (daily from FACT_CAMPAIGN_MONITORING_DWH)**
 ```sql
--- Example BigBrain query pattern (pseudocode)
+-- BigBrain query: predicted ARR by campaign/country
 SELECT 
-  signup_date,
-  campaign_id,
-  country,
-  COUNT(DISTINCT user_id) as signups,
-  SUM(CASE WHEN dep_7 = 1 THEN 1 ELSE 0 END) as deep_engaged_users,
-  (SUM(CASE WHEN dep_7 = 1 THEN 1 ELSE 0 END) / COUNT(DISTINCT user_id)) * 100 as dep_7_pct,
-  (SUM(CASE WHEN no_usage = 1 THEN 1 ELSE 0 END) / COUNT(DISTINCT user_id)) * 100 as no_usage_pct
-FROM bigbrain.user_signups_attributed
-WHERE signup_date = CURRENT_DATE - 7  -- 7-day lookback for DEP_7 measurement
-  AND country = 'GB'
-  AND product_budget_pool IN ('work_management', 'crm', 'dev')
-GROUP BY signup_date, campaign_id, country
+  DATE,
+  CAMPAIGN_ID,
+  COUNTRY,
+  SUM(PREDICTED_FIRST_ARR_7_DAYS_LOCK) as total_dep7_arr,
+  SUM(PREDICTED_FIRST_ARR_NO_USAGE_DEP) as total_no_usage_dep_arr,
+  SUM(PREDICTED_FIRST_ARR_STD_NO_USAGE_DEP) as total_no_usage_dep_std
+FROM BIGBRAIN.L3.FACT_CAMPAIGN_MONITORING_DWH
+WHERE TYPE = 'attribution'
+  AND COUNTRY = 'GB'
+  AND DATE = CURRENT_DATE - 1
+GROUP BY DATE, CAMPAIGN_ID, COUNTRY
 ```
 
 **Step 2: Merge with Paid Media Spend**
 ```python
-# Pseudocode: Join DEP data with cost data
-df_dep = pull_bigbrain_dep_data(date=today - 7)
-df_cost = pull_google_ads_spend(date=today - 7) + pull_meta_spend(date=today - 7)
+# Pseudocode: Join predicted ARR data with cost data
+df_dep = pull_bigbrain_dep_data(date=yesterday)
+df_cost = pull_google_ads_spend(date=yesterday) + pull_meta_spend(date=yesterday)
 
 df_scorecard = df_dep.merge(df_cost, on=['campaign_id', 'date', 'country'])
-df_scorecard['cost_per_dep'] = df_scorecard['spend'] / df_scorecard['deep_engaged_users']
-df_scorecard['cost_per_signup'] = df_scorecard['spend'] / df_scorecard['signups']
-df_scorecard['dep_efficiency_ratio'] = df_scorecard['cost_per_dep'] / df_scorecard['cost_per_signup']
+df_scorecard['cost_per_predicted_arr'] = df_scorecard['spend'] / df_scorecard['total_dep7_arr']
+df_scorecard['arr_efficiency'] = df_scorecard['total_dep7_arr'] / df_scorecard['spend']  # >1 = profitable
+df_scorecard['no_usage_ratio'] = df_scorecard['total_no_usage_dep_arr'] / df_scorecard['total_dep7_arr']
 ```
 
 **Step 3: Anomaly Detection Rules**
