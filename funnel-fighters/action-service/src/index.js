@@ -42,9 +42,10 @@ if (!DATABASE_URL) {
 
 // ─── Initialize ───────────────────────────────────────────
 const vault = new TokenVault(VAULT_PASSPHRASE);
+const READ_ONLY = process.env.READ_ONLY_MODE === 'true'; // Default: writes enabled
 const executor = new ActionExecutor(vault, {
   auditEnabled: true,
-  readOnlyMode: true // Phase 1: read-only. Set false for Phase 2.
+  readOnlyMode: READ_ONLY
 });
 
 initAudit(DATABASE_URL);
@@ -208,7 +209,7 @@ async function start() {
   
   serve({ fetch: app.fetch, port: PORT }, () => {
     console.log(`\n🐺 Action Service running on http://localhost:${PORT}`);
-    console.log(`   Phase: 1 (read-only — write actions blocked)`);
+    console.log(`   Phase: ${READ_ONLY ? '1 (read-only)' : '2 (read + write enabled)'}`);
     console.log(`   Tokens loaded: ${vault.list().length}`);
     console.log(`   Audit: writing to Neon DB`);
     console.log(`   Admin key: ${ADMIN_KEY ? 'required' : 'not set (open)'}\n`);
