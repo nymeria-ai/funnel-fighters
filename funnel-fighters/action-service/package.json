@@ -1,0 +1,17 @@
+{
+  "name": "@funnel-fighters/action-service",
+  "version": "1.0.0",
+  "description": "Local action service with audit enforcement — agents send intent, service executes with its own credentials",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "setup": "node src/setup-tokens.js"
+  },
+  "dependencies": {
+    "hono": "^4.0.0",
+    "@hono/node-server": "^1.0.0",
+    "@neondatabase/serverless": "^0.9.0"
+  }
+}
