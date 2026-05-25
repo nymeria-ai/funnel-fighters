@@ -104,16 +104,29 @@ export class ActionExecutor {
         await completeAudit(auditEntry.run_id, result);
       }
       
+      // Build audit message for notification
+      const auditMsg = `✅ *${requester}* → ${action} on ${platform}` +
+        (trail?.reasoning ? `\n_${trail.reasoning}_` : '') +
+        (scope?.campaign_id ? `\nCampaign: ${scope.campaign_id}` : '') +
+        `\nRun: ${auditEntry?.run_id || 'n/a'}`;
+
       return {
         success: true,
         run_id: auditEntry?.run_id,
-        result
+        result,
+        audit: { run_id: auditEntry?.run_id, message: auditMsg }
       };
     } catch (error) {
       // Update audit on failure
       if (auditEntry) {
         await failAudit(auditEntry.run_id, error.message);
       }
+      
+      const failMsg = `❌ *${requester}* → ${action} on ${platform} FAILED` +
+        `\n${error.message}` +
+        `\nRun: ${auditEntry?.run_id || 'n/a'}`;
+
+      error.auditMessage = failMsg;
       throw error;
     }
   }
