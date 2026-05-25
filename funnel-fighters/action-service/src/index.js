@@ -52,14 +52,14 @@ initAudit(DATABASE_URL);
 // ─── Middleware ────────────────────────────────────────────
 
 /** Admin auth check for token management */
-function requireAdmin(c, next) {
+async function requireAdmin(c, next) {
   if (ADMIN_KEY) {
     const auth = c.req.header('X-Admin-Key');
     if (auth !== ADMIN_KEY) {
       return c.json({ error: 'Unauthorized — admin key required' }, 401);
     }
   }
-  return next();
+  await next();
 }
 
 // ─── Routes ───────────────────────────────────────────────
@@ -134,7 +134,8 @@ app.post('/execute', async (c) => {
  *   metadata: { scope, notes, ... }
  * }
  */
-app.post('/token/store', requireAdmin, async (c) => {
+app.use('/token/store', requireAdmin);
+app.post('/token/store', async (c) => {
   const { agent, platform, token, metadata } = await c.req.json();
   
   if (!agent || !platform || !token) {
@@ -155,7 +156,8 @@ app.post('/token/store', requireAdmin, async (c) => {
  *   token: '<new token value>'
  * }
  */
-app.post('/token/update', requireAdmin, async (c) => {
+app.use('/token/update', requireAdmin);
+app.post('/token/update', async (c) => {
   const { agent, platform, token } = await c.req.json();
   
   if (!agent || !platform || !token) {

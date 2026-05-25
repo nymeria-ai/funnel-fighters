@@ -143,7 +143,7 @@ export async function findStaleRuns(maxAgeMinutes = 60) {
   return sql`
     SELECT * FROM execution_audit
     WHERE status = 'running'
-    AND started_at < NOW() - INTERVAL '${maxAgeMinutes} minutes'
+    AND started_at < NOW() - make_interval(mins => ${maxAgeMinutes})
     ORDER BY started_at ASC
   `;
 }
