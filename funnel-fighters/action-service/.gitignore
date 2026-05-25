@@ -1,0 +1,9 @@
+# Encrypted vault — NEVER commit tokens
+.vault/
+
+# Node
+node_modules/
+
+# Environment
+.env
+.env.*
