@@ -124,16 +124,20 @@ export async function rejectAudit(runId, reviewedBy, reasoning) {
  * Get recent audit entries
  */
 export async function getAuditLog({ limit = 50, requester, platform, status } = {}) {
-  let query = sql`
-    SELECT * FROM execution_audit
-    WHERE 1=1
-    ${requester ? sql`AND requester = ${requester}` : sql``}
-    ${platform ? sql`AND platform = ${platform}` : sql``}
-    ${status ? sql`AND status = ${status}` : sql``}
-    ORDER BY created_at DESC
-    LIMIT ${limit}
-  `;
-  return query;
+  // Build simple query — Neon tagged templates don't handle conditionals well
+  if (requester && platform && status) {
+    return sql`SELECT * FROM execution_audit WHERE requester = ${requester} AND platform = ${platform} AND status = ${status} ORDER BY created_at DESC LIMIT ${limit}`;
+  } else if (requester && platform) {
+    return sql`SELECT * FROM execution_audit WHERE requester = ${requester} AND platform = ${platform} ORDER BY created_at DESC LIMIT ${limit}`;
+  } else if (requester) {
+    return sql`SELECT * FROM execution_audit WHERE requester = ${requester} ORDER BY created_at DESC LIMIT ${limit}`;
+  } else if (platform) {
+    return sql`SELECT * FROM execution_audit WHERE platform = ${platform} ORDER BY created_at DESC LIMIT ${limit}`;
+  } else if (status) {
+    return sql`SELECT * FROM execution_audit WHERE status = ${status} ORDER BY created_at DESC LIMIT ${limit}`;
+  } else {
+    return sql`SELECT * FROM execution_audit ORDER BY created_at DESC LIMIT ${limit}`;
+  }
 }
 
 /**

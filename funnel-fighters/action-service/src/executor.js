@@ -174,7 +174,7 @@ export class ActionExecutor {
     
     const accessToken = await this._refreshGoogleToken(credentials);
     
-    const baseUrl = 'https://googleads.googleapis.com/v18';
+    const baseUrl = 'https://googleads.googleapis.com/v23';
     const customerId = scope.customer_id || credentials.default_customer_id;
     
     switch (action) {
