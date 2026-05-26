@@ -29,6 +29,8 @@ export async function ensureAuditTable() {
       -- Who
       requester TEXT NOT NULL,          -- 'nymeria' | 'ygritte'
       skill_name TEXT,                  -- which skill triggered this
+      initiator_name TEXT,              -- who triggered: 'Guy' | 'Ido' | 'analyst-subagent-6758'
+      initiator_context TEXT,           -- where from: 'DM whatsapp' | 'Marketing X1000' | 'campaign en-xxx deep dive thread'
       
       -- What
       action TEXT NOT NULL,             -- 'pause_campaign', 'adjust_bid', etc.
@@ -63,6 +65,11 @@ export async function ensureAuditTable() {
   await sql`CREATE INDEX IF NOT EXISTS idx_audit_platform ON execution_audit(platform)`;
   await sql`CREATE INDEX IF NOT EXISTS idx_audit_created ON execution_audit(created_at DESC)`;
   
+  // Migration: add initiator columns (safe to run on existing tables)
+  await sql`ALTER TABLE execution_audit ADD COLUMN IF NOT EXISTS initiator_name TEXT`;
+  await sql`ALTER TABLE execution_audit ADD COLUMN IF NOT EXISTS initiator_context TEXT`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_audit_initiator ON execution_audit(initiator_name)`;
+  
   console.log('✅ execution_audit table ready');
 }
 
@@ -70,10 +77,10 @@ export async function ensureAuditTable() {
  * Create an audit row BEFORE execution begins
  * Returns the run_id — required to complete the action
  */
-export async function createAuditEntry({ requester, skill_name, action, platform, scope, trail }) {
+export async function createAuditEntry({ requester, skill_name, action, platform, scope, trail, initiator_name, initiator_context }) {
   const [row] = await sql`
-    INSERT INTO execution_audit (requester, skill_name, action, platform, scope, trail, status)
-    VALUES (${requester}, ${skill_name}, ${action}, ${platform}, ${JSON.stringify(scope)}, ${JSON.stringify(trail)}, 'running')
+    INSERT INTO execution_audit (requester, skill_name, action, platform, scope, trail, status, initiator_name, initiator_context)
+    VALUES (${requester}, ${skill_name}, ${action}, ${platform}, ${JSON.stringify(scope)}, ${JSON.stringify(trail)}, 'running', ${initiator_name || null}, ${initiator_context || null})
     RETURNING run_id, id
   `;
   return row;

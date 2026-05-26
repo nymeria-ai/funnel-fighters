@@ -66,8 +66,11 @@ export class ActionExecutor {
    * @param {object} request.scope - Action parameters (campaign_id, etc.)
    * @param {object} request.trail - Reasoning trail (why this action)
    * @param {string} request.skill_name - Which skill triggered this
+   * @param {object} request.initiator - Who triggered this action
+   * @param {string} request.initiator.name - Initiator name ('Guy' | 'Ido' | 'analyst-subagent-6758')
+   * @param {string} request.initiator.context - Initiator context ('DM whatsapp' | 'Marketing X1000' | 'campaign thread')
    */
-  async execute({ requester, action, platform, scope, trail, skill_name }) {
+  async execute({ requester, action, platform, scope, trail, skill_name, initiator }) {
     // Validate request
     this._validate(requester, action, platform);
     
@@ -88,7 +91,9 @@ export class ActionExecutor {
     let auditEntry;
     if (this.#auditEnabled) {
       auditEntry = await createAuditEntry({
-        requester, skill_name, action, platform, scope, trail
+        requester, skill_name, action, platform, scope, trail,
+        initiator_name: initiator?.name,
+        initiator_context: initiator?.context
       });
     }
     
@@ -105,7 +110,11 @@ export class ActionExecutor {
       }
       
       // Build audit message for notification
+      const initiatorLine = initiator?.name
+        ? `\n👤 Initiated by: *${initiator.name}*${initiator.context ? ` | ${initiator.context}` : ''}`
+        : '';
       const auditMsg = `✅ *${requester}* → ${action} on ${platform}` +
+        initiatorLine +
         (trail?.reasoning ? `\n_${trail.reasoning}_` : '') +
         (scope?.campaign_id ? `\nCampaign: ${scope.campaign_id}` : '') +
         `\nRun: ${auditEntry?.run_id || 'n/a'}`;
@@ -122,7 +131,11 @@ export class ActionExecutor {
         await failAudit(auditEntry.run_id, error.message);
       }
       
+      const failInitiatorLine = initiator?.name
+        ? `\n👤 Initiated by: *${initiator.name}*${initiator.context ? ` | ${initiator.context}` : ''}`
+        : '';
       const failMsg = `❌ *${requester}* → ${action} on ${platform} FAILED` +
+        failInitiatorLine +
         `\n${error.message}` +
         `\nRun: ${auditEntry?.run_id || 'n/a'}`;
 

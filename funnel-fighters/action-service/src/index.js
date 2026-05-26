@@ -118,7 +118,7 @@ app.get('/health', (c) => {
 app.post('/execute', async (c) => {
   try {
     const body = await c.req.json();
-    const { requester, action, platform, scope, trail, skill_name } = body;
+    const { requester, action, platform, scope, trail, skill_name, initiator } = body;
     
     if (!requester || !action || !platform) {
       return c.json({
@@ -134,7 +134,7 @@ app.post('/execute', async (c) => {
     
     const result = await executor.execute({
       requester, action, platform, scope: scope || {},
-      trail, skill_name
+      trail, skill_name, initiator
     });
     
     // Send audit notification to WhatsApp group (best effort)
@@ -279,14 +279,16 @@ app.get('/audit/dashboard', async (c) => {
   <select id="filterStatus" onchange="filterTable()"><option value="">All status</option><option>success</option><option>failed</option><option>running</option><option>rejected</option></select>
 </div>
 <table id="auditTable">
-<thead><tr><th>Time</th><th>Agent</th><th>Action</th><th>Platform</th><th>Status</th><th>Skill</th><th>Reasoning</th><th>Duration</th></tr></thead>
+<thead><tr><th>Time</th><th>Agent</th><th>Initiator</th><th>Action</th><th>Platform</th><th>Status</th><th>Skill</th><th>Reasoning</th><th>Duration</th></tr></thead>
 <tbody>
 ${entries.map(e => {
   const trail = e.trail || {};
   const duration = e.completed_at && e.started_at ? Math.round((new Date(e.completed_at) - new Date(e.started_at)) / 1000) + 's' : '-';
+  const initiatorStr = e.initiator_name ? (e.initiator_name + (e.initiator_context ? ' | ' + e.initiator_context : '')) : '-';
   return '<tr>' +
     '<td>' + new Date(e.created_at).toLocaleString('en-GB', {timeZone:'Europe/London'}) + '</td>' +
     '<td>' + (e.requester || '-') + '</td>' +
+    '<td>' + initiatorStr + '</td>' +
     '<td>' + (e.action || '-') + '</td>' +
     '<td>' + (e.platform || '-') + '</td>' +
     '<td><span class="tag tag-' + (e.status || '') + '">' + (e.status || '-') + '</span></td>' +
