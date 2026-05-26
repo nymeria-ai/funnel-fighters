@@ -232,6 +232,105 @@ export class ActionExecutor {
         return res.json();
       }
       
+      case 'list_campaigns': {
+        const query = scope.query || `SELECT campaign.id, campaign.name, campaign.status, campaign.advertising_channel_type, campaign_budget.amount_micros FROM campaign ORDER BY campaign.id`;
+        const res = await fetch(`${baseUrl}/customers/${customerId}/googleAds:searchStream`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'developer-token': credentials.developer_token,
+            'login-customer-id': credentials.login_customer_id,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ query })
+        });
+        if (!res.ok) throw new Error(`Google Ads API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      case 'get_campaign': {
+        const query = scope.query || `SELECT campaign.id, campaign.name, campaign.status, campaign.advertising_channel_type, campaign_budget.amount_micros, campaign.start_date, campaign.end_date FROM campaign WHERE campaign.id = ${scope.campaign_id}`;
+        const res = await fetch(`${baseUrl}/customers/${customerId}/googleAds:searchStream`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'developer-token': credentials.developer_token,
+            'login-customer-id': credentials.login_customer_id,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ query })
+        });
+        if (!res.ok) throw new Error(`Google Ads API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      case 'list_ad_groups': {
+        const campaignFilter = scope.campaign_id ? ` WHERE campaign.id = ${scope.campaign_id}` : '';
+        const query = scope.query || `SELECT ad_group.id, ad_group.name, ad_group.status, ad_group.type, campaign.id, campaign.name FROM ad_group${campaignFilter} ORDER BY ad_group.id`;
+        const res = await fetch(`${baseUrl}/customers/${customerId}/googleAds:searchStream`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'developer-token': credentials.developer_token,
+            'login-customer-id': credentials.login_customer_id,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ query })
+        });
+        if (!res.ok) throw new Error(`Google Ads API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      case 'get_ad_group': {
+        const query = scope.query || `SELECT ad_group.id, ad_group.name, ad_group.status, ad_group.type, ad_group.cpc_bid_micros, campaign.id FROM ad_group WHERE ad_group.id = ${scope.ad_group_id}`;
+        const res = await fetch(`${baseUrl}/customers/${customerId}/googleAds:searchStream`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'developer-token': credentials.developer_token,
+            'login-customer-id': credentials.login_customer_id,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ query })
+        });
+        if (!res.ok) throw new Error(`Google Ads API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      case 'get_keywords': {
+        const adGroupFilter = scope.ad_group_id ? ` WHERE ad_group.id = ${scope.ad_group_id}` : '';
+        const query = scope.query || `SELECT ad_group_criterion.keyword.text, ad_group_criterion.keyword.match_type, ad_group_criterion.status, ad_group_criterion.quality_info.quality_score, ad_group.id, campaign.id FROM ad_group_criterion WHERE ad_group_criterion.type = 'KEYWORD'${adGroupFilter ? ' AND' + adGroupFilter.replace(' WHERE ', ' ') : ''} ORDER BY ad_group_criterion.keyword.text`;
+        const res = await fetch(`${baseUrl}/customers/${customerId}/googleAds:searchStream`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'developer-token': credentials.developer_token,
+            'login-customer-id': credentials.login_customer_id,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ query })
+        });
+        if (!res.ok) throw new Error(`Google Ads API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      case 'get_ads': {
+        const adGroupFilter = scope.ad_group_id ? ` WHERE ad_group.id = ${scope.ad_group_id}` : (scope.campaign_id ? ` WHERE campaign.id = ${scope.campaign_id}` : '');
+        const query = scope.query || `SELECT ad_group_ad.ad.id, ad_group_ad.ad.name, ad_group_ad.ad.type, ad_group_ad.ad.responsive_search_ad.headlines, ad_group_ad.ad.responsive_search_ad.descriptions, ad_group_ad.status, ad_group_ad.ad.final_urls, ad_group.id, campaign.id FROM ad_group_ad${adGroupFilter} ORDER BY ad_group_ad.ad.id`;
+        const res = await fetch(`${baseUrl}/customers/${customerId}/googleAds:searchStream`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'developer-token': credentials.developer_token,
+            'login-customer-id': credentials.login_customer_id,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ query })
+        });
+        if (!res.ok) throw new Error(`Google Ads API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
       default:
         throw new ActionError('NOT_IMPLEMENTED', `Google Ads action "${action}" not yet implemented`);
     }
@@ -255,15 +354,14 @@ export class ActionExecutor {
           limit: String(scope.limit || 50)
         });
         if (scope.date_preset) params.set('date_preset', scope.date_preset);
-        if (scope.time_range) {
-          params.set('time_range', JSON.stringify(scope.time_range));
-        }
-        if (scope.breakdowns) {
-          params.set('breakdowns', scope.breakdowns);
-        }
-        if (scope.filtering) {
-          params.set('filtering', JSON.stringify(scope.filtering));
-        }
+        if (scope.time_range) params.set('time_range', JSON.stringify(scope.time_range));
+        if (scope.time_increment) params.set('time_increment', String(scope.time_increment));
+        if (scope.breakdowns) params.set('breakdowns', scope.breakdowns);
+        if (scope.action_breakdowns) params.set('action_breakdowns', scope.action_breakdowns);
+        if (scope.action_attribution_windows) params.set('action_attribution_windows', JSON.stringify(scope.action_attribution_windows));
+        if (scope.use_account_attribution_setting) params.set('use_account_attribution_setting', 'true');
+        if (scope.use_unified_attribution_setting) params.set('use_unified_attribution_setting', 'true');
+        if (scope.filtering || scope.filters) params.set('filtering', JSON.stringify(scope.filtering || scope.filters));
         if (scope.after) params.set('after', scope.after);
         if (scope.sort) params.set('sort', scope.sort);
         
@@ -281,14 +379,43 @@ export class ActionExecutor {
           limit: String(scope.limit || 50)
         });
         if (scope.after) params.set('after', scope.after);
-        if (scope.filtering) {
-          params.set('filtering', JSON.stringify(scope.filtering));
-        }
-        if (scope.effective_status) {
-          params.set('effective_status', JSON.stringify(scope.effective_status));
-        }
+        if (scope.filtering || scope.filters) params.set('filtering', JSON.stringify(scope.filtering || scope.filters));
+        if (scope.effective_status) params.set('effective_status', JSON.stringify(scope.effective_status));
+        if (scope.date_preset) params.set('date_preset', scope.date_preset);
         
         const res = await fetch(`${baseUrl}/${accountId}/campaigns?${params}`);
+        if (!res.ok) throw new Error(`Meta API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      case 'list_ad_sets': {
+        const fields = scope.fields || 'id,name,status,daily_budget,lifetime_budget,targeting,optimization_goal,bid_strategy';
+        const accountId = scope.account_id || scope.ad_account_id || adAccount;
+        const endpoint = scope.campaign_id
+          ? `${baseUrl}/${scope.campaign_id}/adsets`
+          : `${baseUrl}/${accountId}/adsets`;
+        const params = new URLSearchParams({ fields, access_token: token, limit: String(scope.limit || 50) });
+        if (scope.after) params.set('after', scope.after);
+        if (scope.filtering || scope.filters) params.set('filtering', JSON.stringify(scope.filtering || scope.filters));
+        if (scope.effective_status) params.set('effective_status', JSON.stringify(scope.effective_status));
+        
+        const res = await fetch(`${endpoint}?${params}`);
+        if (!res.ok) throw new Error(`Meta API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      case 'get_ad_set': {
+        const fields = scope.fields || 'id,name,status,daily_budget,lifetime_budget,targeting,optimization_goal,bid_strategy,start_time,end_time';
+        const params = new URLSearchParams({ fields, access_token: token });
+        const res = await fetch(`${baseUrl}/${scope.adset_id || scope.ad_set_id}?${params}`);
+        if (!res.ok) throw new Error(`Meta API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      case 'get_creative': {
+        const fields = scope.fields || 'id,name,title,body,image_url,image_hash,video_id,call_to_action_type,object_story_spec,asset_feed_spec,thumbnail_url';
+        const params = new URLSearchParams({ fields, access_token: token });
+        const res = await fetch(`${baseUrl}/${scope.creative_id}?${params}`);
         if (!res.ok) throw new Error(`Meta API: ${res.status} ${await res.text()}`);
         return res.json();
       }
@@ -307,8 +434,8 @@ export class ActionExecutor {
         });
         
         if (scope.after) params.set('after', scope.after);
-        if (scope.filters) {
-          params.set('filtering', JSON.stringify(scope.filters));
+        if (scope.filters || scope.filtering) {
+          params.set('filtering', JSON.stringify(scope.filters || scope.filtering));
         }
         if (scope.effective_status) {
           params.set('effective_status', JSON.stringify(scope.effective_status));
