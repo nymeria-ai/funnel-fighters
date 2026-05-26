@@ -132,6 +132,12 @@ app.post('/execute', async (c) => {
       }, 400);
     }
     
+    if (!initiator || !initiator.name) {
+      return c.json({
+        error: 'initiator.name is required — who triggered this action? e.g. {"name": "Guy", "context": "DM whatsapp"}'
+      }, 400);
+    }
+    
     const result = await executor.execute({
       requester, action, platform, scope: scope || {},
       trail, skill_name, initiator
