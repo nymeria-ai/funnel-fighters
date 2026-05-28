@@ -197,12 +197,56 @@ When anomalies are detected, automatically generate hypotheses:
 **Meta API:**
 - Spend and conversion data (in-platform attribution only)
 
-**GA4 (Early Warning Signals):**
+**GA4 (Early Warning Signals) — ✅ CONNECTED 2026-05-28:**
+- **Property:** Monday Main - GA4 (ID: `403390805`)
+- **Endpoint:** `https://analyticsdata.googleapis.com/v1beta/properties/403390805:runReport`
+- **Auth:** OAuth2 refresh token (see each agent's TOOLS.md for token path, client credentials, and refresh method)
+- **Scope:** `analytics.readonly`
+
+**GA4 Query Template — Campaign Engagement (Leading Indicator):**
+```json
+{
+  "dateRanges": [{"startDate": "7daysAgo", "endDate": "today"}],
+  "dimensions": [{"name": "sessionCampaignName"}],
+  "metrics": [
+    {"name": "sessions"},
+    {"name": "engagedSessions"},
+    {"name": "engagementRate"},
+    {"name": "averageSessionDuration"},
+    {"name": "conversions"},
+    {"name": "bounceRate"}
+  ],
+  "dimensionFilter": {
+    "andGroup": {
+      "expressions": [
+        {"filter": {"fieldName": "landingPage", "stringFilter": {"matchType": "CONTAINS", "value": "/ap/"}}},
+        {"filter": {"fieldName": "sessionSource", "stringFilter": {"matchType": "EXACT", "value": "google"}}},
+        {"filter": {"fieldName": "sessionMedium", "stringFilter": {"matchType": "EXACT", "value": "cpc"}}}
+      ]
+    }
+  },
+  "orderBys": [{"metric": {"metricName": "sessions"}, "desc": true}],
+  "limit": 30
+}
+```
+
+**GA4 Early Warning Logic:**
 - On-site engagement metrics as leading indicators (available same-day, no 7-day DEP lag)
 - Session quality by campaign: bounce rate, engagement rate, avg session duration
 - If GA4 session quality drops for a campaign, flag it as a DEP risk 7 days before BigBrain confirms
-- Join path: UTM parameters (source/medium/campaign) → GA4 session metrics
+- Join path: UTM parameters (source/medium/campaign) → GA4 session metrics → match to BigBrain campaign name
 - **Key value:** Reduces effective detection lag from 8 days (7-day cohort + 1 day processing) to ~1 day for leading indicators
+- **Dimensions available:** sessionSource, sessionMedium, sessionCampaignName, sessionManualAdContent (ad ID), landingPage, deviceCategory, country
+- **Metrics available:** sessions, engagedSessions, engagementRate, averageSessionDuration, bounceRate, conversions, newUsers, totalUsers, screenPageViewsPerSession, scrolledUsers, keyEvents, eventCount, eventsPerSession
+
+**GA4 Anomaly Thresholds (leading indicators):**
+| Signal | Threshold | Implication |
+|--------|-----------|-------------|
+| Engagement rate drops >15% WoW | 🟡 Warning | Likely DEP drop in 7 days |
+| Bounce rate spikes >20% WoW | 🔴 Alert | LP or targeting issue |
+| Avg duration drops >25% | 🟡 Warning | Content/audience mismatch |
+| Pages/session drops below 1.5 | 🟡 Warning | Users not exploring |
+| Conversion rate drops >20% WoW | 🔴 Alert | Immediate investigation |
 
 **Automation:**
 - Scheduled daily BigBrain query at 8:00 AM GMT (after 7-day cohort completes)

@@ -88,12 +88,54 @@ For each audience segment, calculate:
 
 | Source | Data | Access |
 |--------|------|--------|
-| Google Ads API | Campaign/ad group metrics, audience segment reports | API (via Nymeria's Google Ads skill) |
+| Google Ads API | Campaign/ad group metrics, audience segment reports | API (via Funnel Gate) |
 | YouTube Analytics | Watch time, audience retention, demographics | In-platform |
 | Google Ads Audience Manager | Segment definitions, sizes, overlap | In-platform |
+| **GA4** | Post-click session quality (engagement, bounce, duration, conversions) | **✅ API (connected 2026-05-28)** |
+
+**GA4 Integration — ✅ CONNECTED 2026-05-28:**
+- **Property:** Monday Main - GA4 (ID: `403390805`)
+- **Endpoint:** `https://analyticsdata.googleapis.com/v1beta/properties/403390805:runReport`
+- **Auth:** OAuth2 refresh token (see each agent's TOOLS.md for token path, client credentials, and refresh method)
+- **Scope:** `analytics.readonly`
+
+**GA4 Query Template — YouTube Post-Click Quality:**
+```json
+{
+  "dateRanges": [{"startDate": "30daysAgo", "endDate": "today"}],
+  "dimensions": [{"name": "sessionCampaignName"}, {"name": "sessionManualAdContent"}],
+  "metrics": [
+    {"name": "sessions"},
+    {"name": "engagedSessions"},
+    {"name": "engagementRate"},
+    {"name": "averageSessionDuration"},
+    {"name": "conversions"},
+    {"name": "bounceRate"},
+    {"name": "screenPageViewsPerSession"}
+  ],
+  "dimensionFilter": {
+    "andGroup": {
+      "expressions": [
+        {"filter": {"fieldName": "sessionSource", "stringFilter": {"matchType": "EXACT", "value": "google"}}},
+        {"filter": {"fieldName": "sessionMedium", "stringFilter": {"matchType": "EXACT", "value": "cpc"}}}
+      ]
+    }
+  },
+  "orderBys": [{"metric": {"metricName": "sessions"}, "desc": true}],
+  "limit": 30
+}
+```
+*Note: YouTube campaigns appear in GA4 under google/cpc with demand_gen campaign names. Filter by campaign naming convention (contains 'youtube' or account ID 7193445013/6236109472).*
+
+**GA4 Value for YouTube (fills the view-through gap):**
+- For users who DO click (not view-through), GA4 provides same-day quality signals
+- Engagement rate by audience segment = proxy for audience-page fit
+- Compare session quality across targeting types (in-market vs affinity vs topics)
+- Leading indicator: if click-through audience engagement drops, the broader view-through audience is likely degrading too
+- **Does NOT solve view-through attribution** — but gives a quality layer on the clickable portion
 
 **NOT available for YouTube:**
-- BigBrain DEP data (view-through attribution gap)
+- BigBrain DEP data (view-through attribution gap — GA4 partially mitigates for click-through)
 - Post-signup product usage metrics
 - Cross-device attribution beyond Google's model
 
