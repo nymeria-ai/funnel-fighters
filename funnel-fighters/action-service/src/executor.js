@@ -25,10 +25,10 @@ const SUPPORTED_ACTIONS = {
   ],
   meta: [
     'get_campaign', 'list_campaigns', 'get_ad_set', 'list_ad_sets',
-    'get_ads', 'get_insights', 'get_creative',
-    // Write actions (Phase 2+)
+    'get_ads', 'get_ad', 'get_insights', 'get_creative',
+    // Write actions
     'pause_campaign', 'enable_campaign', 'pause_ad_set', 'enable_ad_set',
-    'adjust_budget'
+    'adjust_budget', 'create_ad_set', 'create_ad', 'upload_video', 'upload_image', 'delete_ad', 'delete_ad_set', 'get_video', 'update_creative', 'create_ad_creative', 'update_ad'
   ],
   youtube: [
     'get_campaign', 'list_campaigns', 'get_ad_group', 'list_ad_groups',
@@ -41,7 +41,7 @@ const SUPPORTED_ACTIONS = {
  */
 const READ_ACTIONS = new Set([
   'get_campaign', 'list_campaigns', 'get_ad_group', 'list_ad_groups',
-  'get_keywords', 'get_ads', 'get_insights', 'get_creative',
+  'get_keywords', 'get_ads', 'get_ad', 'get_insights', 'get_creative',
   'get_ad_set', 'list_ad_sets', 'get_video_metrics'
 ]);
 
@@ -232,6 +232,105 @@ export class ActionExecutor {
         return res.json();
       }
       
+      case 'list_campaigns': {
+        const query = scope.query || `SELECT campaign.id, campaign.name, campaign.status, campaign.advertising_channel_type, campaign_budget.amount_micros FROM campaign ORDER BY campaign.id`;
+        const res = await fetch(`${baseUrl}/customers/${customerId}/googleAds:searchStream`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'developer-token': credentials.developer_token,
+            'login-customer-id': credentials.login_customer_id,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ query })
+        });
+        if (!res.ok) throw new Error(`Google Ads API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      case 'get_campaign': {
+        const query = scope.query || `SELECT campaign.id, campaign.name, campaign.status, campaign.advertising_channel_type, campaign_budget.amount_micros, campaign.start_date, campaign.end_date FROM campaign WHERE campaign.id = ${scope.campaign_id}`;
+        const res = await fetch(`${baseUrl}/customers/${customerId}/googleAds:searchStream`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'developer-token': credentials.developer_token,
+            'login-customer-id': credentials.login_customer_id,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ query })
+        });
+        if (!res.ok) throw new Error(`Google Ads API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      case 'list_ad_groups': {
+        const campaignFilter = scope.campaign_id ? ` WHERE campaign.id = ${scope.campaign_id}` : '';
+        const query = scope.query || `SELECT ad_group.id, ad_group.name, ad_group.status, ad_group.type, campaign.id, campaign.name FROM ad_group${campaignFilter} ORDER BY ad_group.id`;
+        const res = await fetch(`${baseUrl}/customers/${customerId}/googleAds:searchStream`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'developer-token': credentials.developer_token,
+            'login-customer-id': credentials.login_customer_id,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ query })
+        });
+        if (!res.ok) throw new Error(`Google Ads API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      case 'get_ad_group': {
+        const query = scope.query || `SELECT ad_group.id, ad_group.name, ad_group.status, ad_group.type, ad_group.cpc_bid_micros, campaign.id FROM ad_group WHERE ad_group.id = ${scope.ad_group_id}`;
+        const res = await fetch(`${baseUrl}/customers/${customerId}/googleAds:searchStream`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'developer-token': credentials.developer_token,
+            'login-customer-id': credentials.login_customer_id,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ query })
+        });
+        if (!res.ok) throw new Error(`Google Ads API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      case 'get_keywords': {
+        const adGroupFilter = scope.ad_group_id ? ` WHERE ad_group.id = ${scope.ad_group_id}` : '';
+        const query = scope.query || `SELECT ad_group_criterion.keyword.text, ad_group_criterion.keyword.match_type, ad_group_criterion.status, ad_group_criterion.quality_info.quality_score, ad_group.id, campaign.id FROM ad_group_criterion WHERE ad_group_criterion.type = 'KEYWORD'${adGroupFilter ? ' AND' + adGroupFilter.replace(' WHERE ', ' ') : ''} ORDER BY ad_group_criterion.keyword.text`;
+        const res = await fetch(`${baseUrl}/customers/${customerId}/googleAds:searchStream`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'developer-token': credentials.developer_token,
+            'login-customer-id': credentials.login_customer_id,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ query })
+        });
+        if (!res.ok) throw new Error(`Google Ads API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      case 'get_ads': {
+        const adGroupFilter = scope.ad_group_id ? ` WHERE ad_group.id = ${scope.ad_group_id}` : (scope.campaign_id ? ` WHERE campaign.id = ${scope.campaign_id}` : '');
+        const query = scope.query || `SELECT ad_group_ad.ad.id, ad_group_ad.ad.name, ad_group_ad.ad.type, ad_group_ad.ad.responsive_search_ad.headlines, ad_group_ad.ad.responsive_search_ad.descriptions, ad_group_ad.status, ad_group_ad.ad.final_urls, ad_group.id, campaign.id FROM ad_group_ad${adGroupFilter} ORDER BY ad_group_ad.ad.id`;
+        const res = await fetch(`${baseUrl}/customers/${customerId}/googleAds:searchStream`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'developer-token': credentials.developer_token,
+            'login-customer-id': credentials.login_customer_id,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ query })
+        });
+        if (!res.ok) throw new Error(`Google Ads API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
       default:
         throw new ActionError('NOT_IMPLEMENTED', `Google Ads action "${action}" not yet implemented`);
     }
@@ -241,59 +340,258 @@ export class ActionExecutor {
    * Meta Ads executor
    */
   async _executeMeta(action, scope, token) {
-    const baseUrl = 'https://graph.facebook.com/v21.0';
+    const baseUrl = 'https://graph.facebook.com/v23.0';
     const adAccount = scope.ad_account_id || 'act_1455743984512059';
     
     switch (action) {
       case 'get_insights': {
         const fields = scope.fields || 'impressions,clicks,spend,ctr,cpc,actions';
+        const accountId = scope.account_id || scope.ad_account_id || adAccount;
         const params = new URLSearchParams({
           level: scope.level || 'ad',
           fields,
           access_token: token,
           limit: String(scope.limit || 50)
         });
-        if (scope.time_range) {
-          params.set('time_range', JSON.stringify(scope.time_range));
-        }
-        if (scope.breakdowns) {
-          params.set('breakdowns', scope.breakdowns);
-        }
-        if (scope.filtering) {
-          params.set('filtering', JSON.stringify(scope.filtering));
-        }
+        if (scope.date_preset) params.set('date_preset', scope.date_preset);
+        if (scope.time_range) params.set('time_range', JSON.stringify(scope.time_range));
+        if (scope.time_increment) params.set('time_increment', String(scope.time_increment));
+        if (scope.breakdowns) params.set('breakdowns', scope.breakdowns);
+        if (scope.action_breakdowns) params.set('action_breakdowns', scope.action_breakdowns);
+        if (scope.action_attribution_windows) params.set('action_attribution_windows', JSON.stringify(scope.action_attribution_windows));
+        if (scope.use_account_attribution_setting) params.set('use_account_attribution_setting', 'true');
+        if (scope.use_unified_attribution_setting) params.set('use_unified_attribution_setting', 'true');
+        if (scope.filtering || scope.filters) params.set('filtering', JSON.stringify(scope.filtering || scope.filters));
+        if (scope.after) params.set('after', scope.after);
+        if (scope.sort) params.set('sort', scope.sort);
         
-        const res = await fetch(`${baseUrl}/${adAccount}/insights?${params}`);
+        const res = await fetch(`${baseUrl}/${accountId}/insights?${params}`);
         if (!res.ok) throw new Error(`Meta API: ${res.status} ${await res.text()}`);
         return res.json();
       }
       
       case 'list_campaigns': {
         const fields = scope.fields || 'id,name,status,objective,daily_budget,lifetime_budget';
+        const accountId = scope.account_id || scope.ad_account_id || adAccount;
         const params = new URLSearchParams({
           fields,
           access_token: token,
           limit: String(scope.limit || 50)
         });
+        if (scope.after) params.set('after', scope.after);
+        if (scope.filtering || scope.filters) params.set('filtering', JSON.stringify(scope.filtering || scope.filters));
+        if (scope.effective_status) params.set('effective_status', JSON.stringify(scope.effective_status));
+        if (scope.date_preset) params.set('date_preset', scope.date_preset);
         
-        const res = await fetch(`${baseUrl}/${adAccount}/campaigns?${params}`);
+        const res = await fetch(`${baseUrl}/${accountId}/campaigns?${params}`);
+        if (!res.ok) throw new Error(`Meta API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      case 'list_ad_sets': {
+        const fields = scope.fields || 'id,name,status,daily_budget,lifetime_budget,targeting,optimization_goal,bid_strategy';
+        const accountId = scope.account_id || scope.ad_account_id || adAccount;
+        const endpoint = scope.campaign_id
+          ? `${baseUrl}/${scope.campaign_id}/adsets`
+          : `${baseUrl}/${accountId}/adsets`;
+        const params = new URLSearchParams({ fields, access_token: token, limit: String(scope.limit || 50) });
+        if (scope.after) params.set('after', scope.after);
+        if (scope.filtering || scope.filters) params.set('filtering', JSON.stringify(scope.filtering || scope.filters));
+        if (scope.effective_status) params.set('effective_status', JSON.stringify(scope.effective_status));
+        
+        const res = await fetch(`${endpoint}?${params}`);
+        if (!res.ok) throw new Error(`Meta API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      case 'get_ad_set': {
+        const fields = scope.fields || 'id,name,status,daily_budget,lifetime_budget,targeting,optimization_goal,bid_strategy,start_time,end_time';
+        const params = new URLSearchParams({ fields, access_token: token });
+        const res = await fetch(`${baseUrl}/${scope.adset_id || scope.ad_set_id}?${params}`);
+        if (!res.ok) throw new Error(`Meta API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      case 'get_creative': {
+        const fields = scope.fields || 'id,name,title,body,image_url,image_hash,video_id,call_to_action_type,object_story_spec,asset_feed_spec,thumbnail_url';
+        const params = new URLSearchParams({ fields, access_token: token });
+        const res = await fetch(`${baseUrl}/${scope.creative_id}?${params}`);
         if (!res.ok) throw new Error(`Meta API: ${res.status} ${await res.text()}`);
         return res.json();
       }
       
       case 'get_ads': {
         const fields = scope.fields || 'id,name,status,creative{id,title,body,image_url,video_id}';
+        const accountId = scope.account_id || scope.ad_account_id || adAccount;
+        const endpoint = scope.campaign_id
+          ? `${baseUrl}/${scope.campaign_id}/ads`
+          : `${baseUrl}/${accountId}/ads`;
+        
         const params = new URLSearchParams({
           fields,
           access_token: token,
           limit: String(scope.limit || 50)
         });
         
-        const res = await fetch(`${baseUrl}/${adAccount}/ads?${params}`);
+        if (scope.after) params.set('after', scope.after);
+        if (scope.filters || scope.filtering) {
+          params.set('filtering', JSON.stringify(scope.filters || scope.filtering));
+        }
+        if (scope.effective_status) {
+          params.set('effective_status', JSON.stringify(scope.effective_status));
+        }
+        
+        const res = await fetch(`${endpoint}?${params}`);
         if (!res.ok) throw new Error(`Meta API: ${res.status} ${await res.text()}`);
         return res.json();
       }
       
+      case 'get_ad': {
+        const fields = scope.fields || 'id,name,creative{body,title,asset_feed_spec},effective_status';
+        const params = new URLSearchParams({ fields, access_token: token });
+        const res = await fetch(`${baseUrl}/${scope.ad_id}?${params}`);
+        if (!res.ok) throw new Error(`Meta API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+
+      case 'upload_image': {
+        const accountId = scope.account_id || scope.ad_account_id || adAccount;
+        const { readFileSync } = await import('node:fs');
+        const { basename } = await import('node:path');
+        const fileBuffer = readFileSync(scope.file_path);
+        const formData = new FormData();
+        formData.append('access_token', token);
+        formData.append('filename', scope.filename || basename(scope.file_path));
+        formData.append('source', new Blob([fileBuffer], { type: 'image/png' }), basename(scope.file_path));
+        const res = await fetch(`${baseUrl}/${accountId}/adimages`, { method: 'POST', body: formData });
+        if (!res.ok) throw new Error(`Meta API upload_image: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+
+      case 'upload_video': {
+        const accountId = scope.account_id || scope.ad_account_id || adAccount;
+        const formData = new FormData();
+        formData.append('access_token', token);
+        formData.append('title', scope.title || 'Untitled');
+        if (scope.file_url) formData.append('file_url', scope.file_url);
+        if (scope.file_path) {
+          const { readFileSync } = await import('node:fs');
+          const { basename } = await import('node:path');
+          const fileBuffer = readFileSync(scope.file_path);
+          formData.append('source', new Blob([fileBuffer], { type: 'video/mp4' }), basename(scope.file_path));
+        }
+        const res = await fetch(`${baseUrl}/${accountId}/advideos`, { method: 'POST', body: formData });
+        if (!res.ok) throw new Error(`Meta API upload_video: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+
+      case 'create_ad_set': {
+        const accountId = scope.account_id || scope.ad_account_id || adAccount;
+        const body = new URLSearchParams();
+        body.append('access_token', token);
+        body.append('name', scope.name);
+        body.append('campaign_id', scope.campaign_id);
+        body.append('status', scope.status || 'PAUSED');
+        body.append('daily_budget', String(scope.daily_budget));
+        body.append('optimization_goal', scope.optimization_goal);
+        body.append('billing_event', scope.billing_event);
+        body.append('bid_strategy', scope.bid_strategy);
+        body.append('targeting', JSON.stringify(scope.targeting));
+        body.append('promoted_object', JSON.stringify(scope.promoted_object));
+        if (scope.start_time) body.append('start_time', scope.start_time);
+        if (scope.end_time) body.append('end_time', scope.end_time);
+        const res = await fetch(`${baseUrl}/${accountId}/adsets`, { method: 'POST', body });
+        if (!res.ok) throw new Error(`Meta API create_ad_set: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+
+      case 'create_ad': {
+        const accountId = scope.account_id || scope.ad_account_id || adAccount;
+        const body = new URLSearchParams();
+        body.append('access_token', token);
+        body.append('name', scope.name);
+        body.append('adset_id', scope.adset_id);
+        body.append('status', scope.status || 'PAUSED');
+        body.append('creative', JSON.stringify(scope.creative));
+        if (scope.tracking_specs) body.append('tracking_specs', JSON.stringify(scope.tracking_specs));
+        if (scope.multi_advertiser_ads_opt_in !== undefined) body.append('multi_advertiser_ads_opt_in', String(scope.multi_advertiser_ads_opt_in));
+        const res = await fetch(`${baseUrl}/${accountId}/ads`, { method: 'POST', body });
+        if (!res.ok) throw new Error(`Meta API create_ad: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+
+      case 'get_video': {
+        const fields = scope.fields || 'id,title,source,length,picture,permalink_url';
+        // Try direct video node first
+        const params = new URLSearchParams({ fields, access_token: token });
+        const res = await fetch(`${baseUrl}/${scope.video_id}?${params}`);
+        if (res.ok) return res.json();
+        // Fallback: try via ad account advideos listing
+        const accountId = scope.account_id || scope.ad_account_id || adAccount;
+        const params2 = new URLSearchParams({ fields, access_token: token, limit: '500' });
+        const res2 = await fetch(`${baseUrl}/${accountId}/advideos?${params2}`);
+        if (!res2.ok) throw new Error(`Meta API get_video: ${res.status} ${await res.text()} / fallback: ${res2.status} ${await res2.text()}`);
+        const data2 = await res2.json();
+        const found = (data2.data || []).find(v => v.id === scope.video_id);
+        if (found) return found;
+        return data2;
+      }
+
+      case 'delete_ad': {
+        const params = new URLSearchParams({ access_token: token });
+        const res = await fetch(`${baseUrl}/${scope.ad_id}`, { method: 'DELETE', body: params });
+        if (!res.ok) throw new Error(`Meta API delete_ad: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+
+      case 'delete_ad_set': {
+        const params = new URLSearchParams({ access_token: token });
+        const res = await fetch(`${baseUrl}/${scope.adset_id}`, { method: 'DELETE', body: params });
+        if (!res.ok) throw new Error(`Meta API delete_ad_set: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+
+      case 'update_creative': {
+        // Update an existing ad creative's fields (body, title, name, status, adlabels)
+        const body = new URLSearchParams();
+        body.append('access_token', token);
+        if (scope.body) body.append('body', scope.body);
+        if (scope.title) body.append('title', scope.title);
+        if (scope.name) body.append('name', scope.name);
+        if (scope.status) body.append('status', scope.status);
+        if (scope.asset_feed_spec) body.append('asset_feed_spec', JSON.stringify(scope.asset_feed_spec));
+        if (scope.object_story_spec) body.append('object_story_spec', JSON.stringify(scope.object_story_spec));
+        const res = await fetch(`${baseUrl}/${scope.creative_id}`, { method: 'POST', body });
+        if (!res.ok) throw new Error(`Meta API update_creative: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+
+      case 'create_ad_creative': {
+        // Create a new ad creative (with asset_feed_spec or object_story_spec)
+        const accountId = scope.account_id || scope.ad_account_id || adAccount;
+        const body = new URLSearchParams();
+        body.append('access_token', token);
+        body.append('name', scope.name || 'Untitled Creative');
+        if (scope.asset_feed_spec) body.append('asset_feed_spec', JSON.stringify(scope.asset_feed_spec));
+        if (scope.object_story_spec) body.append('object_story_spec', JSON.stringify(scope.object_story_spec));
+        if (scope.degrees_of_freedom_spec) body.append('degrees_of_freedom_spec', JSON.stringify(scope.degrees_of_freedom_spec));
+        const res = await fetch(`${baseUrl}/${accountId}/adcreatives`, { method: 'POST', body });
+        if (!res.ok) throw new Error(`Meta API create_ad_creative: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+
+      case 'update_ad': {
+        // Update an existing ad (e.g., link a new creative, change name, status)
+        const body = new URLSearchParams();
+        body.append('access_token', token);
+        if (scope.name) body.append('name', scope.name);
+        if (scope.status) body.append('status', scope.status);
+        if (scope.creative) body.append('creative', JSON.stringify(scope.creative));
+        const res = await fetch(`${baseUrl}/${scope.ad_id}`, { method: 'POST', body });
+        if (!res.ok) throw new Error(`Meta API update_ad: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+
       default:
         throw new ActionError('NOT_IMPLEMENTED', `Meta action "${action}" not yet implemented`);
     }
