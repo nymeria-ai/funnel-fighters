@@ -1,5 +1,29 @@
 # Google Ads API × DEP Cross-Reference
 
+## V3 Mandatory Output Rules (added 2026-06-01, Ido feedback)
+
+1. **🚫 No competitor brand names in ad copy (MUST)** — Google policy prohibits competitor brand names in ad headlines/descriptions/display URLs. Never recommend writing "Best Trello Alternative" etc. Use generic framing: "The Modern Work Platform", "Rated #1 by 225K+ Teams", category-based differentiation. LP content is OK — restriction is ad text only.
+
+2. **QS coverage = ALL ad groups, not top 10** — Flag every ad group where avg QS < 4. For each one, provide specific test recommendations to run in Step 1 to improve QS significantly.
+
+3. **LP analysis must include conversion-to-paid** — Pull conversion-to-signup AND conversion-to-paid (SQL Direct) from BigBrain FACT_CAMPAIGN_MONITORING_DWH. Do not evaluate LPs on GA4 CVR alone. High CVR + low DEP = trap tier.
+
+4. **Day of week = BigBrain down-funnel, not just CPA** — Show DEP/signup and signup-to-paid conversion rate by day of week (from BigBrain), not just platform CPA. Bid adjustment recommendations must be informed by down-funnel data.
+
+5. **City level = SQL Direct down-funnel** — Pull city-level data from SQL Direct (signups, DEP, paid conversion rate). Always check if New York appears (flag if yes — US traffic in UK campaign). Dublin is OK — IE+UK targeting is intentional.
+
+6. **LP recommendations must be concrete** — Don't just flag problem LPs. Give specific improvement suggestions: which headline to change, what social proof to add, what CTA to use, what above-fold element is missing. Use Task Management Templates LP as the positive example (keyword in H1, dual CTA, immediate social proof, template gallery visible).
+
+7. **QS4 or lower = specific fix plan** — For any keyword/ad group with QS ≤ 4, provide a step-by-step fix: (a) ad copy changes, (b) LP changes, (c) match type/structure changes. "Project Management Software" QS4 is the reference case.
+
+8. **Hour of day = bid adjustment numbers required** — Must include actual bid adjustment percentages (e.g. "-50% on hours 0-4 UTC", "+15% on 8-11 UTC"). Analysis without numbers is incomplete.
+
+9. **Action plan structure = Day 1 first** — Output must lead with Day 1 actions (do immediately). Then "Watch & Adjust" section (review after 7 days). No long sequential weekly roadmaps.
+
+10. **Spreadsheet output required** — Every report must end with an action table: `| Action | Reason | Expected Effect |`. This is the primary deliverable for the team.
+
+---
+
 ## Purpose
 Deep-dive Google Ads performance analysis that connects in-platform metrics (Quality Score, Impression Share, Auction Insights) with BigBrain DEP data at the keyword and ad group level. Use this skill to diagnose *why* some campaigns produce high-DEP users while others don't, moving beyond aggregate campaign metrics to granular optimization signals. Identify which keywords, match types, and competitive dynamics drive the best signup quality.
 
@@ -317,6 +341,21 @@ competitive_pressure = df_competitive[
   - Hypothesis: Asana's free tier messaging pulling lower-intent users
   - Action: Test value prop differentiation ("Enterprise-ready from day one")
 ```
+
+## 🚫 Google Ads Policy — Competitor Brand Names (MUST — Non-Negotiable)
+
+**Google's trademark policy prohibits using competitor brand names in ad copy.**
+
+- **NEVER include competitor brand names** in ad headlines, descriptions, or display URLs
+- This includes: Asana, Trello, ClickUp, Jira, Notion, Smartsheet, Wrike, Basecamp, etc.
+- Violation = ad disapproval or account suspension
+- When auditing or optimizing ad copy, flag any competitor brand name usage as a CRITICAL policy violation
+- Competitor names on landing pages are allowed — the restriction is ad text only
+- Acceptable alternatives: "vs. other tools", "the modern alternative", feature differentiation without naming
+
+> Added 2026-06-01 based on Ido's feedback.
+
+---
 
 ## Constraints (UK POC Specific)
 - **BigBrain attribution:** Google Search has full attribution via gclid → keyword mapping
