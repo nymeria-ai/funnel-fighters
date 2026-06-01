@@ -22,6 +22,20 @@
 
 10. **Spreadsheet output required** — Every report must end with an action table: `| Action | Reason | Expected Effect |`. This is the primary deliverable for the team.
 
+### General Analysis Principles (added 2026-06-01, from V3 review)
+
+11. **DEP is the primary metric, CPA is secondary** — All bid adjustments, budget decisions, and performance rankings must be driven by BigBrain DEP data, not platform CPA. CPA is directional only. When DEP and CPA disagree (e.g., low CPA but low DEP), DEP wins.
+
+12. **Brand vs non-brand: never compare** — Brand campaigns (brand search, brand CRM, etc.) have fundamentally different intent and conversion behavior. Never rank brand LP or campaign performance alongside non-brand. Always separate into two sections. Brand DEP is a baseline, not a target for non-brand.
+
+13. **Impression share check before budget reallocation** — Before recommending "shift $X from campaign A to campaign B", pull impression share data for both. Confirm the target campaign is actually losing IS to budget (not rank). If losing to rank → fix QS first, don't add budget. Budget reallocation without IS data is guesswork.
+
+14. **Bid adjustments must be selective by campaign quality** — Hour-of-day and DOW bid increases should only apply to high-DEP campaigns (CRM, comp, project management). Never apply positive bid adjustments to low-DEP campaigns (gantt, templates, shared calendar) — you'd just buy more waste at premium hours.
+
+15. **Budget reallocation must include explicit flow** — Don't just say "cut gantt" and "increase CRM". Specify: total freed ($X from campaign A + $Y from campaign B = $Z total), then exactly where each dollar goes (e.g., $15K → comp_asana, $12K → crm_industries, $5K held for QS-fix campaigns). Numbers must add up.
+
+16. **Hour-of-day analysis needs DEP, not just CPA** — Same principle as DOW (rule 4). Pull hourly DEP from BigBrain. CPA-based hour adjustments can be misleading — a cheap hour with $2 DEP is worse than an expensive hour with $40 DEP.
+
 ---
 
 ## Purpose

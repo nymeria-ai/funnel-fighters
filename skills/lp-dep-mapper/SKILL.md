@@ -372,6 +372,14 @@ def evaluate_lp_variant(variant_name, control_metrics):
 4. **Test traffic source personalization** → Google users see feature-focused LP, Facebook users see value prop-focused LP
 ```
 
+## Mandatory Rules (added 2026-06-01)
+
+1. **Brand vs non-brand LP separation** — Brand campaign LPs (e.g., /lp/crm/branded) must never be ranked alongside non-brand LPs. Brand intent inflates DEP and conversion rates, making the comparison meaningless. Always label brand LPs separately and identify the best *non-brand* LP as the actionable benchmark.
+
+2. **LP recommendations must be concrete** — Don't just flag "LP underperforming." Specify: which headline to change, what social proof to add, what CTA to use, what above-fold element is missing. Reference Task Management Templates LP as the positive example pattern (keyword in H1, dual CTA, immediate social proof, template gallery visible).
+
+3. **DEP + payer probability, not just GA4 CVR** — Evaluate LPs on conversion-to-signup AND conversion-to-paid (payer probability from BigBrain). High CVR + low DEP = trap tier (e.g., gantt_template: 133% CVR, $0.91 DEP).
+
 ## Constraints (UK POC Specific)
 - **7-day DEP lag:** LP test results not actionable until 7 days after test concludes (must run test for minimum 14-21 days total)
 - **Sample size requirements:** Minimum 50 signups per LP variant for statistical validity (may take 1-2 weeks depending on traffic volume)

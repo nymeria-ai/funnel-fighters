@@ -373,6 +373,16 @@ net_dep_change = (scenario_a['campaign_x_after']['dep_users'] + scenario_a['camp
 | Dev | £28,000 | 2,140 | £13.08 | Google_NonBrand_Exact (£10.50) |
 ```
 
+## Mandatory Rules (added 2026-06-01)
+
+1. **Brand vs non-brand: never mix in comparisons** — Brand campaigns have inflated DEP from brand intent. Never use brand campaign DEP as the benchmark for non-brand reallocation decisions. Separate brand and non-brand in all analysis and recommendations.
+
+2. **Impression share check before reallocation** — Before recommending budget increase for a campaign, confirm it is losing IS to budget (not rank). If losing to rank → fix QS/ad rank first, adding budget won't help. Pull IS data from Google Ads API.
+
+3. **Explicit budget flow required** — Every reallocation must specify: total freed (from which campaigns, how much each), and exactly where each dollar goes. Numbers must add up. No vague "shift budget from X to Y."
+
+4. **DEP is the primary metric** — Rank campaigns by DEP/signup, not CPA. CPA is directional. When CPA says "good" but DEP says "bad" (e.g., gantt_template: low CPA, $0.91 DEP), DEP wins.
+
 ## Constraints (UK POC Specific)
 - **Product budget isolation:** Reallocations within work_management, crm, or dev pools only (no cross-product shifts without approval)
 - **Minimum campaign budgets:** £50/day minimum to maintain auction viability
