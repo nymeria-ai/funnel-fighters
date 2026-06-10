@@ -331,6 +331,286 @@ export class ActionExecutor {
         return res.json();
       }
       
+      // --- Keyword mutations ---
+      
+      case 'pause_keyword':
+      case 'enable_keyword': {
+        const kwStatus = action === 'pause_keyword' ? 'PAUSED' : 'ENABLED';
+        const res = await fetch(`${baseUrl}/customers/${customerId}/adGroupCriteria:mutate`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'developer-token': credentials.developer_token,
+            'login-customer-id': credentials.login_customer_id,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            operations: [{
+              update: {
+                resourceName: `customers/${customerId}/adGroupCriteria/${scope.ad_group_id}~${scope.criterion_id}`,
+                status: kwStatus
+              },
+              updateMask: 'status'
+            }]
+          })
+        });
+        if (!res.ok) throw new Error(`Google Ads API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      case 'remove_keyword': {
+        const res = await fetch(`${baseUrl}/customers/${customerId}/adGroupCriteria:mutate`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'developer-token': credentials.developer_token,
+            'login-customer-id': credentials.login_customer_id,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            operations: [{
+              remove: `customers/${customerId}/adGroupCriteria/${scope.ad_group_id}~${scope.criterion_id}`
+            }]
+          })
+        });
+        if (!res.ok) throw new Error(`Google Ads API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      // --- Negative keywords (campaign-level) ---
+      
+      case 'add_negative_keywords': {
+        // scope.campaign_id, scope.keywords: [{text, match_type}]
+        const negOps = scope.keywords.map(kw => ({
+          create: {
+            campaign: `customers/${customerId}/campaigns/${scope.campaign_id}`,
+            negative: true,
+            keyword: {
+              text: kw.text,
+              matchType: (kw.match_type || 'EXACT').toUpperCase()
+            }
+          }
+        }));
+        const res = await fetch(`${baseUrl}/customers/${customerId}/campaignCriteria:mutate`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'developer-token': credentials.developer_token,
+            'login-customer-id': credentials.login_customer_id,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ operations: negOps })
+        });
+        if (!res.ok) throw new Error(`Google Ads API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      // --- Ad group mutations ---
+      
+      case 'create_ad_group': {
+        // scope.campaign_id, scope.name, scope.cpc_bid_micros (optional), scope.status (optional)
+        const res = await fetch(`${baseUrl}/customers/${customerId}/adGroups:mutate`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'developer-token': credentials.developer_token,
+            'login-customer-id': credentials.login_customer_id,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            operations: [{
+              create: {
+                campaign: `customers/${customerId}/campaigns/${scope.campaign_id}`,
+                name: scope.name,
+                status: scope.status || 'PAUSED',
+                type: 'SEARCH_STANDARD',
+                ...(scope.cpc_bid_micros ? { cpcBidMicros: scope.cpc_bid_micros } : {})
+              }
+            }]
+          })
+        });
+        if (!res.ok) throw new Error(`Google Ads API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      case 'update_ad_group': {
+        // scope.ad_group_id, scope.updates: { name, status, cpc_bid_micros }
+        const updates = scope.updates || {};
+        const updateFields = [];
+        const updateObj = { resourceName: `customers/${customerId}/adGroups/${scope.ad_group_id}` };
+        if (updates.name) { updateObj.name = updates.name; updateFields.push('name'); }
+        if (updates.status) { updateObj.status = updates.status; updateFields.push('status'); }
+        if (updates.cpc_bid_micros) { updateObj.cpcBidMicros = updates.cpc_bid_micros; updateFields.push('cpc_bid_micros'); }
+        const res = await fetch(`${baseUrl}/customers/${customerId}/adGroups:mutate`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'developer-token': credentials.developer_token,
+            'login-customer-id': credentials.login_customer_id,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            operations: [{ update: updateObj, updateMask: updateFields.join(',') }]
+          })
+        });
+        if (!res.ok) throw new Error(`Google Ads API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      // --- Add keywords to ad group ---
+      
+      case 'add_keywords': {
+        // scope.ad_group_id, scope.keywords: [{text, match_type}]
+        const kwOps = scope.keywords.map(kw => ({
+          create: {
+            adGroup: `customers/${customerId}/adGroups/${scope.ad_group_id}`,
+            status: 'ENABLED',
+            keyword: {
+              text: kw.text,
+              matchType: (kw.match_type || 'EXACT').toUpperCase()
+            }
+          }
+        }));
+        const res = await fetch(`${baseUrl}/customers/${customerId}/adGroupCriteria:mutate`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'developer-token': credentials.developer_token,
+            'login-customer-id': credentials.login_customer_id,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ operations: kwOps })
+        });
+        if (!res.ok) throw new Error(`Google Ads API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      // --- RSA (Responsive Search Ad) creation ---
+      
+      case 'create_rsa': {
+        // scope.ad_group_id
+        // scope.headlines: [{text, pinned_field? (HEADLINE_1, HEADLINE_2, HEADLINE_3)}]
+        // scope.descriptions: [{text, pinned_field?}]
+        // scope.final_urls: ["https://..."]
+        // scope.path1, scope.path2 (optional display URL paths)
+        const headlines = scope.headlines.map(h => {
+          const obj = { text: h.text };
+          if (h.pinned_field) obj.pinnedField = h.pinned_field;
+          return obj;
+        });
+        const descriptions = scope.descriptions.map(d => {
+          const obj = { text: d.text };
+          if (d.pinned_field) obj.pinnedField = d.pinned_field;
+          return obj;
+        });
+        const adBody = {
+          operations: [{
+            create: {
+              adGroup: `customers/${customerId}/adGroups/${scope.ad_group_id}`,
+              status: scope.status || 'PAUSED',
+              ad: {
+                responsiveSearchAd: {
+                  headlines,
+                  descriptions,
+                  ...(scope.path1 ? { path1: scope.path1 } : {}),
+                  ...(scope.path2 ? { path2: scope.path2 } : {})
+                },
+                finalUrls: scope.final_urls || ['https://monday.com/ap/project-management']
+              }
+            }
+          }]
+        };
+        const res = await fetch(`${baseUrl}/customers/${customerId}/adGroupAds:mutate`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'developer-token': credentials.developer_token,
+            'login-customer-id': credentials.login_customer_id,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(adBody)
+        });
+        if (!res.ok) throw new Error(`Google Ads API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      case 'pause_ad':
+      case 'enable_ad': {
+        const adStatus = action === 'pause_ad' ? 'PAUSED' : 'ENABLED';
+        const res = await fetch(`${baseUrl}/customers/${customerId}/adGroupAds:mutate`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'developer-token': credentials.developer_token,
+            'login-customer-id': credentials.login_customer_id,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            operations: [{
+              update: {
+                resourceName: `customers/${customerId}/adGroupAds/${scope.ad_group_id}~${scope.ad_id}`,
+                status: adStatus
+              },
+              updateMask: 'status'
+            }]
+          })
+        });
+        if (!res.ok) throw new Error(`Google Ads API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      // --- Budget mutations ---
+      
+      case 'update_budget': {
+        // scope.budget_id, scope.amount_micros
+        const res = await fetch(`${baseUrl}/customers/${customerId}/campaignBudgets:mutate`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'developer-token': credentials.developer_token,
+            'login-customer-id': credentials.login_customer_id,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            operations: [{
+              update: {
+                resourceName: `customers/${customerId}/campaignBudgets/${scope.budget_id}`,
+                amountMicros: scope.amount_micros
+              },
+              updateMask: 'amount_micros'
+            }]
+          })
+        });
+        if (!res.ok) throw new Error(`Google Ads API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      // --- Bid adjustments ---
+      
+      case 'update_keyword_bid': {
+        // scope.ad_group_id, scope.criterion_id, scope.cpc_bid_micros
+        const res = await fetch(`${baseUrl}/customers/${customerId}/adGroupCriteria:mutate`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'developer-token': credentials.developer_token,
+            'login-customer-id': credentials.login_customer_id,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            operations: [{
+              update: {
+                resourceName: `customers/${customerId}/adGroupCriteria/${scope.ad_group_id}~${scope.criterion_id}`,
+                cpcBidMicros: scope.cpc_bid_micros
+              },
+              updateMask: 'cpc_bid_micros'
+            }]
+          })
+        });
+        if (!res.ok) throw new Error(`Google Ads API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
       default:
         throw new ActionError('NOT_IMPLEMENTED', `Google Ads action "${action}" not yet implemented`);
     }
@@ -442,6 +722,14 @@ export class ActionExecutor {
         }
         
         const res = await fetch(`${endpoint}?${params}`);
+        if (!res.ok) throw new Error(`Meta API: ${res.status} ${await res.text()}`);
+        return res.json();
+      }
+      
+      case 'get_ad': {
+        const fields = scope.fields || 'id,name,creative{body,title,asset_feed_spec},effective_status';
+        const params = new URLSearchParams({ fields, access_token: token });
+        const res = await fetch(`${baseUrl}/${scope.ad_id}?${params}`);
         if (!res.ok) throw new Error(`Meta API: ${res.status} ${await res.text()}`);
         return res.json();
       }
