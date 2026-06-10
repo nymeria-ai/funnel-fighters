@@ -733,14 +733,6 @@ export class ActionExecutor {
         if (!res.ok) throw new Error(`Meta API: ${res.status} ${await res.text()}`);
         return res.json();
       }
-      
-      case 'get_ad': {
-        const fields = scope.fields || 'id,name,creative{body,title,asset_feed_spec},effective_status';
-        const params = new URLSearchParams({ fields, access_token: token });
-        const res = await fetch(`${baseUrl}/${scope.ad_id}?${params}`);
-        if (!res.ok) throw new Error(`Meta API: ${res.status} ${await res.text()}`);
-        return res.json();
-      }
 
       case 'upload_image': {
         const accountId = scope.account_id || scope.ad_account_id || adAccount;
